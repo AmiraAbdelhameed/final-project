@@ -68,7 +68,7 @@ const Navbar = (props) => {
   const navItems = [
     { label: 'الرئيسيه', path: '/' },
     { label: 'المؤسسات', path: '/organizations' },
-    { label: 'المشاريع', path: '/projects' },
+    { label: 'المشاريع', path: '/campaigns' },
     { label: 'من نحن', path: '/about' },
   ];
   const container = window !== undefined ? () => window().document.body : undefined;
@@ -96,6 +96,7 @@ const Navbar = (props) => {
   );
   return (
     <>
+    
       <Container sx={{}}>
         <Box sx={{ mx: 'auto', mt: 8, display: 'flex' }}>
           <CssBaseline />
