@@ -39,7 +39,7 @@ const Organization = () => {
         </Typography>
 
         {/* Tabs Filter */}
-        <Box display="flex" justifyContent="center" mb={4}>
+        <Box display="flex" justifyContent="flex-start" mb={4}>
           <Tabs value={filter} onChange={handleChange} centered>
             <Tab label="الجميع" value="all" />
             <Tab label="معتمدة" value="approved" />
