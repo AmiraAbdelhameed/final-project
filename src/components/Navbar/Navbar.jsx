@@ -1,6 +1,9 @@
-import React,{useState} from 'react'
+// #############From React & React router ##################
+import React, { useState } from 'react'
+import { NavLink, useNavigate, useNavigation } from 'react-router-dom';
+// ##########From MUI##############
 import Box from '@mui/material/Box';
-import { Container } from '@mui/material';
+import { Container  } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography'
 import Drawer from '@mui/material/Drawer';
@@ -10,17 +13,57 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
-import { NavLink, useNavigate, useNavigation } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import AppBar from '@mui/material/AppBar';
 import IconButton from '@mui/material/IconButton';
 import PersonIcon from '@mui/icons-material/Person';
+import Button from '@mui/material/Button';
+// ##################Others #############################
+import { supabase } from '../../services/supabase/supabaseClient'
 
 const Navbar = (props) => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
-      const navigate = useNavigate()
+  const navigate = useNavigate()
+
+  const handleProfile = async () => {
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+
+    if (userError) {
+      console.error("Failed to get user:", userError.message);
+      return;
+    }
+
+    const userId = userData?.user?.id;
+    console.log("User ID:", userId);
+
+    if (!userId) {
+      console.error("User ID is undefined — make sure you're logged in.");
+      return;
+    }
+
+
+    const { data: profileData, error: profileError } = await supabase
+      .from('users')
+      .select('user_type')
+      .eq('user_id', userId)
+      .single();
+
+    if (profileError) {
+      console.error("Failed to fetch user profile:", profileError.message);
+      return;
+    }
+
+    console.log("User Type:", profileData.user_type);
+
+
+    if (profileData.user_type === 'admin') {
+      navigate('/admin');
+    } else {
+      navigate('/profile');
+    }
+  };
+
   const drawerWidth = 240;
   const navItems = [
     { label: 'الرئيسيه', path: '/' },
@@ -30,27 +73,27 @@ const Navbar = (props) => {
   ];
   const container = window !== undefined ? () => window().document.body : undefined;
 
-    const handleDrawerToggle = () => {
-          setMobileOpen((prevState) => !prevState);
-      };
+  const handleDrawerToggle = () => {
+    setMobileOpen((prevState) => !prevState);
+  };
 
-      const drawer = (
-          <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-              <Typography variant="h6" sx={{ my: 2 }}>
-                  Ayady
-              </Typography>
-              <Divider />
-              <List>
-                  {navItems.map((item) => (
-                      <ListItem key={item.label} disablePadding>
-                          <ListItemButton component={NavLink} to={item.path} sx={{ textAlign: 'left' }}>
-                              <ListItemText primary={item.label} />
-                          </ListItemButton>
-                      </ListItem>
-                  ))}
-              </List>
-          </Box>
-      );
+  const drawer = (
+    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
+      <Typography variant="h6" sx={{ my: 2 }}>
+        Ayady
+      </Typography>
+      <Divider />
+      <List>
+        {navItems.map((item) => (
+          <ListItem key={item.label} disablePadding>
+            <ListItemButton component={NavLink} to={item.path} sx={{ textAlign: 'Right' }}>
+              <ListItemText primary={item.label} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
+  );
   return (
     <>
       <Container sx={{}}>
@@ -73,7 +116,7 @@ const Navbar = (props) => {
                 variant="h6"
                 component={NavLink} to={"/"}
 
-                sx={{ display: { xs: 'none', sm: 'block' , textDecoration:'none' }, color: 'primary.main' }}
+                sx={{ display: { xs: 'none', sm: 'block', textDecoration: 'none' }, color: 'primary.main' }}
               >
                 Ayady
               </Typography>
@@ -87,7 +130,7 @@ const Navbar = (props) => {
               </Box>
               {/* Login button */}
               <Box>
-                <IconButton sx={{ color: 'text.primary' }} onClick={()=>navigate('/profile')} ><PersonIcon /></IconButton>
+                <IconButton sx={{ color: 'text.primary' }} onClick={handleProfile} ><PersonIcon /></IconButton>
                 {/* <LoginButton /> */}
               </Box>
             </Toolbar>

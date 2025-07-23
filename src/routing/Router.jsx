@@ -1,6 +1,8 @@
 import { v4 } from "uuid";
-import { Home, Campaigns, Organizations, About, Profile } from "../pages";
+import { Home, Campaigns, Organizations, About, Profile , Admin } from "../pages";
 import Layout from "../layout/Layout";
+import Organization from "../components/Admin/Organization";
+import Projects from "../components/Admin/Projects";
 
 
 export default [
@@ -33,6 +35,23 @@ export default [
                 id: v4(),
                 path:'/profile',
                 element: <Profile />,
+            },
+            {
+                id: v4(),
+                path:'/admin',
+                element: <Admin />,
+                children:[
+                    {
+                        id: v4(),
+                        index:true,
+                        element:<Organization />
+                    },
+                    {
+                        id: v4(),
+                        path:'projects',
+                        element:<Projects />
+                    },
+                ]
             },
         ]
     },
