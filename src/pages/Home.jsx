@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect, useState } from 'react'
 import { supabase } from '../services/supabase/supabaseClient'
 import Organizations from '../components/Home/Organizations'
+import Login from '../components/Buttons/Login'
 
 const Home = () => {
   const [data, setData] = useState([])
@@ -18,23 +19,13 @@ const Home = () => {
     fetchData()
   }, [])
 
-    const handleLogout = async () => {
-      const { error } = await supabase.auth.signOut()
 
-      if (error) {
-        console.error('Logout error:', error.message)
-      } else {
-        console.log('Logged out successfully')
-     
-      }
-    }
-  
   const addUser = async () => {
     const { data, error } = await supabase
       .from('users')
       .insert([
         {
-          email: 'amera2@gmail.com',
+          email: 'ameraa@gmail.com',
           name: 'amira',
           password_hash: "12345",
           user_type: 'donor'
@@ -68,8 +59,8 @@ const Home = () => {
       .from('organizations')
       .insert([
         {
-          email: 'org1@gmail.com',
-          name: 'Org1',
+          email: 'org2@gmail.com',
+          name: 'Org12',
           identification_number: "12345",
           is_approved: true,
         }
@@ -85,6 +76,7 @@ const Home = () => {
 
   const signInUser = async () => {
     const { data, error } = await supabase.auth.signInWithPassword({
+      // email: 'test122@gmail.com',
       email: 'amera@gmail.com',
       password: '123456'
     });
@@ -106,12 +98,10 @@ const Home = () => {
         <h1>Data</h1>
         <pre>{JSON.stringify(data, null, 2)}</pre>
       </div>
-      <button onClick={signInUser}>Sign Up</button>
+      <button onClick={signInUser}>Sign in</button>
       <button onClick={addUser}>Add user</button>
       <button onClick={addOrg}>addOrg</button>
-      <button onClick={handleLogout}>
-        Logout
-      </button>
+      <Login />
       <Organizations />
     </>
   )
