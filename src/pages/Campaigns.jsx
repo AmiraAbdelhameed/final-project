@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Projects = () => {
+const Campaigns = () => {
   return (
     <>
      <h1>Projects</h1> 
@@ -8,4 +8,4 @@ const Projects = () => {
   )
 }
 
-export default Projects
+export default Campaigns

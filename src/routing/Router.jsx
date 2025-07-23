@@ -1,5 +1,5 @@
 import { v4 } from "uuid";
-import { Home, Projects, Organizations, About, Profile } from "../pages";
+import { Home, Campaigns, Organizations, About, Profile } from "../pages";
 import Layout from "../layout/Layout";
 
 
@@ -16,8 +16,8 @@ export default [
             },
             {
                 id: v4(),
-                path:'/projects',
-                element: <Projects />,
+                path:'/campaigns',
+                element: <Campaigns />,
             },
             {
                 id: v4(),
