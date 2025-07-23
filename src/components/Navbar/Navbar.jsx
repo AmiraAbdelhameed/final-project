@@ -24,7 +24,7 @@ const Navbar = (props) => {
   const drawerWidth = 240;
   const navItems = [
     { label: 'الرئيسيه', path: '/' },
-    { label: 'المنظمنات', path: '/organizations' },
+    { label: 'المؤسسات', path: '/organizations' },
     { label: 'المشاريع', path: '/projects' },
     { label: 'من نحن', path: '/about' },
   ];
