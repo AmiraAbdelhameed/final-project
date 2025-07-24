@@ -3,6 +3,8 @@ import { Home, Campaigns, Organizations, About, Profile , Admin } from "../pages
 import Layout from "../layout/Layout";
 import Organization from "../components/Admin/Organization";
 import Projects from "../components/Admin/Projects";
+import Login from "../components/Forms/Login";
+import Signup from "../components/Forms/Signup";
 
 
 export default [
@@ -55,5 +57,16 @@ export default [
             },
         ]
     },
+    {
+        id:v4(),
+        path:'/login',
+        element:<Login />
+    },
+    {
+        id:v4(),
+        path:'/signup',
+        element:<Signup />
+    },
+
 
 ];
