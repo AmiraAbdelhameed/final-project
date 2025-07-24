@@ -1,14 +1,16 @@
 import { v4 } from "uuid";
 import { Home, Campaigns, Organizations, About, Profile , Admin } from "../pages";
 import Layout from "../layout/Layout";
+
 import Organization from "../components/Admin/Organization";
 import Projects from "../components/Admin/Projects";
 import Login from "../components/Forms/Login";
 import Signup from "../components/Forms/Signup";
+import OrganizationDetails from "../pages/OrganizationDetails";
 
 
 export default [
-    {
+  {
         id: v4(),
         path: "/",
         element: <Layout />,
@@ -28,6 +30,11 @@ export default [
                 path:'/organizations',
                 element: <Organizations />,
             },
+          {
+            id: v4(),
+            path: "/organizations/:id",
+            element: <OrganizationDetails />,
+          },
             {
                 id: v4(),
                 path:'/about',
@@ -68,5 +75,4 @@ export default [
         element:<Signup />
     },
 
-
-];
+  ]
