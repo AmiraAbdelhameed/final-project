@@ -1,1 +1,70 @@
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap');
+
+.navbar {
+    background-color: #4A7811;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    color: white;
+}
+.color {
+    color: white;
+}
+
+
+
+.home {
+     background-image:
+      linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), /* dark overlay */
+      url("./assets/Hero.png");
+ 
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.mo {
+   display: flex !important;
+   gap: 10px;
+ 
+}
+.white {
+    color: white;
+}
+
+.img-icon {
+    width: 30px !important;
+    margin: 10px;
+}
+
+.img-2 {
+    max-width: 500px !important;
+}
+
+.icon {
+    border: 2px solid #000000 !important;
+    margin: 5px !important;
+}
+
+
+.custom-shape-divider-top-1753308709 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  transform: rotate(180deg);
+  z-index: 1;
+}
+
+.custom-shape-divider-top-1753308709 svg {
+  position: relative;
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 265px;
+}
+
+.custom-shape-divider-top-1753308709 .shape-fill {
+  fill: #E0E6D9 !important;
+}
