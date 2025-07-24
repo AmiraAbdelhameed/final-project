@@ -33,10 +33,8 @@ const Login = () => {
                 container
                 sx={{
                     minHeight: '95vh',
-                    // bgcolor: 'secondary.main',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    // p: { xs: 2, md: 4 },
                 }}
             >
                 <Paper

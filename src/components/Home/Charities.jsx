@@ -20,11 +20,7 @@ import 'swiper/css/pagination';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import IconButton from '@mui/material/IconButton';
 import { Link } from 'react-router';
-
-// Initialize Supabase client
-// const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-// const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
-// const supabase = createClient(supabaseUrl, supabaseKey);
+import { supabase } from '../../services/supabase/supabaseClient';
 
 const Charities = () => {
   const [organizations, setOrganizations] = useState([]);

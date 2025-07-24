@@ -6,21 +6,21 @@ export default function FeaturedArticle() {
   return (
     <Box p={4}>
       <Grid container spacing={4} alignItems="center" justifyContent="space-around" margin={"auto"}>
-        
+
 
         {/* Right side content */}
         <Grid item xs={12} md={6} textAlign="right">
           {/* Header */}
-          <Box display="flex" alignItems="center"  gap={1}>
+          <Box display="flex" alignItems="center" gap={1}>
             <Typography fontWeight="bold">
-          <Box
-  component="img"
-  src={img2}
-  className="img-icon"
-  alt="كفالة يتيم"
-  sx={{ width: "100%", maxWidth: 578, borderRadius: 2 }}
-/>
-                المقالات المميز</Typography>
+              <Box
+                component="img"
+                src={img2}
+                className="img-icon"
+                alt="كفالة يتيم"
+                sx={{ width: "100%", maxWidth: 578, borderRadius: 2 }}
+              />
+              المقالات المميز</Typography>
             <Avatar
               src="https://via.placeholder.com/60"
               alt="icon"
@@ -38,11 +38,11 @@ export default function FeaturedArticle() {
             </Typography>
 
             {/* Buttons */}
-            <Box display="flex"  gap={2} mt={5}>
-              <Button variant="contained"  color="primary" style={{ padding: "10px 30px" }}>
+            <Box display="flex" gap={2} mt={5}>
+              <Button variant="contained" color="primary" style={{ padding: "10px 30px" }}>
                 تبرع الان
               </Button>
-            
+
             </Box>
           </Box>
         </Grid>

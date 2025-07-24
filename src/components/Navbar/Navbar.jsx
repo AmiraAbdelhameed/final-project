@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   AppBar,
   Toolbar,
@@ -24,24 +24,11 @@ import createCache from '@emotion/cache';
 import rtlPlugin from 'stylis-plugin-rtl';
 import { prefixer } from 'stylis';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Link } from 'react-router-dom'; 
-
-// RTL setup
-// const cacheRtl = createCache({
-//   key: 'muirtl',
-//   stylisPlugins: [prefixer, rtlPlugin],
-// });
-
-// const theme = createTheme({
-//   direction: 'rtl',
-//   typography: {
-//     fontFamily: 'Arial, sans-serif',
-//   },
-// });
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
-  const [drawerOpen, setDrawerOpen] = React.useState(false);
-  const [langMenuAnchor, setLangMenuAnchor] = React.useState(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [langMenuAnchor, setLangMenuAnchor] = useState(null);
   const muiTheme = useTheme();
   const isMobile = useMediaQuery(muiTheme.breakpoints.down('md'));
 
@@ -151,85 +138,85 @@ const Navbar = () => {
   );
 
   return (
-    <div className="navbar">
-      {/* <CacheProvider value={cacheRtl}> */}
-        {/* <ThemeProvider theme={theme}> */}
-          <CssBaseline />
-          <AppBar position="static" color="primary.main" elevation={0}>
-            <Toolbar
-              sx={{
-                justifyContent: 'space-between',
-                flexDirection: isMobile ? 'row-reverse' : 'row',
-              }}
-            >
-              {/* Mobile View */}
-              {isMobile ? (
-                <>
-                  <IconButton edge="start" onClick={toggleDrawer(true)}>
-                    <MenuIcon />
-                  </IconButton>
-                  <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                   أيادي
-                  </Typography>
-                </>
-              ) : (
-                <>
-                  {/* Right Section - Navigation */}
-                  <Box display="flex" alignItems="center" gap={3}>
-                    <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                     أيادي
-                    </Typography>
-                    {navItems.map((item) => (
-                      <Button
-                        key={item.path}
-                        component={Link}
-                        to={item.path}
-                        color="inherit"
-                        sx={{ color: 'white', fontWeight: 'bold' }}
-                      >
-                        {item.label}
-                      </Button>
-                    ))}
-                    <IconButton>
-                      <SearchIcon className='white'/>
-                    </IconButton>
-                  </Box>
-
-                  {/* Left Section - Auth & Lang */}
-                  <Box display="flex" alignItems="center" gap={1}>
-                    <Button variant="outlined" color="inherit">
-                      الاشتراك
-                    </Button>
-                    <Button variant="contained" className='text-black' color="inherit">
-                      تسجيل الدخول
-                    </Button>
-                    <Button
-                      color="inherit"
-                      endIcon={<ArrowDropDownIcon />}
-                      onClick={handleLangClick}
-                    >
-                      AR
-                    </Button>
-                  </Box>
-                </>
-              )}
-            </Toolbar>
-          </AppBar>
-
-          {/* Full-width drawer on mobile */}
-          <Drawer
-            anchor="right"
-            open={drawerOpen}
-            onClose={toggleDrawer(false)}
-            PaperProps={{
-              sx: { width: '100%' },
+    <>
+      <Box sx={{ mx: 'auto', mt: 8, display: 'flex' }}>
+        <CssBaseline />
+        <AppBar component="nav">
+          <Toolbar
+            sx={{
+              bgcolor: "primary.main",
+              justifyContent: 'space-between',
+              flexDirection: isMobile ? 'row-reverse' : 'row',
             }}
           >
-            {mobileMenu}
-          </Drawer>
-        {/* </ThemeProvider> */}
-      {/* </CacheProvider> */}
-    </div>
+            {/* Mobile View */}
+            {isMobile ? (
+              <>
+                <IconButton edge="start" onClick={toggleDrawer(true)}>
+                  <MenuIcon />
+                </IconButton>
+                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                  أيادي
+                </Typography>
+              </>
+            ) : (
+              <>
+                {/* Right Section - Navigation */}
+                <Box display="flex" alignItems="center" gap={3}>
+                  <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                    أيادي
+                  </Typography>
+                  {navItems.map((item) => (
+                    <Button
+                      key={item.path}
+                      component={Link}
+                      to={item.path}
+                      color="inherit"
+                      sx={{ color: 'white', fontWeight: 'bold' }}
+                    >
+                      {item.label}
+                    </Button>
+                  ))}
+                  <IconButton>
+                    <SearchIcon className='white' />
+                  </IconButton>
+                </Box>
+
+                {/* Left Section - Auth & Lang */}
+                <Box display="flex" alignItems="center" gap={1}>
+                  <Button variant="outlined" color="inherit">
+                    الاشتراك
+                  </Button>
+                  <Button variant="contained" className='text-black' color="inherit">
+                    تسجيل الدخول
+                  </Button>
+                  <Button
+                    color="inherit"
+                    endIcon={<ArrowDropDownIcon />}
+                    onClick={handleLangClick}
+                  >
+                    AR
+                  </Button>
+                </Box>
+              </>
+            )}
+          </Toolbar>
+        </AppBar>
+
+        {/* Full-width drawer on mobile */}
+        <Drawer
+          anchor="right"
+          open={drawerOpen}
+          onClose={toggleDrawer(false)}
+          PaperProps={{
+            sx: { width: '100%' },
+          }}
+        >
+          {mobileMenu}
+        </Drawer>
+
+      </Box>
+    </>
   );
 };
 
