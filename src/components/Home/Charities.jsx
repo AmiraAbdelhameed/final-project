@@ -22,8 +22,8 @@ import IconButton from '@mui/material/IconButton';
 import { Link } from 'react-router';
 
 // Initialize Supabase client
-const supabaseUrl = "https://dppjznfxcfjtwpxqqxqw.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRwcGp6bmZ4Y2ZqdHdweHFxeHF3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI3NzY5MjMsImV4cCI6MjA2ODM1MjkyM30.ZNcvs8Q1u_m1HQ_NEB8_WJDLAg-bBoj6kvLXZCrc9Sg";
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const Charities = () => {
