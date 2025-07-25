@@ -41,8 +41,35 @@ const organizationSlice = createSlice({
             .addCase(getOrganizations.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-            });
+            })
+            .addCase(toggleApproval.fulfilled, (state, action) => {
+                const updated = action.payload;
+                const index = state.data.findIndex(org => org.id === updated.id);
+                if (index !== -1) {
+                    state.data[index] = updated;
+                }
+            })
     },
 });
+export const toggleApproval = createAsyncThunk(
+    'organizations/toggleApproval',
+    async ({ id, currentStatus }, thunkAPI) => {
+        try {
+            const { data, error } = await supabase
+                .from('organizations')
+                .update({ is_approved: !currentStatus })
+                .eq('id', id)
+                .select(); 
+
+            if (error) {
+                return thunkAPI.rejectWithValue(error.message);
+            }
+
+            return data[0]; 
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.message);
+        }
+    }
+);
 
 export default organizationSlice.reducer;

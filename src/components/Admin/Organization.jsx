@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Tab, Typography, Tabs } from '@mui/material';
-import { getOrganizations } from '../../redux/Slices/organizationsSlice';
+import { Box, Tab, Typography, Tabs , Button } from '@mui/material';
+import { getOrganizations, toggleApproval } from '../../redux/Slices/organizationsSlice';
 
 const Organization = () => {
   const dispatch = useDispatch();
@@ -46,16 +46,28 @@ const Organization = () => {
       ) : filteredOrganizations.length === 0 ? (
         <Typography style={{ textAlign: 'center' }}>لا توجد مؤسسات مطابقة</Typography>
       ) : (
-        <ul>
-          {filteredOrganizations.map((org) => (
-            <li key={org.id}>
-              <strong>{org.name}</strong><br />
-              Email: {org.email}<br />
-              رقم التعريف: {org.identification_number}<br />
-              معتمدة: {org.is_approved ? 'نعم' : 'لا'}
-            </li>
-          ))}
-        </ul>
+              <ul>
+                {filteredOrganizations.map((org) => (
+                  <li key={org.id}>
+                    <strong>{org.name}</strong><br />
+                    Email: {org.email}<br />
+                    رقم التعريف: {org.identification_number}<br />
+                    معتمدة: {org.is_approved ? 'نعم' : 'لا'}
+                    <br />
+                    <Button
+                      variant="outlined"
+                      color={org.is_approved ? 'warning' : 'success'}
+                      size="small"
+                      onClick={() =>
+                        dispatch(toggleApproval({ id: org.id, currentStatus: org.is_approved }))
+                      }
+                      sx={{ mt: 1 }}
+                    >
+                      {org.is_approved ? 'إلغاء الاعتماد' : 'اعتماد'}
+                    </Button>
+                  </li>
+                ))}
+              </ul>
       )}
     </Box>
   );
