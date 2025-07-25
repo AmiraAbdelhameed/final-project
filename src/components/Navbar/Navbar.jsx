@@ -1,143 +1,222 @@
 import React, { useState } from "react";
-import Box from "@mui/material/Box";
-import { Container } from "@mui/material";
-import Divider from "@mui/material/Divider";
-import Typography from "@mui/material/Typography";
-import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  IconButton,
+  Box,
+  MenuItem,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Divider,
+  useMediaQuery,
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import MenuIcon from "@mui/icons-material/Menu";
-import Toolbar from "@mui/material/Toolbar";
-import Button from "@mui/material/Button";
-import { NavLink, useNavigate, useNavigation } from "react-router-dom";
+import { createTheme, ThemeProvider, useTheme } from "@mui/material/styles";
+import { CacheProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
+import rtlPlugin from "stylis-plugin-rtl";
+import { prefixer } from "stylis";
 import CssBaseline from "@mui/material/CssBaseline";
-import AppBar from "@mui/material/AppBar";
-import IconButton from "@mui/material/IconButton";
-import PersonIcon from "@mui/icons-material/Person";
+import { Link } from "react-router-dom";
 
-const Navbar = (props) => {
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const navigate = useNavigate();
-  const drawerWidth = 240;
+const Navbar = () => {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [langMenuAnchor, setLangMenuAnchor] = useState(null);
+  const muiTheme = useTheme();
+  const isMobile = useMediaQuery(muiTheme.breakpoints.down("md"));
+
+  const handleLangClick = (event) => {
+    setLangMenuAnchor(event.currentTarget);
+  };
+
+  const handleLangClose = () => {
+    setLangMenuAnchor(null);
+  };
+
+  const toggleDrawer = (open) => () => {
+    setDrawerOpen(open);
+  };
+  const handleProfile = async () => {
+    const { data: userData, error: userError } = await supabase.auth.getUser();
+
+    if (userError) {
+      console.error("Failed to get user:", userError.message);
+      return;
+    }
+
+    const userId = userData?.user?.id;
+    console.log("User ID:", userId);
+
+    if (!userId) {
+      console.error("User ID is undefined — make sure you're logged in.");
+      return;
+    }
+
+    const { data: profileData, error: profileError } = await supabase
+      .from("users")
+      .select("user_type")
+      .eq("user_id", userId)
+      .single();
+
+    if (profileError) {
+      console.error("Failed to fetch user profile:", profileError.message);
+      return;
+    }
+
+    console.log("User Type:", profileData.user_type);
+
+    if (profileData.user_type === "admin") {
+      navigate("/admin");
+    } else {
+      navigate("/profile");
+    }
+  };
+
   const navItems = [
     { label: "الرئيسيه", path: "/" },
     { label: "المؤسسات", path: "/organizations" },
-    { label: "المشاريع", path: "/projects" },
+    { label: "المشاريع", path: "/Campaigns" },
     { label: "من نحن", path: "/about" },
   ];
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
 
-  const handleDrawerToggle = () => {
-    setMobileOpen((prevState) => !prevState);
-  };
-
-  const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        Ayady
-      </Typography>
-      <Divider />
+  const mobileMenu = (
+    <Box
+      sx={{ width: "100vw", bgcolor: "#fff", height: "100%", p: 2 }}
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
       <List>
         {navItems.map((item) => (
-          <ListItem key={item.label} disablePadding>
-            <ListItemButton
-              component={NavLink}
-              to={item.path}
-              sx={{ textAlign: "left" }}
-            >
+          <ListItem disablePadding key={item.path}>
+            <ListItemButton component={Link} to={item.path}>
               <ListItemText primary={item.label} />
             </ListItemButton>
           </ListItem>
         ))}
+        <ListItem disablePadding>
+          <ListItemButton>
+            <SearchIcon sx={{ mr: 1 }} />
+            <ListItemText primary="بحث" />
+          </ListItemButton>
+        </ListItem>
+        <Divider sx={{ my: 2 }} />
+        <ListItem disablePadding>
+          <Button fullWidth variant="outlined" color="inherit">
+            الاشتراك
+          </Button>
+        </ListItem>
+        <ListItem disablePadding sx={{ mt: 1 }}>
+          <Button fullWidth variant="contained" color="inherit">
+            تسجيل الدخول
+          </Button>
+        </ListItem>
+        <ListItem disablePadding sx={{ mt: 2 }}>
+          <Button
+            fullWidth
+            color="inherit"
+            endIcon={<ArrowDropDownIcon />}
+            onClick={(e) => {
+              e.stopPropagation();
+              handleLangClick(e);
+            }}
+          >
+            AR
+          </Button>
+        </ListItem>
       </List>
     </Box>
   );
+
   return (
     <>
-      <Container sx={{}}>
-        <Box sx={{ mx: "auto", mt: 8, display: "flex" }}>
-          <CssBaseline />
-          <AppBar component="nav">
-            <Toolbar
-              sx={{
-                backgroundColor: "secondary.main",
-                justifyContent: "space-between",
-              }}
-            >
-              {/* Icon appear in small screens */}
-              <IconButton
-                color="text.primary"
-                aria-label="open drawer"
-                edge="start"
-                onClick={handleDrawerToggle}
-                sx={{ mr: 2, display: { sm: "none" } }}
-              >
-                <MenuIcon />
-              </IconButton>
-              {/* Logo */}
-              <Typography
-                variant="h6"
-                component={NavLink}
-                to={"/"}
-                sx={{
-                  display: { xs: "none", sm: "block", textDecoration: "none" },
-                  color: "primary.main",
-                }}
-              >
-                Ayady
-              </Typography>
-              {/* Menu links  */}
-              <Box sx={{ display: { xs: "none", sm: "block" } }}>
-                {navItems.map((item) => (
-                  <Button
-                    key={item.label}
-                    component={NavLink}
-                    to={item.path}
-                    sx={{ color: "text.primary" }}
-                  >
-                    {item.label}
-                  </Button>
-                ))}
-              </Box>
-              {/* Login button */}
-              <Box>
-                <IconButton
-                  sx={{ color: "text.primary" }}
-                  onClick={() => navigate("/profile")}
-                >
-                  <PersonIcon />
+      <Box sx={{ mx: "auto", mt: 8, display: "flex" }}>
+        <CssBaseline />
+        <AppBar component="nav">
+          <Toolbar
+            sx={{
+              bgcolor: "primary.main",
+              justifyContent: "space-between",
+              flexDirection: isMobile ? "row-reverse" : "row",
+            }}
+          >
+            {/* Mobile View */}
+            {isMobile ? (
+              <>
+                <IconButton edge="start" onClick={toggleDrawer(true)}>
+                  <MenuIcon />
                 </IconButton>
-                {/* <LoginButton /> */}
-              </Box>
-            </Toolbar>
-          </AppBar>
-          {/* Drawer appear in small screens */}
-          <nav>
-            <Drawer
-              container={container}
-              variant="temporary"
-              open={mobileOpen}
-              onClose={handleDrawerToggle}
-              ModalProps={{
-                keepMounted: true,
-              }}
-              sx={{
-                display: { xs: "block", sm: "none" },
-                "& .MuiDrawer-paper": {
-                  boxSizing: "border-box",
-                  width: drawerWidth,
-                },
-              }}
-            >
-              {drawer}
-            </Drawer>
-          </nav>
-        </Box>
-      </Container>
+                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                  أيادي
+                </Typography>
+              </>
+            ) : (
+              <>
+                {/* Right Section - Navigation */}
+                <Box display="flex" alignItems="center" gap={3}>
+                  <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                    أيادي
+                  </Typography>
+                  {navItems.map((item) => (
+                    <Button
+                      key={item.path}
+                      component={Link}
+                      to={item.path}
+                      color="inherit"
+                      sx={{ color: "white", fontWeight: "bold" }}
+                    >
+                      {item.label}
+                    </Button>
+                  ))}
+                  <IconButton>
+                    <SearchIcon className="white" />
+                  </IconButton>
+                </Box>
+
+                {/* Left Section - Auth & Lang */}
+                <Box display="flex" alignItems="center" gap={1}>
+                  <Button variant="outlined" color="inherit">
+                    الاشتراك
+                  </Button>
+                  <Button
+                    variant="contained"
+                    className="text-black"
+                    color="inherit"
+                  >
+                    تسجيل الدخول
+                  </Button>
+                  <Button
+                    color="inherit"
+                    endIcon={<ArrowDropDownIcon />}
+                    onClick={handleLangClick}
+                  >
+                    AR
+                  </Button>
+                </Box>
+              </>
+            )}
+          </Toolbar>
+        </AppBar>
+
+        {/* Full-width drawer on mobile */}
+        <Drawer
+          anchor="right"
+          open={drawerOpen}
+          onClose={toggleDrawer(false)}
+          PaperProps={{
+            sx: { width: "100%" },
+          }}
+        >
+          {mobileMenu}
+        </Drawer>
+      </Box>
     </>
   );
 };
