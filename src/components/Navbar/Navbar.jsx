@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -6,7 +6,6 @@ import {
   Button,
   IconButton,
   Box,
-  MenuItem,
   Drawer,
   List,
   ListItem,
@@ -17,28 +16,20 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import PersonIcon from '@mui/icons-material/Person';
 import MenuIcon from '@mui/icons-material/Menu';
-import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
-import { CacheProvider } from '@emotion/react';
-import createCache from '@emotion/cache';
-import rtlPlugin from 'stylis-plugin-rtl';
-import { prefixer } from 'stylis';
+import { useTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import { supabase } from '../../services/supabase/supabaseClient';
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [langMenuAnchor, setLangMenuAnchor] = useState(null);
   const muiTheme = useTheme();
   const isMobile = useMediaQuery(muiTheme.breakpoints.down('md'));
+  const navigate = useNavigate()
 
-  const handleLangClick = (event) => {
-    setLangMenuAnchor(event.currentTarget);
-  };
-
-  const handleLangClose = () => {
-    setLangMenuAnchor(null);
-  };
 
   const toggleDrawer = (open) => () => {
     setDrawerOpen(open);
@@ -52,14 +43,10 @@ const Navbar = () => {
     }
 
     const userId = userData?.user?.id;
-    console.log("User ID:", userId);
-
     if (!userId) {
       console.error("User ID is undefined — make sure you're logged in.");
       return;
     }
-
-
     const { data: profileData, error: profileError } = await supabase
       .from('users')
       .select('user_type')
@@ -70,10 +57,6 @@ const Navbar = () => {
       console.error("Failed to fetch user profile:", profileError.message);
       return;
     }
-
-    console.log("User Type:", profileData.user_type);
-
-
     if (profileData.user_type === 'admin') {
       navigate('/admin');
     } else {
@@ -109,53 +92,51 @@ const Navbar = () => {
             <ListItemText primary="بحث" />
           </ListItemButton>
         </ListItem>
-        <Divider sx={{ my: 2 }} />
         <ListItem disablePadding>
-          <Button fullWidth variant="outlined" color="inherit">
-            الاشتراك
-          </Button>
+          <ListItemButton onClick={handleProfile}>
+            <ListItemText primary="الملف الشخصي" />
+          </ListItemButton>
         </ListItem>
+        <Divider sx={{ my: 2 }} />
         <ListItem disablePadding sx={{ mt: 1 }}>
-          <Button fullWidth variant="contained" color="inherit">
+          <Button fullWidth variant="contained" onClick={() => navigate('/login')} >
             تسجيل الدخول
-          </Button>
-        </ListItem>
-        <ListItem disablePadding sx={{ mt: 2 }}>
-          <Button
-            fullWidth
-            color="inherit"
-            endIcon={<ArrowDropDownIcon />}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleLangClick(e);
-            }}
-          >
-            AR
           </Button>
         </ListItem>
       </List>
     </Box>
   );
-
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
   return (
     <>
-      <Box sx={{ mx: 'auto', mt: 8, display: 'flex' }}>
+      <Box sx={{ mx: 'auto', mt: isHomePage ? 0 : 8, display: 'flex' }}>
         <CssBaseline />
-        <AppBar component="nav">
+        <AppBar
+          component="nav"
+          position="fixed"
+          elevation={isHomePage ? 0 : 4}
+          sx={{
+            backgroundColor: isHomePage ? 'rgba(199, 209, 187, 0.1)' : 'primary.main ',
+            color: isHomePage ? 'white' : 'black',
+            backdropFilter: isHomePage ? 'blur(8px)' : 'none',
+          }}
+        >
           <Toolbar
             sx={{
-              bgcolor: "primary.main",
+              bgcolor: "transparent",
               justifyContent: 'space-between',
               flexDirection: isMobile ? 'row-reverse' : 'row',
             }}
           >
+
             {/* Mobile View */}
             {isMobile ? (
               <>
                 <IconButton edge="start" onClick={toggleDrawer(true)}>
                   <MenuIcon />
                 </IconButton>
-                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                <Typography variant="h6" sx={{ fontWeight: 'bold',cursor:'pointer' }} onClick={()=>navigate('/')}>
                   أيادي
                 </Typography>
               </>
@@ -184,19 +165,12 @@ const Navbar = () => {
 
                 {/* Left Section - Auth & Lang */}
                 <Box display="flex" alignItems="center" gap={1}>
-                  <Button variant="outlined" color="inherit">
-                    الاشتراك
-                  </Button>
-                  <Button variant="contained" className='text-black' color="inherit">
+        
+                  <Button variant="contained" onClick={()=>navigate('/login')} >
                     تسجيل الدخول
                   </Button>
-                  <Button
-                    color="inherit"
-                    endIcon={<ArrowDropDownIcon />}
-                    onClick={handleLangClick}
-                  >
-                    AR
-                  </Button>
+                  <IconButton sx={{ color: 'secondary.main' }} onClick={handleProfile} ><PersonIcon /></IconButton>
+
                 </Box>
               </>
             )}

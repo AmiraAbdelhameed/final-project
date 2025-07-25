@@ -57,7 +57,7 @@ className='mo'
     alignItems: { xs: 'center', md: 'flex-start' },
   }}
 >
-          <Button variant="contained" color="success">
+          <Button variant="contained" >
             ابدأ تجربتك المجانية
           </Button>
           <Button

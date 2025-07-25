@@ -1,6 +1,7 @@
 import React from 'react'
 import { NavLink} from 'react-router-dom';
-import { ListItemText, ListItemButton, List, ListItem } from '@mui/material';
+import { ListItemText, ListItemButton, List, ListItem, Button, Typography } from '@mui/material';
+import { supabase } from "../../services/supabase/supabaseClient"
 
 const Sidebar = () => {
   const items = [{
@@ -10,9 +11,20 @@ const Sidebar = () => {
     label: "المشاريع",
     path:'/admin/projects'
   } ];
+  const handleSignOut = async () => {
+    const { error } = await supabase.auth.signOut();
 
+    if (error) {
+      console.error('Error signing out:', error.message);
+    } else {
+      console.log('Signed out successfully');
+      // Optionally navigate to login or home
+      // navigate('/login');
+    }
+  };
   return (
     <>
+   
       <List >
         {items.map((item, index) => (
           <ListItem key={index}  >
@@ -21,6 +33,11 @@ const Sidebar = () => {
             </ListItemButton>
           </ListItem>
         ))}
+        <ListItem  >
+          <ListItemButton component={Button} onClick={handleSignOut} sx={{ textAlign: 'Right' }}>
+            <ListItemText primary={"sigh"} />
+          </ListItemButton>
+        </ListItem>
       </List>
     </>
   )
