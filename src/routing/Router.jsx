@@ -1,14 +1,17 @@
 import { v4 } from "uuid";
 import { Home, Campaigns, Organizations, About, Profile , Admin } from "../pages";
 import Layout from "../layout/Layout";
+
 import Organization from "../components/Admin/Organization";
 import Projects from "../components/Admin/Projects";
 import Login from "../components/Forms/Login";
 import Signup from "../components/Forms/Signup";
+import OrganizationDetails from "../pages/OrganizationDetails";
+import ProtectedAdminRoute from "../components/Admin/ProtectedAdminRoute";
 
 
 export default [
-    {
+  {
         id: v4(),
         path: "/",
         element: <Layout />,
@@ -28,6 +31,11 @@ export default [
                 path:'/organizations',
                 element: <Organizations />,
             },
+          {
+            id: v4(),
+            path: "/organizations/:id",
+            element: <OrganizationDetails />,
+          },
             {
                 id: v4(),
                 path:'/about',
@@ -41,7 +49,7 @@ export default [
             {
                 id: v4(),
                 path:'/admin',
-                element: <Admin />,
+                element: <ProtectedAdminRoute><Admin /></ProtectedAdminRoute>,
                 children:[
                     {
                         id: v4(),
@@ -68,5 +76,4 @@ export default [
         element:<Signup />
     },
 
-
-];
+  ]
