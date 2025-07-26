@@ -25,6 +25,7 @@ import { useLocation } from "react-router-dom";
 import { supabase } from "../../services/supabase/supabaseClient";
 const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  //const [langMenuAnchor, setLangMenuAnchor] = useState(null);
   const muiTheme = useTheme();
   const isMobile = useMediaQuery(muiTheme.breakpoints.down("md"));
   const navigate = useNavigate();
