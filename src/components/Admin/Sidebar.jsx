@@ -18,8 +18,6 @@ const Sidebar = () => {
       console.error('Error signing out:', error.message);
     } else {
       console.log('Signed out successfully');
-      // Optionally navigate to login or home
-      // navigate('/login');
     }
   };
   return (
@@ -35,7 +33,7 @@ const Sidebar = () => {
         ))}
         <ListItem  >
           <ListItemButton component={Button} onClick={handleSignOut} sx={{ textAlign: 'Right' }}>
-            <ListItemText primary={"sigh"} />
+            <ListItemText primary={"sign out"} />
           </ListItemButton>
         </ListItem>
       </List>

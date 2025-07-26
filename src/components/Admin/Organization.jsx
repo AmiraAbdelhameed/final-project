@@ -56,7 +56,7 @@ const Organization = () => {
                     <br />
                     <Button
                       variant="outlined"
-                      color={org.is_approved ? 'warning' : 'success'}
+                      color={org.is_approved ? 'warning' : 'primary.main'}
                       size="small"
                       onClick={() =>
                         dispatch(toggleApproval({ id: org.id, currentStatus: org.is_approved }))
