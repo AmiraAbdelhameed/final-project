@@ -14,6 +14,7 @@ import Projects from "../components/Admin/Projects";
 import Login from "../components/Forms/Login";
 import Signup from "../components/Forms/Signup";
 import OrganizationDetails from "../pages/OrganizationDetails";
+import ProtectedAdminRoute from "../components/Admin/ProtectedAdminRoute";
 
 export default [
   {
@@ -54,7 +55,11 @@ export default [
       {
         id: v4(),
         path: "/admin",
-        element: <Admin />,
+        element: (
+          <ProtectedAdminRoute>
+            <Admin />
+          </ProtectedAdminRoute>
+        ),
         children: [
           {
             id: v4(),
