@@ -1,15 +1,11 @@
-import Hero from '../components/Home/Hero'
-import Article from '../components/Home/Article'
-import Charities from '../components/Home/Charities'
-import Postarticles from '../components/Home/Postarticles'
-import Newepisodes from '../components/Home/Newepisodes'
-import { Container } from '@mui/material'
-
+import Hero from "../components/Home/Hero";
+import Article from "../components/Home/Article";
+import Charities from "../components/Home/Charities";
+import Postarticles from "../components/Home/Postarticles";
+import Newepisodes from "../components/Home/Newepisodes";
+import { Container } from "@mui/material";
 
 const Home = () => {
-
-
-
   return (
     <>
       <Hero />
@@ -20,7 +16,7 @@ const Home = () => {
         <Newepisodes />
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

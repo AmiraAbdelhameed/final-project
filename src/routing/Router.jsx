@@ -14,6 +14,7 @@ import Projects from "../components/Admin/Projects";
 import Login from "../components/Forms/Login";
 import Signup from "../components/Forms/Signup";
 import OrganizationDetails from "../pages/OrganizationDetails";
+import CampaignDetails from "../pages/CampaignDetails";
 import ProtectedAdminRoute from "../components/Admin/ProtectedAdminRoute";
 
 export default [
@@ -31,6 +32,11 @@ export default [
         id: v4(),
         path: "/campaigns",
         element: <Campaigns />,
+      },
+      {
+        id: v4(),
+        path: "/campaigns/:id",
+        element: <CampaignDetails />,
       },
       {
         id: v4(),
