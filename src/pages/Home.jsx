@@ -11,7 +11,6 @@ const Home = () => {
 
   return (
     <>
-
       <Hero />
       <Container maxWidth="lg">
         <Article />

@@ -9,7 +9,7 @@ const Sidebar = () => {
     path:'/admin/main'
   },{
     label: "المشاريع",
-    path:'/admin/main/projects'
+    path:'/admin/main/campaigns'
   } ];
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();

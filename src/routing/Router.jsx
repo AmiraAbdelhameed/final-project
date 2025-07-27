@@ -10,11 +10,13 @@ import {
 import Layout from "../layout/Layout";
 
 import Organization from "../components/Admin/Organization";
-import Projects from "../components/Admin/Projects";
+import AdminCampaigns from "../components/Admin/AdminCampaigns";
 import Login from "../components/Forms/Login";
 import Signup from "../components/Forms/Signup";
 import OrganizationDetails from "../pages/OrganizationDetails";
 import ProtectedAdminRoute from "../components/Admin/ProtectedAdminRoute";
+import AdminOrganizationDetails from "../components/Admin/AdminOrganizationDetails";
+import CampaignsDetails from "../components/Admin/CampaignsDetails";
 
 export default [
   {
@@ -80,9 +82,19 @@ export default [
                     },
                     {
                         id: v4(),
-                        path: 'projects',
-                        element: <Projects />
+                      path: 'campaigns',
+                      element: <AdminCampaigns />
                     },
+                  {
+                    id: v4(),
+                    path: 'organization/:id', 
+                    element: <AdminOrganizationDetails />
+                  },
+                  {
+                    id: v4(),
+                    path: 'campaigns/:id', 
+                    element: <CampaignsDetails />
+                  },
                 ]
             },
            

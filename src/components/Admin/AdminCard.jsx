@@ -1,7 +1,7 @@
 import { Box,Button , Card, CardContent, CardMedia, Typography, Chip, Stack } from '@mui/material';
 import React from 'react';
+const AdminCard = ({ email, image, name, id, is_approved, identification_number, handleApproval, handleDelete, handleNavigation }) => {
 
-const AdminCard = ({ email, image, name, id, is_approved, identification_number, handleApproval }) => {
     return (
         <Card
             sx={{
@@ -12,7 +12,7 @@ const AdminCard = ({ email, image, name, id, is_approved, identification_number,
                 borderRadius: 3,
                 p: 2,
                 mb: 2,
-                background: '#f8fafc',
+                background: 'secondary.main',
                 maxWidth: 500,
                 mx: 'auto'
             }}
@@ -33,7 +33,13 @@ const AdminCard = ({ email, image, name, id, is_approved, identification_number,
                 }}
             />
             <CardContent sx={{ flex: 1 }}>
-                <Typography variant="h6" fontWeight="bold" gutterBottom>
+                <Typography
+                    variant="h6"
+                    fontWeight="bold"
+                    gutterBottom
+                    sx={{ cursor: 'pointer' }}
+                    onClick={handleNavigation}
+                >
                     {name}
                 </Typography>
                 <Typography variant="body2" color="text.secondary" gutterBottom>
@@ -58,6 +64,15 @@ const AdminCard = ({ email, image, name, id, is_approved, identification_number,
                     sx={{ mt: 1 }}
                 >
                     {is_approved ? 'إلغاء الاعتماد' : 'اعتماد'}
+                </Button>
+                <Button
+                    variant="contained"
+                    size="small"
+                    onClick={handleDelete}
+                    bgcolor="red-500"
+                    sx={{ mt: 1 , bgcolor:'red' }}
+                >
+                    حذف
                 </Button>
             </CardContent>
         </Card>

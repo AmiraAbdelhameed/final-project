@@ -63,7 +63,7 @@ const ProjectsSection = () => {
                 description={campaign.description}
                 img={campaign.cover_image}
                 organizationName={org ? org.name : "غير معروف"}
-                orgImg={org.profile_image}
+                // orgImg={org.profile_image}
               />
             )
           })}
