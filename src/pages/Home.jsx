@@ -4,8 +4,6 @@ import Charities from '../components/Home/Charities'
 import OrganizationSection from '../components/Home/OrganizationSection'
 import ProjectsSection from '../components/Home/ProjectsSection'
 import { Container } from '@mui/material'
-import Campaigns from '../components/Campaigns'
-
 
 const Home = () => {
 

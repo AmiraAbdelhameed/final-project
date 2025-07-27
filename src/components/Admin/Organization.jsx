@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Tab, Typography, Tabs , Button } from '@mui/material';
 import { getOrganizations, toggleApproval } from '../../redux/Slices/organizationsSlice';
+import AdminCard from './AdminCard';
 
 const Organization = () => {
   const dispatch = useDispatch();
@@ -46,28 +47,20 @@ const Organization = () => {
       ) : filteredOrganizations.length === 0 ? (
         <Typography style={{ textAlign: 'center' }}>لا توجد مؤسسات مطابقة</Typography>
       ) : (
-              <ul>
-                {filteredOrganizations.map((org) => (
-                  <li key={org.id}>
-                    <strong>{org.name}</strong><br />
-                    Email: {org.email}<br />
-                    رقم التعريف: {org.identification_number}<br />
-                    معتمدة: {org.is_approved ? 'نعم' : 'لا'}
-                    <br />
-                    <Button
-                      variant="outlined"
-                      color={org.is_approved ? 'warning' : 'primary.main'}
-                      size="small"
-                      onClick={() =>
-                        dispatch(toggleApproval({ id: org.id, currentStatus: org.is_approved }))
-                      }
-                      sx={{ mt: 1 }}
-                    >
-                      {org.is_approved ? 'إلغاء الاعتماد' : 'اعتماد'}
-                    </Button>
-                  </li>
-                ))}
-              </ul>
+        filteredOrganizations.map((org) => (
+          <AdminCard
+            key={org.id}
+            name={org.name}
+            email={org.email}
+            identification_number={org.identification_number}
+            is_approved={org.is_approved}
+            image={org.profile_image}
+            id={org.id}
+            handleApproval={() =>
+              dispatch(toggleApproval({ id: org.id, currentStatus: org.is_approved }))
+                    }
+          />
+        ))
       )}
     </Box>
   );
