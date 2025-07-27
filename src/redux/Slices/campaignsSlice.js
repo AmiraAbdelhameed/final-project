@@ -53,16 +53,38 @@ export const deleteCampaign = createAsyncThunk(
                 return thunkAPI.rejectWithValue(error.message);
             }
 
-            return id; 
+            return id;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.message);
         }
     }
 );
+export const getCampaignById = createAsyncThunk(
+    'campaigns/getCampaignById',
+    async (id, thunkAPI) => {
+        try {
+            const { data, error } = await supabase
+                .from('campaigns')
+                .select('*')
+                .eq('id', id)
+                .single();
+
+            if (error) {
+                return thunkAPI.rejectWithValue(error.message);
+            }
+
+            return data;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.message);
+        }
+    }
+);
+
 const campaignsSlice = createSlice({
     name: 'campaigns',
     initialState: {
         data: [],
+        selectedCampaign:null,
         loading: false,
         error: null,
     },
@@ -92,9 +114,22 @@ const campaignsSlice = createSlice({
                 const deletedId = action.payload;
                 state.data = state.data.filter(campaign => campaign.id !== deletedId);
             })
-        .addCase(deleteCampaign.rejected, (state, action) => {
-            state.error = action.payload;
-        })
+            .addCase(deleteCampaign.rejected, (state, action) => {
+                state.error = action.payload;
+            })
+            .addCase(getCampaignById.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.selectedOrg = null;
+            })
+            .addCase(getCampaignById.fulfilled, (state, action) => {
+                state.loading = false;
+                state.selectedCampaign = action.payload;
+            })
+            .addCase(getCampaignById.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
     },
 });
 

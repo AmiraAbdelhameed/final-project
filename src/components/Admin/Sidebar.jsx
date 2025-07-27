@@ -1,9 +1,10 @@
 import React from 'react'
-import { NavLink} from 'react-router-dom';
+import { NavLink, useNavigate} from 'react-router-dom';
 import { ListItemText, ListItemButton, List, ListItem, Button, Typography } from '@mui/material';
 import { supabase } from "../../services/supabase/supabaseClient"
 
 const Sidebar = () => {
+  const navigate = useNavigate()
   const items = [{
     label: "المؤسسات" ,
     path:'/admin/main'
@@ -19,6 +20,7 @@ const Sidebar = () => {
     } else {
       console.log('Signed out successfully');
     }
+    navigate('/admin')
   };
   return (
     <>
@@ -33,7 +35,7 @@ const Sidebar = () => {
         ))}
         <ListItem  >
           <ListItemButton component={Button} onClick={handleSignOut} sx={{ textAlign: 'Right' }}>
-            <ListItemText primary={"sign out"} />
+            <ListItemText primary={"تسجيل الخروج"} />
           </ListItemButton>
         </ListItem>
       </List>

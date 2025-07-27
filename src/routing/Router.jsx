@@ -85,17 +85,17 @@ export default [
                       path: 'campaigns',
                       element: <AdminCampaigns />
                     },
-                  {
-                    id: v4(),
-                    path: 'organization/:id', 
-                    element: <AdminOrganizationDetails />
-                  },
-                  {
-                    id: v4(),
-                    path: 'campaigns/:id', 
-                    element: <CampaignsDetails />
-                  },
                 ]
+            },
+            {
+              id:v4(),
+              path:'/admin/organization/:id',
+              element: <ProtectedAdminRoute> <AdminOrganizationDetails /></ProtectedAdminRoute>
+            },
+            {
+              id:v4(),
+              path:'/admin/campaigns/:id',
+              element: <ProtectedAdminRoute> <CampaignsDetails /></ProtectedAdminRoute>
             },
            
   

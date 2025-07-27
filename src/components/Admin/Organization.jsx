@@ -92,7 +92,7 @@ const Organization = () => {
               dispatch(toggleApproval({ id: org.id, currentStatus: org.is_approved }))
             }
             handleDelete={() => handleOpenDialog(org.id)}
-            handleNavigation={() => navigate(`/admin/main/organization/${org.id}`)}
+            handleNavigation={() => navigate(`/admin/organization/${org.id}`)}
           />
         ))
       )}

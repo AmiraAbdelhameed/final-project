@@ -94,7 +94,7 @@ const Campaigns = () => {
                   });
               }}
               handleDelete={() => handleOpenDialog(campaign.id)}
-              handleNavigation={() => navigate(`/admin/main/campaigns/${campaign.id}`)}
+              handleNavigation={() => navigate(`/admin/campaigns/${campaign.id}`)}
             />
           ))
         )}
