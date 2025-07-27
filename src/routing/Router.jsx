@@ -53,7 +53,7 @@ export default [
             },
             {
                 id: v4(),
-                path: '/admin/organizations',
+                path: '/admin/main',
                 element: <ProtectedAdminRoute><Admin /></ProtectedAdminRoute>,
                 children: [
                     {
