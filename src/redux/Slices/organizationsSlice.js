@@ -10,8 +10,65 @@ export const getOrganizations = createAsyncThunk(
             if (error) {
                 return thunkAPI.rejectWithValue(error.message);
             }
+            return data;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.message);
+        }
+    }
+);
+export const deleteOrganization = createAsyncThunk(
+    'organizations/deleteOrganization',
+    async (id, thunkAPI) => {
+        try {
+            const { error } = await supabase
+                .from('organizations')
+                .delete()
+                .eq('id', id);
+
+            if (error) {
+                return thunkAPI.rejectWithValue(error.message);
+            }
+
+            return id;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.message);
+        }
+    }
+);
+export const getOrganizationById = createAsyncThunk(
+    'organizations/getOrganizationById',
+    async (id, thunkAPI) => {
+        try {
+            const { data, error } = await supabase
+                .from('organizations')
+                .select('*')
+                .eq('id', id)
+                .single();
+
+            if (error) {
+                return thunkAPI.rejectWithValue(error.message);
+            }
 
             return data;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.message);
+        }
+    }
+);
+export const getOrganizationCampaignsById = createAsyncThunk(
+    'organizations/getOrganizationCampaignsById',
+    async (organization_id, thunkAPI) => {
+        try {
+            const { data, error } = await supabase
+                .from('campaigns')
+                .select('*')
+                .eq('organization_id', organization_id);
+
+            if (error) {
+                return thunkAPI.rejectWithValue(error.message);
+            }
+
+            return data; 
         } catch (err) {
             return thunkAPI.rejectWithValue(err.message);
         }
@@ -22,6 +79,8 @@ const organizationSlice = createSlice({
     name: 'organizations',
     initialState: {
         data: [],
+        organizationCampaigns: [],
+        selectedOrg: null,
         loading: false,
         error: null,
     },
@@ -48,6 +107,38 @@ const organizationSlice = createSlice({
                 if (index !== -1) {
                     state.data[index] = updated;
                 }
+            })
+            .addCase(deleteOrganization.fulfilled, (state, action) => {
+                const id = action.payload;
+                state.data = state.data.filter(org => org.id !== id);
+            })
+            .addCase(deleteOrganization.rejected, (state, action) => {
+                state.error = action.payload || 'Failed to delete organization';
+            })
+            .addCase(getOrganizationById.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+                state.selectedOrg = null;
+            })
+            .addCase(getOrganizationById.fulfilled, (state, action) => {
+                state.loading = false;
+                state.selectedOrg = action.payload;
+            })
+            .addCase(getOrganizationById.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
+            })
+            .addCase(getOrganizationCampaignsById.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(getOrganizationCampaignsById.fulfilled, (state, action) => {
+                state.loading = false;
+                state.organizationCampaigns = action.payload;
+            })
+            .addCase(getOrganizationCampaignsById.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.payload;
             })
     },
 });

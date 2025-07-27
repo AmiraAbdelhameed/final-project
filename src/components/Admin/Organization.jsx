@@ -1,15 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Tab, Typography, Tabs , Button } from '@mui/material';
-import { getOrganizations, toggleApproval } from '../../redux/Slices/organizationsSlice';
+import {
+  Box, Tab, Typography, Tabs, Button, Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Snackbar,
+  Alert
+} from '@mui/material';
+import { getOrganizations, toggleApproval, deleteOrganization } from '../../redux/Slices/organizationsSlice';
 import AdminCard from './AdminCard';
+import { useNavigate } from 'react-router-dom';
 
 const Organization = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { data: organizations, loading, error } = useSelector((state) => state.organizations);
   const [filter, setFilter] = useState('all');
-
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+  const [showSnackbar, setShowSnackbar] = useState(false);
   useEffect(() => {
     dispatch(getOrganizations());
   }, [dispatch]);
@@ -23,8 +34,29 @@ const Organization = () => {
     if (filter === 'not_approved') return org.is_approved === false;
     return true;
   });
+  const handleOpenDialog = (id) => {
+    setSelectedId(id);
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setSelectedId(null);
+  };
+
+  const handleConfirmDelete = () => {
+    if (selectedId) {
+      dispatch(deleteOrganization(selectedId)).then((res) => {
+        if (!res.error) {
+          setShowSnackbar(true); 
+        }
+      });
+    }
+    handleCloseDialog();
+  };
 
   return (
+    <>
     <Box>
       <Typography variant="h4" textAlign="right" mt={4} mb={2}>
         المؤسسات
@@ -58,11 +90,35 @@ const Organization = () => {
             id={org.id}
             handleApproval={() =>
               dispatch(toggleApproval({ id: org.id, currentStatus: org.is_approved }))
-                    }
+            }
+            handleDelete={() => handleOpenDialog(org.id)}
+            handleNavigation={() => navigate(`/admin/organization/${org.id}`)}
           />
         ))
       )}
     </Box>
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>تأكيد الحذف</DialogTitle>
+        <DialogContent>
+          هل أنت متأكد أنك تريد حذف هذه المؤسسة؟
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog}>إلغاء</Button>
+          <Button onClick={handleConfirmDelete} color="error">حذف</Button>
+        </DialogActions>
+      </Dialog>
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={3000}
+        onClose={() => setShowSnackbar(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert onClose={() => setShowSnackbar(false)} severity="success" variant="filled">
+          تم حذف المؤسسة بنجاح
+        </Alert>
+      </Snackbar>
+    </>
+
   );
 };
 

@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import {
   AppBar,
@@ -13,23 +14,23 @@ import {
   ListItemText,
   Divider,
   useMediaQuery,
-} from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import PersonIcon from '@mui/icons-material/Person';
-import MenuIcon from '@mui/icons-material/Menu';
-import { useTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import { Link, useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
-import { supabase } from '../../services/supabase/supabaseClient';
+} from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import PersonIcon from "@mui/icons-material/Person";
+import MenuIcon from "@mui/icons-material/Menu";
+import { useTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { Link, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { supabase } from "../../services/supabase/supabaseClient";
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const muiTheme = useTheme();
-  const isMobile = useMediaQuery(muiTheme.breakpoints.down('md'));
-  const navigate = useNavigate()
 
+  const muiTheme = useTheme();
+  const isMobile = useMediaQuery(muiTheme.breakpoints.down("md"));
+  const navigate = useNavigate();
 
   const toggleDrawer = (open) => () => {
     setDrawerOpen(open);
@@ -48,29 +49,32 @@ const Navbar = () => {
       return;
     }
     const { data: profileData, error: profileError } = await supabase
-      .from('users')
-      .select('user_type')
-      .eq('user_id', userId)
+      .from("users")
+      .select("user_type")
+      .eq("user_id", userId)
       .single();
 
     if (profileError) {
       console.error("Failed to fetch user profile:", profileError.message);
       return;
+
     } else {
-      navigate('/profile');
+      navigate("/profile");
     }
   };
 
   const navItems = [
+
     { label: 'الرئيسيه', path: '/' },
     { label: 'المؤسسات', path: '/organizations' },
     { label: 'المشاريع', path: '/campaigns' },
     { label: 'من نحن', path: '/about' },
+
   ];
 
   const mobileMenu = (
     <Box
-      sx={{ width: '100vw', bgcolor: '#fff', height: '100%', p: 2 }}
+      sx={{ width: "100vw", bgcolor: "#fff", height: "100%", p: 2 }}
       role="presentation"
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
@@ -96,7 +100,11 @@ const Navbar = () => {
         </ListItem>
         <Divider sx={{ my: 2 }} />
         <ListItem disablePadding sx={{ mt: 1 }}>
-          <Button fullWidth variant="contained" onClick={() => navigate('/login')} >
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={() => navigate("/login")}
+          >
             تسجيل الدخول
           </Button>
         </ListItem>
@@ -119,36 +127,39 @@ const Navbar = () => {
   }, [isHomePage]);
   return (
     <>
-      <Box sx={{ mx: 'auto', mt: isHomePage ? 0 : 8, display: 'flex' }}>
+      <Box sx={{ mx: "auto", mt: isHomePage ? 0 : 8, display: "flex" }}>
         <CssBaseline />
         <AppBar
           component="nav"
           position="fixed"
           elevation={isHomePage && !scrolled ? 0 : 4}     
           sx={{
+
             px: 6,
             backgroundColor: isHomePage
               ? (scrolled ? 'primary.main' : 'rgba(199, 209, 187, 0.1)')
               : 'primary.main',
             color: isHomePage && !scrolled ? 'white' : 'black',
             backdropFilter: isHomePage && !scrolled ? 'blur(8px)' : 'none',
+
           }}
         >
           <Toolbar
             sx={{
               bgcolor: "transparent",
-              justifyContent: 'space-between',
-              flexDirection: isMobile ? 'row-reverse' : 'row',
+              justifyContent: "space-between",
+              flexDirection: isMobile ? "row-reverse" : "row",
             }}
           >
-
             {/* Mobile View */}
             {isMobile ? (
               <>
                 <IconButton edge="start" onClick={toggleDrawer(true)}>
                   <MenuIcon />
                 </IconButton>
+
                 <Typography variant="h6" sx={{ fontWeight: 'bold',cursor:'p' }} onClick={()=>navigate('/')}>
+
                   أيادي
                 </Typography>
               </>
@@ -156,7 +167,7 @@ const Navbar = () => {
               <>
                 {/* Right Section - Navigation */}
                 <Box display="flex" alignItems="center" gap={3}>
-                  <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                  <Typography variant="h6" sx={{ fontWeight: "bold" }}>
                     أيادي
                   </Typography>
                   {navItems.map((item) => (
@@ -165,24 +176,30 @@ const Navbar = () => {
                       component={Link}
                       to={item.path}
                       color="inherit"
-                      sx={{ color: 'white', fontWeight: 'bold' }}
+                      sx={{ color: "white", fontWeight: "bold" }}
                     >
                       {item.label}
                     </Button>
                   ))}
                   <IconButton>
-                    <SearchIcon className='white' />
+                    <SearchIcon className="white" />
                   </IconButton>
                 </Box>
 
                 {/* Left Section - Auth & Lang */}
                 <Box display="flex" alignItems="center" gap={1}>
-        
-                  <Button variant="contained" onClick={()=>navigate('/login')} >
+                  <Button
+                    variant="contained"
+                    onClick={() => navigate("/login")}
+                  >
                     تسجيل الدخول
                   </Button>
-                  <IconButton sx={{ color: 'secondary.main' }} onClick={handleProfile} ><PersonIcon /></IconButton>
-
+                  <IconButton
+                    sx={{ color: "secondary.main" }}
+                    onClick={handleProfile}
+                  >
+                    <PersonIcon />
+                  </IconButton>
                 </Box>
               </>
             )}
@@ -195,12 +212,11 @@ const Navbar = () => {
           open={drawerOpen}
           onClose={toggleDrawer(false)}
           PaperProps={{
-            sx: { width: '100%' },
+            sx: { width: "100%" },
           }}
         >
           {mobileMenu}
         </Drawer>
-
       </Box>
     </>
   );
