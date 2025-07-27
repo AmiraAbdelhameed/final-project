@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getOrganizations } from "../redux/Slices/organizationsSlice";
+import React, { useEffect, useState } from "react";
+import { supabase } from "../services/supabase/supabaseClient";
 import {
   Box,
   Typography,
@@ -15,25 +14,29 @@ import BusinessIcon from "@mui/icons-material/Business";
 import { Link } from "react-router-dom";
 
 const Organizations = () => {
-  const dispatch = useDispatch();
-  const {
-    data: organizations,
-    loading,
-    error,
-  } = useSelector((state) => state.organizations);
+  const [organizations, setOrganizations] = useState([]);
+  const [loading, setLoading] = useState(true);
   const theme = useTheme();
 
   useEffect(() => {
-    dispatch(getOrganizations());
-  }, [dispatch]);
-
-  // Filter for approved organizations in render
-  const approvedOrgs = (organizations || []).filter(
-    (org) =>
-      org.is_approved === true ||
-      org.is_approved === "TRUE" ||
-      org.is_approved === 1
-  );
+    const fetchOrganizations = async () => {
+      const { data, error } = await supabase.from("organizations").select("*");
+      if (error) {
+        console.error("Error fetching organizations:", error.message);
+      } else {
+        setOrganizations(
+          (data || []).filter(
+            (org) =>
+              org.is_approved === true ||
+              org.is_approved === "TRUE" ||
+              org.is_approved === 1
+          )
+        );
+      }
+      setLoading(false);
+    };
+    fetchOrganizations();
+  }, []);
 
   return (
     <Box
@@ -67,17 +70,13 @@ const Organizations = () => {
         >
           جاري التحميل...
         </Typography>
-      ) : error ? (
-        <Typography color="error" textAlign="center">
-          خطأ: {error}
-        </Typography>
-      ) : approvedOrgs.length === 0 ? (
+      ) : organizations.length === 0 ? (
         <Typography color={theme.palette.text.secondary} textAlign="center">
           لا توجد مؤسسات معتمدة حالياً.
         </Typography>
       ) : (
         <Box>
-          {approvedOrgs.map((org) => (
+          {organizations.map((org) => (
             <React.Fragment key={org.id}>
               <Paper
                 component={Link}
