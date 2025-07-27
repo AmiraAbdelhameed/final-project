@@ -9,17 +9,32 @@ import {
   Chip,
   Stack,
   IconButton,
+  Card,
+  CardContent,
+  CardMedia,
+  Grid,
+  Divider,
+  CircularProgress,
+  Alert,
+  Fade,
+  Zoom,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
+import CampaignIcon from "@mui/icons-material/Campaign";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import GroupIcon from "@mui/icons-material/Group";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useTheme } from "@mui/material/styles";
 
 const OrganizationDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [org, setOrg] = useState(null);
+  const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [campaignsLoading, setCampaignsLoading] = useState(true);
   const theme = useTheme();
 
   useEffect(() => {
@@ -35,17 +50,46 @@ const OrganizationDetails = () => {
     fetchOrg();
   }, [id]);
 
+  useEffect(() => {
+    const fetchCampaigns = async () => {
+      const { data } = await supabase
+        .from("campaigns")
+        .select("*")
+        .eq("organization_id", id)
+        .eq("is_approved", true);
+      setCampaigns(data || []);
+      setCampaignsLoading(false);
+    };
+    fetchCampaigns();
+  }, [id]);
+
   if (loading)
     return (
-      <Typography sx={{ textAlign: "center", mt: 4 }}>
-        جاري تحميل بيانات المؤسسة...
-      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <CircularProgress size={60} />
+      </Box>
     );
   if (!org)
     return (
-      <Typography sx={{ textAlign: "center", mt: 4 }}>
-        عذراً، لم يتم العثور على هذه المؤسسة.
-      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <Alert severity="error" sx={{ fontSize: "1.1rem" }}>
+          عذراً، لم يتم العثور على هذه المؤسسة.
+        </Alert>
+      </Box>
     );
 
   return (
@@ -148,7 +192,7 @@ const OrganizationDetails = () => {
         <Paper
           sx={{
             width: "100%",
-            maxWidth: 600,
+            maxWidth: 800,
             p: { xs: 3, sm: 5 },
             borderRadius: 4,
             boxShadow: 4,
@@ -194,6 +238,199 @@ const OrganizationDetails = () => {
               </Stack>
             )}
           </Stack>
+
+          {/* قسم الحملات */}
+          <Divider sx={{ my: 4 }} />
+
+          <Box sx={{ mt: 4 }}>
+            <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 3 }}>
+              <CampaignIcon
+                sx={{ color: theme.palette.primary.main, fontSize: 28 }}
+              />
+              <Typography
+                variant="h5"
+                fontWeight="bold"
+                color={theme.palette.primary.main}
+                fontFamily={theme.typography.fontFamily}
+              >
+                الحملات المعتمدة
+              </Typography>
+              <Chip
+                label={campaigns.length}
+                color="primary"
+                size="small"
+                sx={{ fontWeight: "bold" }}
+              />
+            </Box>
+
+            {campaignsLoading ? (
+              <Box sx={{ display: "flex", justifyContent: "center", py: 4 }}>
+                <CircularProgress />
+              </Box>
+            ) : campaigns.length === 0 ? (
+              <Fade in={true} timeout={800}>
+                <Box
+                  sx={{
+                    textAlign: "center",
+                    py: 6,
+                    px: 4,
+                    bgcolor: theme.palette.grey[50],
+                    borderRadius: 3,
+                    border: `1px solid ${theme.palette.grey[200]}`,
+                  }}
+                >
+                  <CampaignIcon
+                    sx={{
+                      fontSize: 60,
+                      color: theme.palette.text.secondary,
+                      mb: 2,
+                      opacity: 0.5,
+                    }}
+                  />
+                  <Typography
+                    variant="h6"
+                    color="text.secondary"
+                    fontFamily={theme.typography.fontFamily}
+                    sx={{ mb: 1 }}
+                  >
+                    لا توجد حملات معتمدة حالياً
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    fontFamily={theme.typography.fontFamily}
+                  >
+                    سيتم إضافة الحملات المعتمدة قريباً
+                  </Typography>
+                </Box>
+              </Fade>
+            ) : (
+              <Grid container spacing={3}>
+                {campaigns.map((campaign, index) => (
+                  <Grid item xs={12} sm={6} md={4} key={campaign.id}>
+                    <Zoom in={true} timeout={1000 + index * 200}>
+                      <Card
+                        onClick={() => navigate(`/campaigns/${campaign.id}`)}
+                        sx={{
+                          height: "100%",
+                          cursor: "pointer",
+                          transition: "all 0.3s ease",
+                          border: `1px solid ${theme.palette.primary.main}20`,
+                          "&:hover": {
+                            transform: "translateY(-4px)",
+                            boxShadow: `0 8px 25px ${theme.palette.primary.main}20`,
+                            border: `2px solid ${theme.palette.primary.main}40`,
+                          },
+                        }}
+                      >
+                        {/* صورة الحملة */}
+                        <CardMedia
+                          component="img"
+                          height="140"
+                          image={
+                            campaign.cover_image || "/default-campaign.jpg"
+                          }
+                          alt={campaign.name}
+                          sx={{ objectFit: "cover" }}
+                        />
+
+                        <CardContent sx={{ p: 2 }}>
+                          {/* نوع الحملة وعلامة المعتمدة */}
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+                              gap: 1,
+                              mb: 1,
+                            }}
+                          >
+                            <Chip
+                              label={
+                                campaign.type === "money" ? "تبرع مالي" : "تطوع"
+                              }
+                              color={
+                                campaign.type === "money"
+                                  ? "primary"
+                                  : "secondary"
+                              }
+                              size="small"
+                              icon={
+                                campaign.type === "money" ? (
+                                  <AttachMoneyIcon />
+                                ) : (
+                                  <GroupIcon />
+                                )
+                              }
+                              sx={{ fontSize: "0.7rem", height: 20 }}
+                            />
+                            <CheckCircleIcon
+                              sx={{
+                                color: theme.palette.success.main,
+                                fontSize: 16,
+                              }}
+                            />
+                          </Box>
+
+                          {/* اسم الحملة */}
+                          <Typography
+                            variant="h6"
+                            component="h3"
+                            fontWeight="bold"
+                            color={theme.palette.text.primary}
+                            fontFamily={theme.typography.fontFamily}
+                            sx={{
+                              mb: 1,
+                              fontSize: "1rem",
+                              lineHeight: 1.3,
+                            }}
+                          >
+                            {campaign.name}
+                          </Typography>
+
+                          {/* وصف الحملة */}
+                          {campaign.description && (
+                            <Typography
+                              variant="body2"
+                              color="text.secondary"
+                              fontFamily={theme.typography.fontFamily}
+                              sx={{
+                                display: "-webkit-box",
+                                WebkitLineClamp: 2,
+                                WebkitBoxOrient: "vertical",
+                                overflow: "hidden",
+                                lineHeight: 1.4,
+                                fontSize: "0.85rem",
+                              }}
+                            >
+                              {campaign.description}
+                            </Typography>
+                          )}
+
+                          {/* معلومات إضافية */}
+                          <Box
+                            sx={{
+                              mt: 2,
+                              pt: 1,
+                              borderTop: `1px solid ${theme.palette.grey[200]}`,
+                            }}
+                          >
+                            <Typography
+                              variant="caption"
+                              color="text.secondary"
+                              fontFamily={theme.typography.fontFamily}
+                              sx={{ fontSize: "0.75rem" }}
+                            >
+                              انقر لعرض التفاصيل الكاملة
+                            </Typography>
+                          </Box>
+                        </CardContent>
+                      </Card>
+                    </Zoom>
+                  </Grid>
+                ))}
+              </Grid>
+            )}
+          </Box>
         </Paper>
       </Box>
     </Box>

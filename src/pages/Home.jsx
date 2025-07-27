@@ -6,9 +6,6 @@ import ProjectsSection from '../components/Home/ProjectsSection'
 import { Container } from '@mui/material'
 
 const Home = () => {
-
-
-
   return (
     <>
 
@@ -20,7 +17,7 @@ const Home = () => {
         <ProjectsSection />
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
