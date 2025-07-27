@@ -52,20 +52,7 @@ export default [
         path: "/profile",
         element: <Profile />,
       },
-      {
-        id: v4(),
-        path: "/admin",
-        element: (
-          <ProtectedAdminRoute>
-            <Admin />
-          </ProtectedAdminRoute>
-        ),
-        children: [
-          {
-            id: v4(),
-            index: true,
-            element: <Organization />,
-          },
+     
             {
                 id: v4(),
                 path:'/about',
@@ -99,8 +86,7 @@ export default [
                 ]
             },
            
-        ]
-    },
+  
     {
         id:v4(),
         path:'/login',
