@@ -1,9 +1,9 @@
-import Hero from "../components/Home/Hero";
-import Article from "../components/Home/Article";
-import Charities from "../components/Home/Charities";
-import Postarticles from "../components/Home/Postarticles";
-import Newepisodes from "../components/Home/Newepisodes";
-import { Container } from "@mui/material";
+import Hero from '../components/Home/Hero'
+import Article from '../components/Home/Article'
+import Charities from '../components/Home/Charities'
+import OrganizationSection from '../components/Home/OrganizationSection'
+import ProjectsSection from '../components/Home/ProjectsSection'
+import { Container } from '@mui/material'
 
 const Home = () => {
   return (
@@ -12,8 +12,8 @@ const Home = () => {
       <Container maxWidth="lg">
         <Article />
         <Charities />
-        <Postarticles />
-        <Newepisodes />
+        <OrganizationSection />
+        <ProjectsSection />
       </Container>
     </>
   );

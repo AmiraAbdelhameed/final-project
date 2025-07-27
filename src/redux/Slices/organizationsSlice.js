@@ -17,6 +17,25 @@ export const getOrganizations = createAsyncThunk(
         }
     }
 );
+export const deleteOrganization = createAsyncThunk(
+    'organizations/deleteOrganization',
+    async (id, thunkAPI) => {
+        try {
+            const { error } = await supabase
+                .from('organizations')
+                .delete()
+                .eq('id', id);
+
+            if (error) {
+                return thunkAPI.rejectWithValue(error.message);
+            }
+
+            return id;
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.message);
+        }
+    }
+);
 
 const organizationSlice = createSlice({
     name: 'organizations',
@@ -49,6 +68,13 @@ const organizationSlice = createSlice({
                     state.data[index] = updated;
                 }
             })
+            .addCase(deleteOrganization.fulfilled, (state, action) => {
+                const id = action.payload;
+                state.data = state.data.filter(org => org.id !== id);
+            })
+            .addCase(deleteOrganization.rejected, (state, action) => {
+                state.error = action.payload || 'Failed to delete organization';
+            });
     },
 });
 export const toggleApproval = createAsyncThunk(

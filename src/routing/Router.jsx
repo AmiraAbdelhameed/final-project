@@ -10,12 +10,14 @@ import {
 import Layout from "../layout/Layout";
 
 import Organization from "../components/Admin/Organization";
-import Projects from "../components/Admin/Projects";
+import AdminCampaigns from "../components/Admin/AdminCampaigns";
 import Login from "../components/Forms/Login";
 import Signup from "../components/Forms/Signup";
 import OrganizationDetails from "../pages/OrganizationDetails";
 import CampaignDetails from "../pages/CampaignDetails";
 import ProtectedAdminRoute from "../components/Admin/ProtectedAdminRoute";
+import AdminOrganizationDetails from "../components/Admin/AdminOrganizationDetails";
+import CampaignsDetails from "../components/Admin/CampaignsDetails";
 
 export default [
   {
@@ -58,37 +60,61 @@ export default [
         path: "/profile",
         element: <Profile />,
       },
-      {
-        id: v4(),
-        path: "/admin",
-        element: (
-          <ProtectedAdminRoute>
-            <Admin />
-          </ProtectedAdminRoute>
-        ),
-        children: [
-          {
-            id: v4(),
-            index: true,
-            element: <Organization />,
-          },
-          {
-            id: v4(),
-            path: "projects",
-            element: <Projects />,
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: v4(),
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    id: v4(),
-    path: "/signup",
-    element: <Signup />,
-  },
-];
+     
+            {
+                id: v4(),
+                path:'/about',
+                element: <About />,
+            },
+            {
+                id: v4(),
+                path:'/profile',
+                element: <Profile />,
+            },
+            {
+                id: v4(),
+                path:'/admin',
+                element: <Login />,
+            },
+            {
+                id: v4(),
+                path: '/admin/main',
+                element: <ProtectedAdminRoute><Admin /></ProtectedAdminRoute>,
+                children: [
+                    {
+                        id: v4(),
+                        index: true,
+                        element: <Organization />
+                    },
+                    {
+                        id: v4(),
+                      path: 'campaigns',
+                      element: <AdminCampaigns />
+                    },
+                  {
+                    id: v4(),
+                    path: 'organization/:id', 
+                    element: <AdminOrganizationDetails />
+                  },
+                  {
+                    id: v4(),
+                    path: 'campaigns/:id', 
+                    element: <CampaignsDetails />
+                  },
+                ]
+            },
+           
+  
+    {
+        id:v4(),
+        path:'/login',
+        element:<Login />
+    },
+    {
+        id:v4(),
+        path:'/signup',
+        element:<Signup />
+    },
+
+  ]
+  }]

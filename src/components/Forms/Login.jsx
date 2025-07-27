@@ -1,6 +1,6 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { Navigate, NavLink, useNavigate } from "react-router";
+import { Navigate, NavLink, Outlet, useNavigate } from "react-router";
 
 import {
     Grid,
@@ -107,6 +107,7 @@ const Login = () => {
                     </Box>
                 </Paper>
             </Grid>
+   
         </>
     );
 };

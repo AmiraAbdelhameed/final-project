@@ -31,13 +31,10 @@ const Footer = () => {
     
           <Grid item xs={12} md={3}>
             <Typography variant="h6" fontWeight="bold" gutterBottom>
-              نبض الخير
+                أيادي – منصتك للخير
             </Typography>
             <Typography variant="body2" maxWidth={400}>
-              منظومة ERP متكاملة تمكّنك من إنشاء وإدارة فواتيرك بشكل أبسط وأسرع وآمن، يضمن لك حماية خصوصيتك بالكامل.
-              <br />
-              أصدر فواتيرك، أدر مبيعاتك والموردين ومخزونك وموظفيك وحساباتك.
-            </Typography>
+                نوفّر وسيلة سهلة وآمنة للتبرع، عبر ربط المتبرعين بالجمعيات الخيرية المعتمدة. نؤمن أن كل يد تمتدّ بالعطاء قادرة على صناعة أثر حقيقي.</Typography>
             <Box mt={2}>
               <IconButton className='icon'><LinkedInIcon /></IconButton>
               <IconButton className='icon'><FacebookIcon /></IconButton>
@@ -48,11 +45,12 @@ const Footer = () => {
 
           <Grid item xs={12} md={3}>
             <Typography variant="h6" fontWeight="bold" gutterBottom>
-              الشركة
+                عن أيادي
             </Typography>
-            <Typography variant="body2">التسويق بالعمولة</Typography>
-            <Typography variant="body2">الفاتورة الالكترونية</Typography>
-            <Typography variant="body2">خطط الأسعار</Typography>
+              <Typography variant="body2">من نحن</Typography>
+              <Typography variant="body2">انضم كجمعية خيرية</Typography>
+              <Typography variant="body2">قصص النجاح</Typography>
+              <Typography variant="body2">كيف تعمل المنصة</Typography>
             <Typography variant="body2">الأسئلة الشائعة</Typography>
             <Typography variant="body2">سياسة الخصوصية</Typography>
             <Typography variant="body2">شروط الخدمة</Typography>
@@ -60,10 +58,12 @@ const Footer = () => {
 
           <Grid item xs={12} md={3}>
             <Typography variant="h6" fontWeight="bold" gutterBottom>
-              المطورون
+                خدماتنا
             </Typography>
-            <Typography variant="body2">دليل التكامل</Typography>
-            <Typography variant="body2">دليل APIS</Typography>
+              <Typography variant="body2">التبرع الشهري</Typography>
+              <Typography variant="body2"> التبرع السريع</Typography>
+              <Typography variant="body2"> التبرع حسب الفئة</Typography>
+              <Typography variant="body2"> اكتشف الجمعيات</Typography>
           </Grid>
 
           <Grid item xs={12} md={3}>
@@ -90,7 +90,7 @@ const Footer = () => {
         <Box mt={4} textAlign="center">
 
           <Typography variant="body2">
-            شركة أركان الطيف لتقنية المعلومات<br />
+           أيادي<br />
             جميع الحقوق محفوظة 2025
           </Typography>
         </Box>
