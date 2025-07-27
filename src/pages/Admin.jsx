@@ -6,9 +6,9 @@ import { Outlet } from 'react-router'
 const Admin = () => {
   return (
     <>
-      <Container maxWidth="md">
+      <Container maxWidth="xl">
         <Grid container spacing={2}>
-          <Grid size={4} sx={{ minHeight: "80vh" }}>
+          <Grid size={3} sx={{ minHeight: "80vh" }}>
             <Sidebar />
           </Grid>
           <Divider orientation="vertical" flexItem />

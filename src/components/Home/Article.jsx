@@ -1,62 +1,88 @@
 import { Box, Grid, Typography, Avatar, Button } from "@mui/material";
-import img1 from "../../assets/image 9.png";
-import img2 from "../../assets/googleanalytics_svgrepo.com.png";
+import { useDispatch, useSelector } from 'react-redux';
+import { getCampaigns, toggleApproval } from '../../redux/Slices/campaignsSlice';
+import { useEffect } from "react";
 
-export default function FeaturedArticle() {
+export default function Article() {
+  const dispatch = useDispatch();
+  const { data: campaigns = [], loading = false, error = null } = useSelector(
+    (state) => state.campaigns || {}
+  );
+  let campaign = campaigns[0]
+   useEffect(() => {
+    dispatch(getCampaigns());
+  }, [dispatch]);
+ 
+  console.log("Campaigns:", campaigns);
+  if (loading) return <Box textAlign="center">Loading</Box>;
+  if (error) return <Typography color="error">حدث خطأ أثناء جلب البيانات</Typography>;
+  if (!campaigns || campaigns.length === 0) return <Typography>لا توجد مشاريع متاحة</Typography>;
   return (
+  
     <Box p={4}>
-      <Grid container spacing={4} alignItems="center" justifyContent="space-around" margin={"auto"}>
-
-
+      <Grid
+        container
+        spacing={2}
+        alignItems="stretch" 
+        justifyContent="space-between"
+        direction={{ xs: "column-reverse", sm: "row" }}
+      >
         {/* Right side content */}
-        <Grid item xs={12} md={6} textAlign="right">
-          {/* Header */}
-          <Box display="flex" alignItems="center" gap={1}>
-            <Typography fontWeight="bold">
-              <Box
-                component="img"
-                src={img2}
-                className="img-icon"
-                alt="كفالة يتيم"
-                sx={{ width: "100%", maxWidth: 578, borderRadius: 2 }}
-              />
-              المقالات المميز</Typography>
-            <Avatar
-              src="https://via.placeholder.com/60"
-              alt="icon"
-              sx={{ width: 40, height: 40 }}
-            />
-          </Box>
-
-          {/* Text */}
-          <Box mt={3} maxWidth={500} ml="auto">
-            <Typography paragraph>
-              شاهدت ترويج إعلان خاص بجمعية مكافحة السجائر في أوسباد باريس عشرات المرات شاهدت ترويج إعلان خاص بجمعية مكافحة السجائر في أوسباد باريس عشرات المرات شاهدت ترويج.
-            </Typography>
-            <Typography paragraph>
-              شاهدت ترويج إعلان خاص بجمعية مكافحة السجائر في أوسباد باريس عشرات المرات شاهدت ترويج.
-            </Typography>
-
-            {/* Buttons */}
-            <Box display="flex" gap={2} mt={5}>
-              <Button variant="contained" color="primary" style={{ padding: "10px 30px" }}>
-                تبرع الان
-              </Button>
-
-            </Box>
-          </Box>
+        <Grid
+          item
+          xs={12}
+          sm={5.8}
+          textAlign="right"
+          sx={{
+            flex: 1,
+            height: "100%", 
+            p: 2,
+            borderRadius: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center'
+          }}
+        >
+          <Typography variant="h5" mb={2}  >أحدث المشاريع</Typography>
+          <Typography py={4}><strong>{campaign.name}</strong> </Typography>
+          <Typography> {campaign.description || 'لا يوجد وصف'}</Typography>
+          <Button variant="contained" sx={{
+            width:'50%',
+            my:4
+          }}>تبرع الان</Button>
         </Grid>
+
         {/* Left side image */}
-        <Grid item xs={12} md={6}>
-          <Box
-            component="img"
-            src={img1}
-            className="img-2"
-            alt="كفالة يتيم"
-            sx={{ width: "100%", maxWidth: 578, borderRadius: 2 }}
-          />
+        <Grid
+          item
+          xs={12}
+          sm={5.8}
+          sx={{
+            flex: 1,
+            height: "100%", 
+            borderRadius: 2,
+            p: 1,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {campaign.cover_image ? (
+            <img
+              src={campaign.cover_image}
+              alt={campaign.name}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }}
+            />
+          ) : (
+              <img
+                src="./images/project.png"
+                alt={campaign.name}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '8px' }}
+              />
+          )}
         </Grid>
       </Grid>
     </Box>
+
   );
 }

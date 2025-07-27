@@ -1,21 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import img1 from "../../assets/img-1.png";
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 // Import Swiper React components and styles
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
+import { getOrganizations } from '../../redux/Slices/organizationsSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
-const newsletters = Array.from({ length: 14 }).map((_, i) => ({
-  id: i,
-  img: img1,
-}));
 
-const Postarticles = () => {
+const OrganizationSection = () => {
+  const dispatch = useDispatch();
+  const { data: organizations = [], loading = false, error = null } = useSelector(
+    (state) => state.organizations || {}
+  );
+
+  useEffect(() => {
+    dispatch(getOrganizations());
+  }, [dispatch]);
+
   return (
-    <Box sx={{ px: 4, py: 3, direction: 'rtl' }}>
+    <Box sx={{ p: 4,  direction: 'rtl' }}>
       {/* Header */}
       <Box
         display="flex"
@@ -26,14 +33,14 @@ const Postarticles = () => {
         <Box display="flex" alignItems="center" gap={1}>
           <MailOutlineIcon />
           <Typography variant="h6" fontWeight="bold">
-            نشرات بريدية مميزة
+            المؤسسات 
           </Typography>
         </Box>
 
-        <Box display="flex" alignItems="center" gap={1}>
+        <Button display="flex" alignItems="center" gap={1}>
+          <Typography variant="body2" pl={1}>عرض المزيد</Typography>
           <ArrowBackIosNewIcon fontSize="small" />
-          <Typography variant="body2">عرض المزيد</Typography>
-        </Box>
+        </Button>
       </Box>
 
       {/* Swiper Image Carousel */}
@@ -47,12 +54,14 @@ const Postarticles = () => {
         }}
         style={{ padding: '8px 0' }}
       >
-        {newsletters.map((item) => (
+        {organizations
+          .filter((org) => org.is_approved === true)
+        .map((item) => (
           <SwiperSlide key={item.id}>
             <Box
               component="img"
-              src={item.img}
-              alt={`newsletter-${item.id}`}
+              src={item.profile_image}
+              alt={item.name}
               sx={{
                 width: '100%',
                 height: 100,
@@ -68,4 +77,4 @@ const Postarticles = () => {
   );
 };
 
-export default Postarticles;
+export default OrganizationSection;

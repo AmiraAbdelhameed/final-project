@@ -6,10 +6,10 @@ import { supabase } from "../../services/supabase/supabaseClient"
 const Sidebar = () => {
   const items = [{
     label: "المؤسسات" ,
-    path:'/admin'
+    path:'/admin/organizations'
   },{
     label: "المشاريع",
-    path:'/admin/projects'
+    path:'/admin/organizations/projects'
   } ];
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();

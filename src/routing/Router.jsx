@@ -49,20 +49,26 @@ export default [
             {
                 id: v4(),
                 path:'/admin',
+                element: <Login />,
+            },
+            {
+                id: v4(),
+                path: '/admin/organizations',
                 element: <ProtectedAdminRoute><Admin /></ProtectedAdminRoute>,
-                children:[
+                children: [
                     {
                         id: v4(),
-                        index:true,
-                        element:<Organization />
+                        index: true,
+                        element: <Organization />
                     },
                     {
                         id: v4(),
-                        path:'projects',
-                        element:<Projects />
+                        path: 'projects',
+                        element: <Projects />
                     },
                 ]
             },
+           
         ]
     },
     {

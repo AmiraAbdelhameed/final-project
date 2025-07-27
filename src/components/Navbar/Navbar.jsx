@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -24,8 +24,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { supabase } from '../../services/supabase/supabaseClient';
 const Navbar = () => {
+  const [scrolled, setScrolled] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [langMenuAnchor, setLangMenuAnchor] = useState(null);
   const muiTheme = useTheme();
   const isMobile = useMediaQuery(muiTheme.breakpoints.down('md'));
   const navigate = useNavigate()
@@ -56,9 +56,6 @@ const Navbar = () => {
     if (profileError) {
       console.error("Failed to fetch user profile:", profileError.message);
       return;
-    }
-    if (profileData.user_type === 'admin') {
-      navigate('/admin');
     } else {
       navigate('/profile');
     }
@@ -67,7 +64,7 @@ const Navbar = () => {
   const navItems = [
     { label: 'الرئيسيه', path: '/' },
     { label: 'المؤسسات', path: '/organizations' },
-    { label: 'المشاريع', path: '/Campaigns' },
+    { label: 'المشاريع', path: '/campaigns' },
     { label: 'من نحن', path: '/about' },
   ];
 
@@ -108,6 +105,18 @@ const Navbar = () => {
   );
   const location = useLocation();
   const isHomePage = location.pathname === '/';
+  useEffect(() => {
+    if (!isHomePage) {
+      setScrolled(false);
+      return;
+    }
+    const handleScroll = () => {
+      
+      setScrolled(window.scrollY > 590);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [isHomePage]);
   return (
     <>
       <Box sx={{ mx: 'auto', mt: isHomePage ? 0 : 8, display: 'flex' }}>
@@ -115,11 +124,14 @@ const Navbar = () => {
         <AppBar
           component="nav"
           position="fixed"
-          elevation={isHomePage ? 0 : 4}
+          elevation={isHomePage && !scrolled ? 0 : 4}     
           sx={{
-            backgroundColor: isHomePage ? 'rgba(199, 209, 187, 0.1)' : 'primary.main ',
-            color: isHomePage ? 'white' : 'black',
-            backdropFilter: isHomePage ? 'blur(8px)' : 'none',
+            px: 6,
+            backgroundColor: isHomePage
+              ? (scrolled ? 'primary.main' : 'rgba(199, 209, 187, 0.1)')
+              : 'primary.main',
+            color: isHomePage && !scrolled ? 'white' : 'black',
+            backdropFilter: isHomePage && !scrolled ? 'blur(8px)' : 'none',
           }}
         >
           <Toolbar
@@ -136,7 +148,7 @@ const Navbar = () => {
                 <IconButton edge="start" onClick={toggleDrawer(true)}>
                   <MenuIcon />
                 </IconButton>
-                <Typography variant="h6" sx={{ fontWeight: 'bold',cursor:'pointer' }} onClick={()=>navigate('/')}>
+                <Typography variant="h6" sx={{ fontWeight: 'bold',cursor:'p' }} onClick={()=>navigate('/')}>
                   أيادي
                 </Typography>
               </>

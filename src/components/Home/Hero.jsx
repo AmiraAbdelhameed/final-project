@@ -1,7 +1,8 @@
 import React from 'react';
 import { Box, Button, Typography, Stack } from '@mui/material';
-
+import { useNavigate } from 'react-router';
 function Hero() {
+  const navigate =useNavigate()
   return (
     <Box
       className="home"
@@ -33,7 +34,9 @@ function Hero() {
             fontSize: { xs: '1.8rem', md: '3rem' },
           }}
         >
-          مؤسسو كريم في الرياض، والخُطّة: بناؤها من جديد!
+          ساهم بيدك... وصِل الخير لمستحقيه عبر "أيادي" 
+
+
         </Typography>
 
         <Typography
@@ -45,9 +48,9 @@ function Hero() {
             lineHeight: 1.8,
           }}
         >
-          الحصول على نجاح بُمستويات الريادات أمر لا يحصل كل يوم. ولو حصل، فمعظم الأشخاص إما يتجهون إلى استثمار هذه الأموال،
-          أو يعودون إلى صناعة نجاح جديد. لكن أن تعود وتقرر بناء مرحلة جديدة لشركة التي تأخرت منها، وبعد خمس سنوات، كان أمرًا
-          غريبًا على من في البداية على الأقل.
+          في عالم تزداد فيه التحديات، يبقى العطاء هو الأمل الذي يجمعنا.
+          "أيادي" منصة تبرعات تربط المتبرعين بالجمعيات الموثوقة بكل شفافية وسهولة.
+          تبرعك معنا ليس مجرد مساعدة، بل شراكة إنسانية تصنع فرقًا حقيقيًا.
         </Typography>
 <Stack
 className='mo'
@@ -57,8 +60,8 @@ className='mo'
     alignItems: { xs: 'center', md: 'flex-start' },
   }}
 >
-          <Button variant="contained" >
-            ابدأ تجربتك المجانية
+          <Button variant="contained" onClick={() => navigate('/campaigns')} >
+            ابدأ التبرع الآن
           </Button>
           <Button
             variant="outlined"
@@ -70,8 +73,9 @@ className='mo'
                 color: 'black',
               },
             }}
+            onClick={() => navigate('/organizations')}
           >
-            اكتشف الآن
+            استكشف الجمعيات
           </Button>
         </Stack>
       </Box>

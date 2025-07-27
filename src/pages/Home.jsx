@@ -1,9 +1,10 @@
 import Hero from '../components/Home/Hero'
 import Article from '../components/Home/Article'
 import Charities from '../components/Home/Charities'
-import Postarticles from '../components/Home/Postarticles'
-import Newepisodes from '../components/Home/Newepisodes'
+import OrganizationSection from '../components/Home/OrganizationSection'
+import ProjectsSection from '../components/Home/ProjectsSection'
 import { Container } from '@mui/material'
+import Campaigns from '../components/Campaigns'
 
 
 const Home = () => {
@@ -12,12 +13,13 @@ const Home = () => {
 
   return (
     <>
+
       <Hero />
       <Container maxWidth="lg">
         <Article />
         <Charities />
-        <Postarticles />
-        <Newepisodes />
+        <OrganizationSection />
+        <ProjectsSection />
       </Container>
     </>
   )
