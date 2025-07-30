@@ -106,8 +106,27 @@ const Charities = () => {
           right: 0,
           bottom: 0,
           background: `radial-gradient(circle at 20% 80%, ${theme.palette.primary.main}10 0%, transparent 50%),
-                       radial-gradient(circle at 80% 20%, ${theme.palette.secondary.main}10 0%, transparent 50%)`,
+                        radial-gradient(circle at 80% 20%, ${theme.palette.secondary.main}10 0%, transparent 50%)`,
           pointerEvents: "none",
+        },
+        // Custom Swiper navigation styles
+        "& .custom-swiper .swiper-button-next": {
+          color: theme.palette.primary.main,
+          "&:after": {
+            color: theme.palette.primary.main,
+          },
+        },
+        "& .custom-swiper .swiper-button-prev": {
+          color: theme.palette.primary.main,
+          "&:after": {
+            color: theme.palette.primary.main,
+          },
+        },
+        "& .custom-swiper .swiper-button-next:hover": {
+          color: theme.palette.primary.dark,
+        },
+        "& .custom-swiper .swiper-button-prev:hover": {
+          color: theme.palette.primary.dark,
         },
       }}
     >
@@ -144,10 +163,11 @@ const Charities = () => {
                   component={Link}
                   to="/organizations"
                   sx={{
-                    bgcolor: theme.palette.primary.main,
-                    color: "white",
+                    bgcolor: "transparent",
+                    color: theme.palette.primary.main,
                     "&:hover": {
-                      bgcolor: theme.palette.primary.dark,
+                      bgcolor: theme.palette.primary.main,
+                      color: "white",
                       transform: "scale(1.1)",
                     },
                     transition: "all 0.3s ease",
@@ -205,6 +225,7 @@ const Charities = () => {
                 style={{
                   paddingBottom: 40,
                 }}
+                className="custom-swiper"
               >
                 {approvedOrgs.map((org, index) => (
                   <SwiperSlide key={org.id}>
@@ -231,29 +252,6 @@ const Charities = () => {
                           },
                         }}
                       >
-                        {/* Approval Badge */}
-                        <Box
-                          sx={{
-                            position: "absolute",
-                            top: 12,
-                            right: 12,
-                            bgcolor: theme.palette.success.main,
-                            borderRadius: 2,
-                            p: 0.5,
-                            display: "flex",
-                            alignItems: "center",
-                            gap: 0.5,
-                          }}
-                        >
-                          <CheckCircle sx={{ color: "white", fontSize: 16 }} />
-                          <Typography
-                            variant="caption"
-                            sx={{ color: "white", fontWeight: "bold" }}
-                          >
-                            معتمدة
-                          </Typography>
-                        </Box>
-
                         {/* Organization Image */}
                         <Box sx={{ position: "relative", mb: 3 }}>
                           {org.profile_image ? (
@@ -308,36 +306,6 @@ const Charities = () => {
                           >
                             {org.name}
                           </Typography>
-
-                          <Box
-                            sx={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              gap: 1,
-                              p: 1.5,
-                              borderRadius: 2,
-                              bgcolor: theme.palette.grey[50],
-                              border: `1px solid ${theme.palette.grey[200]}`,
-                            }}
-                          >
-                            <Email
-                              sx={{
-                                color: theme.palette.primary.main,
-                                fontSize: 18,
-                              }}
-                            />
-                            <Typography
-                              variant="body2"
-                              color="text.secondary"
-                              sx={{
-                                fontFamily: "Tajawal, Arial, sans-serif",
-                                fontSize: "0.9rem",
-                              }}
-                            >
-                              {org.email}
-                            </Typography>
-                          </Box>
 
                           {/* Additional Info if available */}
                           {org.description && (
