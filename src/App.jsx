@@ -3,6 +3,7 @@ import { ThemeProvider } from "@emotion/react";
 import { theme } from "./theme";
 import routes from "./routing/Router";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Loading from "./components/Loading/Loading";
 function renderRoutes(routes) {
   return routes.map(({ id, path, element, children, index }) => (
     <Route key={id} path={path} element={element} index={index}>
@@ -16,7 +17,8 @@ function App() {
     <>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
-          <Suspense fallback={<div>Loading...</div>}>
+          {/* <Suspense fallback={<div>Loading...</div>}> */}
+          <Suspense fallback={<Loading />}>
             <Routes>{renderRoutes(routes)}</Routes>
           </Suspense>
         </BrowserRouter>

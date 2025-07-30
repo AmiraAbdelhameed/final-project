@@ -14,6 +14,7 @@ import {
 import { supabase } from '../../services/supabase/supabaseClient';
 
 const Login = () => {
+    const navigate =useNavigate()
     const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm();
 
     const onSubmit = async (data) => {
@@ -24,6 +25,7 @@ const Login = () => {
             alert('Sign in failed: ' + error.message);
         } else {
             alert('Signed in successfully!');
+            navigate('/')
         }
     };
 

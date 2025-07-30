@@ -8,11 +8,19 @@ const Admin = () => {
     <>
       <Container maxWidth="xl">
         <Grid container spacing={2}>
-          <Grid size={3} sx={{ minHeight: "80vh" }}>
+          <Grid
+       
+          size={3}
+      
+          sx={{ minHeight: "80vh" }}>
             <Sidebar />
           </Grid>
           <Divider orientation="vertical" flexItem />
-          <Grid size={7}>
+          <Grid
+      
+          size={8} 
+          
+          >
             <Outlet />
           </Grid>
         </Grid>

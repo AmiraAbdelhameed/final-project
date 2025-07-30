@@ -1,4 +1,4 @@
-import { Box,Button , Card, CardContent, CardMedia, Typography, Chip, Stack } from '@mui/material';
+import { Box, Button, Card, CardContent, CardMedia, Typography, Chip, Stack } from '@mui/material';
 const AdminCard = ({ email, image, name, id, is_approved, identification_number, handleApproval, handleDelete, handleNavigation }) => {
     return (
         <Card
@@ -8,23 +8,23 @@ const AdminCard = ({ email, image, name, id, is_approved, identification_number,
                 alignItems: 'center',
                 boxShadow: 3,
                 borderRadius: 3,
-                p: 2,
+                p: 1,
                 mb: 2,
                 background: 'secondary.main',
-                maxWidth: 500,
-                mx: 'auto'
+                width: { xs: "100%", md: '70%' },
             }}
         >
             <CardMedia
                 component="img"
-                image={image || '/images/avatar-placeholder.png'}
+                image={image}
                 alt={name}
                 sx={{
-                    width: 100,
-                    height: 100,
-                    borderRadius: '50%',
+                    width: {
+                        xs: '100%', sm: '40%'
+                    },
+                    alignSelf: 'stretch',
+                    height: 'auto',
                     objectFit: 'cover',
-                    mr: { sm: 3, xs: 0 },
                     mb: { xs: 2, sm: 0 },
                     boxShadow: 1,
                     background: '#fff'
@@ -40,23 +40,26 @@ const AdminCard = ({ email, image, name, id, is_approved, identification_number,
                 >
                     {name}
                 </Typography>
-                <Typography variant="body2" color="text.secondary" gutterBottom>
-                    {email}
+                <Typography  color="text.secondary" gutterBottom>
+                    الايميل:{email}
                 </Typography>
-                <Typography variant="body2" color="text.secondary" gutterBottom>
+                <Typography color="text.secondary" gutterBottom>
                     رقم الهوية: {identification_number}
                 </Typography>
-                <Stack direction="row" spacing={1} mt={1}>
-                    <Chip
-                        label={is_approved ? "مفعل" : "غير مفعل"}
-                        color={is_approved ? "success" : "warning"}
-                        size="small"
-                    />
-                    <Chip label={`ID: ${id}`} variant="outlined" size="small" />
-                </Stack>
+                <Box sx={{
+                    color: is_approved ? "primary.main" : "danger.main" 
+                }}
+                >
+                    {is_approved ? "مفعل" : "غير مفعل"}
+                </Box>
+                <Box sx={{
+                    display:'flex',
+                    justifyContent:'space-between'
+                }}>
+
                 <Button
                     variant="outlined"
-                    color={is_approved ? 'warning' : 'primary.main'}
+                    color={is_approved ? 'warning' : 'primary'}
                     size="small"
                     onClick={handleApproval}
                     sx={{ mt: 1 }}
@@ -68,10 +71,12 @@ const AdminCard = ({ email, image, name, id, is_approved, identification_number,
                     size="small"
                     onClick={handleDelete}
                     bgcolor="red-500"
-                    sx={{ mt: 1 , bgcolor:'red' }}
+                    sx={{ mt: 1, bgcolor: 'red' }}
                 >
                     حذف
                 </Button>
+                </Box>
+
             </CardContent>
         </Card>
     );

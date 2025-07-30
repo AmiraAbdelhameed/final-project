@@ -6,6 +6,7 @@ import {
   About,
   Profile,
   Admin,
+  ErrorPage
 } from "../pages";
 import Layout from "../layout/Layout";
 
@@ -19,7 +20,9 @@ import ProtectedAdminRoute from "../components/Admin/ProtectedAdminRoute";
 import AdminOrganizationDetails from "../components/Admin/AdminOrganizationDetails";
 import CampaignsDetails from "../components/Admin/CampaignsDetails";
 
+
 export default [
+ 
   {
     id: v4(),
     path: "/",
@@ -29,6 +32,11 @@ export default [
         id: v4(),
         index: true,
         element: <Home />,
+      },
+      {
+        id: v4(),
+        path: '*',
+        element: <ErrorPage />,
       },
       {
         id: v4(),
@@ -61,11 +69,7 @@ export default [
         element: <Profile />,
       },
      
-            {
-                id: v4(),
-                path:'/about',
-                element: <About />,
-            },
+          
             {
                 id: v4(),
                 path:'/profile',
@@ -105,16 +109,19 @@ export default [
             },
            
   
-    {
-        id:v4(),
-        path:'/login',
-        element:<Login />
-    },
-    {
-        id:v4(),
-        path:'/signup',
-        element:<Signup />
-    },
+            
+          ]
+        },
+        {
+            id:v4(),
+            path:'/login',
+            element:<Login />
+        },
+        {
+            id:v4(),
+            path:'/signup',
+            element:<Signup />
+        },
+        
 
-  ]
-  }]
+]

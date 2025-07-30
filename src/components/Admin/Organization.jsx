@@ -63,8 +63,12 @@ const Organization = () => {
       </Typography>
 
       {/* Tabs Filter */}
-      <Box display="flex" justifyContent="flex-start" mb={4}>
-        <Tabs value={filter} onChange={handleChange} centered>
+      <Box display="flex" justifyContent="flex-start"
+   
+   mb={4}>
+          <Tabs value={filter} onChange={handleChange} centered 
+            // flexDirection='column'
+        >
           <Tab label="الجميع" value="all" />
           <Tab label="معتمدة" value="approved" />
           <Tab label="غير معتمدة" value="not_approved" />
