@@ -6,7 +6,8 @@ import {
   About,
   Profile,
   Admin,
-  ErrorPage
+  ErrorPage,
+  AdminLogin
 } from "../pages";
 import Layout from "../layout/Layout";
 
@@ -75,11 +76,7 @@ export default [
                 path:'/profile',
                 element: <Profile />,
             },
-            {
-                id: v4(),
-                path:'/admin',
-                element: <Login />,
-            },
+       
             {
                 id: v4(),
                 path: '/admin/main',
@@ -112,6 +109,11 @@ export default [
             
           ]
         },
+  {
+    id: v4(),
+    path: '/admin',
+    element: <AdminLogin />,
+  },
         {
             id:v4(),
             path:'/login',

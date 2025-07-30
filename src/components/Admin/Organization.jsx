@@ -83,22 +83,33 @@ const Organization = () => {
       ) : filteredOrganizations.length === 0 ? (
         <Typography style={{ textAlign: 'center' }}>لا توجد مؤسسات مطابقة</Typography>
       ) : (
-        filteredOrganizations.map((org) => (
-          <AdminCard
-            key={org.id}
-            name={org.name}
-            email={org.email}
-            identification_number={org.identification_number}
-            is_approved={org.is_approved}
-            image={org.profile_image}
-            id={org.id}
-            handleApproval={() =>
-              dispatch(toggleApproval({ id: org.id, currentStatus: org.is_approved }))
-            }
-            handleDelete={() => handleOpenDialog(org.id)}
-            handleNavigation={() => navigate(`/admin/organization/${org.id}`)}
-          />
-        ))
+          <Box
+                          sx={{
+                              display: 'flex',
+                              flexWrap: 'wrap',
+                              gap: 2,
+                              justifyContent: 'start',
+                              px: 2,
+                              my:4
+                          }}
+                      >
+                      {  filteredOrganizations.map((org) => (
+                           <AdminCard
+                             key={org.id}
+                             name={org.name}
+                             email={org.email}
+                             identification_number={org.identification_number}
+                             is_approved={org.is_approved}
+                             image={org.profile_image}
+                             id={org.id}
+                             handleApproval={() =>
+                               dispatch(toggleApproval({ id: org.id, currentStatus: org.is_approved }))
+                             }
+                             handleDelete={() => handleOpenDialog(org.id)}
+                             handleNavigation={() => navigate(`/admin/organization/${org.id}`)}
+                           />
+                         ))}
+                        </Box>
       )}
     </Box>
       <Dialog open={openDialog} onClose={handleCloseDialog}>

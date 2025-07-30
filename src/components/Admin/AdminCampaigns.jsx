@@ -79,25 +79,37 @@ const Campaigns = () => {
         ) : filteredCampaigns.length === 0 ? (
           <Typography style={{ textAlign: 'center' }}>لا توجد مؤسسات مطابقة</Typography>
         ) : (
-          filteredCampaigns.map((campaign) => (
-            <AdminCard
-              key={campaign.id}
-              name={campaign.name}
-              email={campaign.email}
-              is_approved={campaign.is_approved}
-              image={campaign.cover_image}
-              id={campaign.id}
-              handleApproval={() => {
-                dispatch(toggleApproval({ id: campaign.id, currentStatus: campaign.is_approved }))
-                  .then((res) => {
-                    console.log('Toggle result:', res);
-                  });
-              }}
-              handleDelete={() => handleOpenDialog(campaign.id)}
-              handleNavigation={() => navigate(`/admin/campaigns/${campaign.id}`)}
-            />
-          ))
-        )}
+          <Box
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 2,
+              justifyContent: 'start',
+              px: 2,
+              my: 4
+            }}
+          >
+            {filteredCampaigns.map((campaign) => (
+              <AdminCard
+                key={campaign.id}
+                name={campaign.name}
+                email={campaign.email}
+                is_approved={campaign.is_approved}
+                image={campaign.cover_image}
+                id={campaign.id}
+                handleApproval={() => {
+                  dispatch(toggleApproval({ id: campaign.id, currentStatus: campaign.is_approved }))
+                    .then((res) => {
+                      console.log('Toggle result:', res);
+                    });
+                }}
+                handleDelete={() => handleOpenDialog(campaign.id)}
+                handleNavigation={() => navigate(`/admin/campaigns/${campaign.id}`)}
+              />
+            ))}
+          </Box>
+        )
+        }
       </Box>
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>تأكيد الحذف</DialogTitle>

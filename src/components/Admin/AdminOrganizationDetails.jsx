@@ -65,18 +65,23 @@ const AdminOrganizationDetails = () => {
                 {org.description || 'لا يوجد وصف متاح'}
               </Typography>
               <Stack direction="row" spacing={1} mt={1} flexWrap="wrap">
-                <Chip label={org.is_approved ? 'معتمد' : 'غير معتمد'} color={org.is_approved ? 'success' : 'warning'} />
                 <Chip label={`رقم الهوية: ${org.identification_number}`} variant="outlined" />
                 <Chip label={`الهاتف: ${org.phone}`} variant="outlined" />
               </Stack>
               <Typography variant="body2" color="text.secondary" mt={2}>
+              حاله الاعتماد : {org.is_approved?'معتمده':"غير معتمده"}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" mt={2}>
                 البريد الإلكتروني: {org.email}
               </Typography>
-              <Typography variant="caption" color="text.secondary">
+              <Typography variant="body2" color="text.secondary" mt={2}>
+                البريد الإلكتروني: {org.email}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" mt={2}>
                 تم الإنشاء في: {new Date(org.created_at).toLocaleDateString()}
               </Typography>
-              <br />
-              <Typography variant="caption" color="text.secondary">
+            
+              <Typography variant="body2" color="text.secondary" mt={2}>
                 آخر تحديث: {new Date(org.updated_at).toLocaleDateString()}
               </Typography>
             </CardContent>
