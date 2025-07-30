@@ -8,7 +8,6 @@ import {
   Chip,
   CircularProgress,
   Container,
-  Divider,
   Grid,
   Stack,
   Typography,
@@ -19,16 +18,28 @@ import {
 
 const AdminOrganizationDetails = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
+ 
   const dispatch = useDispatch();
 
   const { selectedOrg: org, loading, error, organizationCampaigns } = useSelector((state) => state.organizations);
 
+
   useEffect(() => {
     dispatch(getOrganizationById(id));
     dispatch(getOrganizationCampaignsById(id));
+    dispatch(getOrganizationCampaignsById(id));
   }, [id, dispatch]);
 
+  if (loading) {
+    return (
+      <Box display="flex" justifyContent="center" mt={4}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) return <Typography color="error">حدث خطأ: {error}</Typography>;
+  if (!org) return <Typography>لم يتم العثور على المؤسسة.</Typography>;
   if (loading) {
     return (
       <Box display="flex" justifyContent="center" mt={4}>
@@ -146,3 +157,4 @@ const AdminOrganizationDetails = () => {
 };
 
 export default AdminOrganizationDetails;
+
