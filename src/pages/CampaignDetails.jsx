@@ -1,7 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getCampaigns } from "../redux/Slices/campaignsSlice";
+import { makePayment, clearPaymentState } from "../redux/Slices/paymentSlice";
 import {
   Box,
   Typography,
@@ -20,6 +21,11 @@ import {
   Badge,
   Fade,
   Zoom,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import {
@@ -43,6 +49,13 @@ const CampaignDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { data: campaigns, loading } = useSelector((state) => state.campaigns);
+  const {
+    loading: paymentLoading,
+    error: paymentError,
+    data: paymentResponse,
+  } = useSelector((state) => state.payment);
+  const [donationAmount, setDonationAmount] = useState(100);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const theme = useTheme();
 
   useEffect(() => {
@@ -51,7 +64,44 @@ const CampaignDetails = () => {
     }
   }, [dispatch, campaigns]);
 
+  // Clear payment state when component unmounts
+  useEffect(() => {
+    return () => {
+      dispatch(clearPaymentState());
+    };
+  }, [dispatch]);
+
   const campaign = (campaigns || []).find((c) => String(c.id) === String(id));
+
+  // Handle donation payment
+  const handleDonation = () => {
+    if (campaign && donationAmount > 0) {
+      dispatch(
+        makePayment({
+          campaign_id: campaign.id,
+          amount: donationAmount,
+        })
+      );
+    }
+  };
+
+  // Redirect to payment URL when payment is successful
+  useEffect(() => {
+    if (paymentResponse?.iframe_url) {
+      // Redirect directly to payment URL
+      window.open(paymentResponse.iframe_url, "_blank");
+      dispatch(clearPaymentState());
+    } else if (paymentError) {
+      // Show error modal only for errors
+      setShowPaymentModal(true);
+    }
+  }, [paymentResponse, paymentError, dispatch]);
+
+  // Close modal and clear payment state
+  const handleCloseModal = () => {
+    setShowPaymentModal(false);
+    dispatch(clearPaymentState());
+  };
 
   // Calculate progress percentages
   const financialProgress = campaign?.goal_amount
@@ -377,6 +427,154 @@ const CampaignDetails = () => {
                     </CardContent>
                   </Card>
                 </Zoom>
+
+                {/* Donation Section */}
+                {campaign.type === "money" && (
+                  <Fade in={true} timeout={1000}>
+                    <Card
+                      elevation={6}
+                      sx={{
+                        borderRadius: 4,
+                        border: `1px solid ${theme.palette.primary.main}20`,
+                        background: `linear-gradient(135deg, ${theme.palette.primary.main}08 0%, transparent 100%)`,
+                        transition: "transform 0.3s ease",
+                        "&:hover": {
+                          transform: "translateY(-2px)",
+                        },
+                      }}
+                    >
+                      <CardContent sx={{ p: 4 }}>
+                        <Typography
+                          variant="h6"
+                          fontWeight="bold"
+                          sx={{
+                            mb: 3,
+                            fontFamily: "Tajawal, Arial, sans-serif",
+                            color: theme.palette.primary.main,
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 1.5,
+                          }}
+                        >
+                          <AttachMoney />
+                          تبرع الآن
+                        </Typography>
+
+                        <Box sx={{ mb: 3 }}>
+                          <Typography
+                            variant="body1"
+                            color="text.secondary"
+                            sx={{
+                              mb: 2,
+                              fontFamily: "Tajawal, Arial, sans-serif",
+                            }}
+                          >
+                            اختر مبلغ التبرع:
+                          </Typography>
+                          <Stack
+                            direction="row"
+                            spacing={2}
+                            flexWrap="wrap"
+                            useFlexGap
+                          >
+                            {[50, 100, 200, 500, 1000].map((amount) => (
+                              <Chip
+                                key={amount}
+                                label={`${amount} جنيه`}
+                                onClick={() => setDonationAmount(amount)}
+                                color={
+                                  donationAmount === amount
+                                    ? "primary"
+                                    : "default"
+                                }
+                                variant={
+                                  donationAmount === amount
+                                    ? "filled"
+                                    : "outlined"
+                                }
+                                sx={{
+                                  fontWeight: "bold",
+                                  cursor: "pointer",
+                                  transition: "all 0.3s ease",
+                                  "&:hover": {
+                                    transform: "scale(1.05)",
+                                  },
+                                }}
+                              />
+                            ))}
+                          </Stack>
+                        </Box>
+
+                        <Box sx={{ mb: 3 }}>
+                          <Typography
+                            variant="body1"
+                            color="text.secondary"
+                            sx={{
+                              mb: 1,
+                              fontFamily: "Tajawal, Arial, sans-serif",
+                            }}
+                          >
+                            أو أدخل مبلغ مخصص:
+                          </Typography>
+                          <input
+                            type="number"
+                            value={donationAmount}
+                            onChange={(e) =>
+                              setDonationAmount(Number(e.target.value) || 0)
+                            }
+                            style={{
+                              width: "100%",
+                              padding: "12px 16px",
+                              borderRadius: "8px",
+                              border: `2px solid ${theme.palette.primary.main}30`,
+                              fontSize: "16px",
+                              fontFamily: "Tajawal, Arial, sans-serif",
+                              outline: "none",
+                              transition: "all 0.3s ease",
+                            }}
+                            placeholder="أدخل المبلغ"
+                            min="1"
+                          />
+                        </Box>
+
+                        <Box sx={{ textAlign: "center" }}>
+                          <button
+                            onClick={handleDonation}
+                            disabled={paymentLoading || donationAmount <= 0}
+                            style={{
+                              backgroundColor: theme.palette.primary.main,
+                              color: "white",
+                              border: "none",
+                              borderRadius: "12px",
+                              padding: "16px 32px",
+                              fontSize: "18px",
+                              fontWeight: "bold",
+                              fontFamily: "Tajawal, Arial, sans-serif",
+                              cursor: paymentLoading
+                                ? "not-allowed"
+                                : "pointer",
+                              opacity: paymentLoading ? 0.7 : 1,
+                              transition: "all 0.3s ease",
+                              boxShadow: `0 4px 15px ${theme.palette.primary.main}40`,
+                            }}
+                            onMouseEnter={(e) => {
+                              if (!paymentLoading) {
+                                e.target.style.transform = "translateY(-2px)";
+                                e.target.style.boxShadow = `0 8px 25px ${theme.palette.primary.main}50`;
+                              }
+                            }}
+                            onMouseLeave={(e) => {
+                              e.target.style.transform = "translateY(0)";
+                              e.target.style.boxShadow = `0 4px 15px ${theme.palette.primary.main}40`;
+                            }}
+                          >
+                            {paymentLoading ? "جاري المعالجة..." : "تبرع الآن"}
+                          </button>
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  </Fade>
+                )}
 
                 {/* التواريخ */}
                 <Fade in={true} timeout={1000}>
@@ -864,6 +1062,68 @@ const CampaignDetails = () => {
           </Grid>
         </Paper>
       </Fade>
+
+      {/* Payment Response Modal */}
+      <Dialog
+        open={showPaymentModal}
+        onClose={handleCloseModal}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: 3,
+            background: `linear-gradient(145deg, ${theme.palette.background.paper} 0%, ${theme.palette.primary.main}05 100%)`,
+            border: `2px solid ${theme.palette.primary.main}30`,
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            textAlign: "center",
+            fontFamily: "Tajawal, Arial, sans-serif",
+            fontWeight: "bold",
+            color: "error.main",
+            borderBottom: `2px solid error.main30`,
+          }}
+        >
+          خطأ في الدفع
+        </DialogTitle>
+        <DialogContent sx={{ pt: 3 }}>
+          <Box sx={{ textAlign: "center", py: 2 }}>
+            <Typography
+              variant="h6"
+              color="error.main"
+              fontWeight="bold"
+              sx={{ mb: 2, fontFamily: "Tajawal, Arial, sans-serif" }}
+            >
+              حدث خطأ أثناء معالجة الدفع
+            </Typography>
+            <Typography
+              variant="body1"
+              color="error.dark"
+              sx={{ fontFamily: "Tajawal, Arial, sans-serif" }}
+            >
+              {paymentError}
+            </Typography>
+          </Box>
+        </DialogContent>
+        <DialogActions sx={{ p: 3, justifyContent: "center" }}>
+          <Button
+            onClick={handleCloseModal}
+            variant="contained"
+            color="error"
+            sx={{
+              fontWeight: "bold",
+              fontFamily: "Tajawal, Arial, sans-serif",
+              px: 4,
+              py: 1.5,
+              borderRadius: 2,
+            }}
+          >
+            إغلاق
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
