@@ -196,7 +196,7 @@ const CampaignDetails = () => {
           }}
         >
           <Grid container spacing={5}>
-            <Grid item xs={12} md={5}>
+            <Grid xs={12} md={5}>
               {/* الصور */}
               <Zoom in={true} timeout={1000}>
                 <Card
@@ -337,7 +337,7 @@ const CampaignDetails = () => {
                 )}
             </Grid>
 
-            <Grid item xs={12} md={7}>
+            <Grid xs={12} md={7}>
               <Stack spacing={4}>
                 {/* المعلومات الأساسية */}
                 <Zoom in={true} timeout={800}>
@@ -606,7 +606,7 @@ const CampaignDetails = () => {
                         تواريخ الحملة
                       </Typography>
                       <Grid container spacing={3}>
-                        <Grid item xs={12} sm={6}>
+                        <Grid xs={12} sm={6}>
                           <Box
                             sx={{
                               p: 3,
@@ -639,7 +639,7 @@ const CampaignDetails = () => {
                             </Typography>
                           </Box>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid xs={12} sm={6}>
                           <Box
                             sx={{
                               p: 3,
@@ -706,7 +706,7 @@ const CampaignDetails = () => {
                       </Typography>
                       <Grid container spacing={3}>
                         {campaign.goal_amount !== null && (
-                          <Grid item xs={12} sm={6}>
+                          <Grid xs={12} sm={6}>
                             <Box
                               sx={{
                                 p: 3,
@@ -769,7 +769,7 @@ const CampaignDetails = () => {
                           </Grid>
                         )}
                         {campaign.goal_volunteers !== null && (
-                          <Grid item xs={12} sm={6}>
+                          <Grid xs={12} sm={6}>
                             <Box
                               sx={{
                                 p: 3,
@@ -866,7 +866,7 @@ const CampaignDetails = () => {
                         الحالة الحالية
                       </Typography>
                       <Grid container spacing={3}>
-                        <Grid item xs={12} sm={6}>
+                        <Grid xs={12} sm={6}>
                           <Box
                             sx={{
                               p: 3,
@@ -911,7 +911,7 @@ const CampaignDetails = () => {
                             </Typography>
                           </Box>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid xs={12} sm={6}>
                           <Box
                             sx={{
                               p: 3,
@@ -991,7 +991,7 @@ const CampaignDetails = () => {
                         معلومات إضافية
                       </Typography>
                       <Grid container spacing={3}>
-                        <Grid item xs={12} sm={6}>
+                        <Grid xs={12} sm={6}>
                           <Box
                             sx={{
                               p: 3,
@@ -1022,7 +1022,7 @@ const CampaignDetails = () => {
                             </Typography>
                           </Box>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid xs={12} sm={6}>
                           <Box
                             sx={{
                               p: 3,

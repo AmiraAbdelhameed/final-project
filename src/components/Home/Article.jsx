@@ -5,9 +5,11 @@ import {
   toggleApproval,
 } from "../../redux/Slices/campaignsSlice";
 import { useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 
 export default function Article() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     data: campaigns = [],
     loading = false,
@@ -35,11 +37,10 @@ export default function Article() {
       >
         {/* Right side content */}
         <Grid
-          item
           xs={12}
           sm={5.8}
-          textAlign="right"
           sx={{
+            textAlign: "right",
             flex: 1,
             height: "100%",
             p: 2,
@@ -62,6 +63,7 @@ export default function Article() {
               width: "50%",
               my: 4,
             }}
+            onClick={() => navigate(`/campaigns/${campaign.id}`)}
           >
             تبرع الان
           </Button>
@@ -69,7 +71,6 @@ export default function Article() {
 
         {/* Left side image */}
         <Grid
-          item
           xs={12}
           sm={5.8}
           sx={{
