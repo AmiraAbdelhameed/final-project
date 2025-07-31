@@ -59,12 +59,10 @@ const Campaigns = () => {
   return (
     <>
       <Box>
-        <Search tableName="campaigns" />
-
+        <Search tableName="campaigns" page='campaigns' />
         <Typography variant="h4" textAlign="right" mt={4} mb={2}>
           المشاريع
         </Typography>
-
         {/* Tabs Filter */}
         <Box display="flex" justifyContent="flex-start" mb={4}>
           <Tabs value={filter} onChange={handleChange} centered>

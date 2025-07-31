@@ -59,7 +59,7 @@ const Organization = () => {
   return (
     <>
       <Box>
-        <Search tableName='organizations' />
+        <Search tableName='organizations' page="organizations" />
         <Typography variant="h4" textAlign="right" mt={4} mb={2}>
           المؤسسات
         </Typography>

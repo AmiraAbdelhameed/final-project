@@ -54,9 +54,6 @@ const AdminOrganizationDetails = () => {
 
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
-
- 
-
       <Box sx={{ mb: 4 }}>
         <Grid container spacing={3} alignItems="start" sx={{ position: 'relative', display:"flex" , flexDirection:"column" }} >
           <Grid item xs={12} sm={6} >

@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { searchData, setSearchTerm } from '../../redux/Slices/searchSlice';
 import { useNavigate } from 'react-router';
 
-const Search = ({ tableName }) => {
+const Search = ({ tableName, page }) => {
   const navigate = useNavigate();
   const wrapperRef = useRef(null);
   const dispatch = useDispatch();
@@ -79,7 +79,7 @@ const Search = ({ tableName }) => {
               {results.map((item) => (
                 <ListItem
                   key={item.id}
-                  onClick={() => navigate(`/admin/organization/${item.id}`)}
+                  onClick={() => navigate(`/admin/${page}/${item.id}`)}
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
