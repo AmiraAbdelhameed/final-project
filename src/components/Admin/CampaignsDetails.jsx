@@ -55,7 +55,7 @@ const CampaignsDetails = () => {
           </Typography>
 
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid xs={12} sm={6}>
               <Stack spacing={1}>
                 <Typography variant="subtitle2">نوع المشروع: {campaign.type}</Typography>
                 <Typography variant="subtitle2">تاريخ البداية: {campaign.start_date}</Typography>
@@ -65,7 +65,7 @@ const CampaignsDetails = () => {
               </Stack>
             </Grid>
             <Divider sx={{ mx: 4, border: 1 }} />
-            <Grid item xs={12} sm={6}>
+            <Grid xs={12} sm={6}>
               <Stack spacing={1}>
                 <Typography variant="subtitle2">عدد المتطوعين الحالي: {campaign.current_volunteers}</Typography>
                 <Typography variant="subtitle2">العدد المستهدف للمتطوعين: {campaign.goal_volunteers}</Typography>
