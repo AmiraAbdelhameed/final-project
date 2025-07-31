@@ -150,10 +150,6 @@ const Charities = () => {
                   fontWeight: 700,
                   color: theme.palette.primary.main,
                   fontFamily: "Tajawal, Arial, sans-serif",
-                  background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-                  backgroundClip: "text",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
                 }}
               >
                 المؤسسات المعتمدة
@@ -233,11 +229,11 @@ const Charities = () => {
                       <Card
                         onClick={() => navigate(`/organizations/${org.id}`)}
                         sx={{
-                          height: "100%",
+                          height: 350, // Fixed height for all cards
                           display: "flex",
                           flexDirection: "column",
                           background: `linear-gradient(145deg, ${theme.palette.background.paper} 0%, ${theme.palette.primary.main}05 100%)`,
-                          justifyContent: "center",
+                          justifyContent: "space-between",
                           borderRadius: 3,
                           alignItems: "center",
                           textAlign: "center",
@@ -293,7 +289,16 @@ const Charities = () => {
                         </Box>
 
                         {/* Organization Info */}
-                        <CardContent sx={{ p: 0, width: "100%" }}>
+                        <CardContent
+                          sx={{
+                            p: 0,
+                            width: "100%",
+                            flex: 1,
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                          }}
+                        >
                           <Typography
                             variant="h6"
                             component="h3"
@@ -313,13 +318,13 @@ const Charities = () => {
                               variant="body2"
                               color="text.secondary"
                               sx={{
-                                mt: 2,
                                 fontFamily: "Tajawal, Arial, sans-serif",
                                 lineHeight: 1.5,
                                 display: "-webkit-box",
-                                WebkitLineClamp: 2,
+                                WebkitLineClamp: 3,
                                 WebkitBoxOrient: "vertical",
                                 overflow: "hidden",
+                                minHeight: "4.5em", // Ensures consistent spacing
                               }}
                             >
                               {org.description}
@@ -330,7 +335,6 @@ const Charities = () => {
                         {/* Footer */}
                         <Box
                           sx={{
-                            mt: "auto",
                             pt: 2,
                             width: "100%",
                             borderTop: `1px solid ${theme.palette.grey[200]}`,
