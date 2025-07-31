@@ -13,7 +13,7 @@ const Home = () => {
       <Container maxWidth="lg">
         <Article />
         <Charities />
-        <OrganizationSection />
+        {/* <OrganizationSection /> */}
         <ProjectsSection />
       </Container>
     </>

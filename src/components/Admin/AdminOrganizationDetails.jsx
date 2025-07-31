@@ -14,7 +14,8 @@ import {
   Card,
   CardContent,
   CardMedia,
-  IconButton
+  IconButton,
+
 } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 const AdminOrganizationDetails = () => {
@@ -53,25 +54,25 @@ const AdminOrganizationDetails = () => {
 
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
-      {/* <Button variant="outlined" onClick={}> */}
-        {/* العودة إلى جميع المؤسسات */}
-      <IconButton onClick={() => navigate('/admin/main')} sx={{ mb: 3 }}>
-        <ArrowBackIosIcon />
-        </IconButton>
-      {/* </Button> */}
+
+ 
 
       <Box sx={{ mb: 4 }}>
-        <Grid container spacing={3} alignItems="center" >
-          <Grid item xs={12} sm={4}>
-            <CardMedia
+        <Grid container spacing={3} alignItems="start" sx={{ position: 'relative', display:"flex" , flexDirection:"column" }} >
+          <Grid item xs={12} sm={6} >
+            <Box
               component="img"
-              image={org.profile_image || '/images/avatar-placeholder.png'}
+              src={org.profile_image }
               alt={org.name}
               sx={{ width: '100%', height: 200, objectFit: 'cover', }}
             />
+
+            <Button onClick={() => navigate('/admin/main')} sx={{ mb: 3,position:"absolute",top:0, left:0 }}>
+            <Typography>العوده الي جميع المؤسسات</Typography>  <ArrowBackIosIcon sx={{ color: 'primary.main' }} />
+            </Button>
           </Grid>
           <Grid item xs={12} sm={8}>
-            <CardContent>
+            <Box >
               <Typography variant="h5" fontWeight="bold" gutterBottom>
                 {org.name}
               </Typography>
@@ -99,7 +100,7 @@ const AdminOrganizationDetails = () => {
               <Button variant='outlined' color={org.is_approved ? 'warning' : 'primary'} onClick={()=> dispatch(toggleApproval({ id: org.id, currentStatus: org.is_approved }))}>
                 {org.is_approved ? 'إلغاء الاعتماد' : 'اعتماد'}
               </Button>
-            </CardContent>
+            </Box>
           </Grid>
         </Grid>
       </Box>
@@ -135,7 +136,7 @@ const AdminOrganizationDetails = () => {
                     height: 120,
                     objectFit: 'cover',
                     borderRadius: 2,
-                    mr: { sm: 2, xs: 0 },
+                    mx: { sm: 2, xs: 0 },
                     mb: { xs: 1, sm: 0 },
                     backgroundColor: '#f0f0f0'
                   }}
@@ -143,7 +144,7 @@ const AdminOrganizationDetails = () => {
 
                 {/* Campaign Info */}
                 <Box sx={{ flex: 1 }}>
-                  <Typography variant="subtitle1" fontWeight="bold">
+                  <Typography variant="subtitle1" fontWeight="bold" sx={{cursor:"pointer"}} onClick={() => navigate(`/admin/campaigns/${campaign.id}`)}>
                     {campaign.name}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">

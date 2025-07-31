@@ -53,12 +53,10 @@ const OurValues = () => {
                       <Card
                           key={index}
                           sx={{
-                              minWidth: 250,
-                              maxWidth: 300,
+                              minWidth: 350,
+                              maxWidth: 400,
                               flex: '1 1 250px',
                               textAlign: 'center',
-                            //   background: `linear-gradient(110deg, #4A7811 0%, #fafafaff 100%)`,
-                            //   color: '#fff',
                               borderRadius: 3,
                               boxShadow: 3,
                               transition: 'transform 0.3s',
@@ -67,14 +65,7 @@ const OurValues = () => {
                               },
                           }}
                       >
-                          {/* {value.image && (
-                              <CardMedia
-                                  component="img"
-                                  image={value.image}
-                                  alt={value.title}
-                                  sx={{ height: 180, objectFit: 'cover' }}
-                              />
-                          )} */}
+                    
                           <CardContent>
                               <Typography color='primary' variant="h6" fontWeight="bold">
                                   {value.title}

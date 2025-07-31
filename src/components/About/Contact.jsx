@@ -1,10 +1,32 @@
-import { Box, Typography } from '@mui/material'
+import {
+    Box,
+    Grid,
+    TextField,
+    MenuItem,
+    Typography,
+    Button,
+    Select,
+    InputLabel,
+    FormControl,
+    TextareaAutosize,
+    IconButton
+} from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
+import EmailIcon from '@mui/icons-material/Email';
+import PhoneIcon from '@mui/icons-material/Phone';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import ShareIcon from '@mui/icons-material/Share';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import InstagramIcon from '@mui/icons-material/Instagram';
+
 import React from 'react'
 
 const Contact = () => {
-  return (
-    <>
-          <Box sx={{ position: 'relative', width: '100%', height: '50vh', overflow: 'hidden', my:1 }}>
+    return (
+        <>
+            <Box sx={{ position: 'relative', width: '100%', height: '50vh', overflow: 'hidden', my:1 }}>
 
               <Box component={'img'} src='./images/adminlogin.jpg' alt='Contact Us'
                   sx={{ width: '100%', height: '100%', objectFit: 'cover', mb: 4 }} >
@@ -49,8 +71,10 @@ const Contact = () => {
                   </Box>
               </Box>
           </Box>
-    </>
-  )
+         
+
+        </>
+    )
 }
 
 export default Contact

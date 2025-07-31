@@ -11,6 +11,7 @@ import {
 import { getCampaigns, toggleApproval, deleteCampaign } from '../../redux/Slices/campaignsSlice';
 import AdminCard from './AdminCard';
 import { useNavigate } from 'react-router-dom';
+import Search from './Search';
 
 const Campaigns = () => {
   const dispatch = useDispatch();
@@ -58,6 +59,8 @@ const Campaigns = () => {
   return (
     <>
       <Box>
+        <Search tableName="campaigns" />
+
         <Typography variant="h4" textAlign="right" mt={4} mb={2}>
           المشاريع
         </Typography>

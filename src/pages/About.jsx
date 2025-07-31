@@ -11,9 +11,9 @@ const About = () => {
         <Ayady />
         <OurValues />
       </Container> 
-      <Vision />
-      <Mission />
-      <Contact />
+      {/* <Vision /> */}
+      {/* <Mission /> */}
+      {/* <Contact /> */}
    
     </>
   )

@@ -11,6 +11,7 @@ import {
 import { getOrganizations, toggleApproval, deleteOrganization } from '../../redux/Slices/organizationsSlice';
 import AdminCard from './AdminCard';
 import { useNavigate } from 'react-router-dom';
+import Search from './Search';
 
 const Organization = () => {
   const dispatch = useDispatch();
@@ -58,6 +59,7 @@ const Organization = () => {
   return (
     <>
       <Box>
+        <Search tableName='organizations' />
         <Typography variant="h4" textAlign="right" mt={4} mb={2}>
           المؤسسات
         </Typography>
