@@ -48,7 +48,7 @@ const Organization = () => {
     if (selectedId) {
       dispatch(deleteOrganization(selectedId)).then((res) => {
         if (!res.error) {
-          setShowSnackbar(true); 
+          setShowSnackbar(true);
         }
       });
     }
@@ -57,61 +57,61 @@ const Organization = () => {
 
   return (
     <>
-    <Box>
-      <Typography variant="h4" textAlign="right" mt={4} mb={2}>
-        المؤسسات
-      </Typography>
+      <Box>
+        <Typography variant="h4" textAlign="right" mt={4} mb={2}>
+          المؤسسات
+        </Typography>
 
-      {/* Tabs Filter */}
-      <Box display="flex" justifyContent="flex-start"
-   
-   mb={4}>
-          <Tabs value={filter} onChange={handleChange} centered 
-            // flexDirection='column'
-        >
-          <Tab label="الجميع" value="all" />
-          <Tab label="معتمدة" value="approved" />
-          <Tab label="غير معتمدة" value="not_approved" />
-        </Tabs>
-      </Box>
+        {/* Tabs Filter */}
+        <Box display="flex" justifyContent="flex-start"
 
-      {/* Organizations List */}
-      {loading ? (
-        <Typography>جاري التحميل...</Typography>
-      ) : error ? (
-        <Typography color="error">حدث خطأ: {error}</Typography>
-      ) : filteredOrganizations.length === 0 ? (
-        <Typography style={{ textAlign: 'center' }}>لا توجد مؤسسات مطابقة</Typography>
-      ) : (
+          mb={4}>
+          <Tabs value={filter} onChange={handleChange} centered
+          // flexDirection='column'
+          >
+            <Tab label="الجميع" value="all" />
+            <Tab label="معتمدة" value="approved" />
+            <Tab label="غير معتمدة" value="not_approved" />
+          </Tabs>
+        </Box>
+
+        {/* Organizations List */}
+        {loading ? (
+          <Typography>جاري التحميل...</Typography>
+        ) : error ? (
+          <Typography color="error">حدث خطأ: {error}</Typography>
+        ) : filteredOrganizations.length === 0 ? (
+          <Typography style={{ textAlign: 'center' }}>لا توجد مؤسسات مطابقة</Typography>
+        ) : (
           <Box
-                          sx={{
-                              display: 'flex',
-                              flexWrap: 'wrap',
-                              gap: 2,
-                              justifyContent: 'start',
-                              px: 2,
-                              my:4
-                          }}
-                      >
-                      {  filteredOrganizations.map((org) => (
-                           <AdminCard
-                             key={org.id}
-                             name={org.name}
-                             email={org.email}
-                             identification_number={org.identification_number}
-                             is_approved={org.is_approved}
-                             image={org.profile_image}
-                             id={org.id}
-                             handleApproval={() =>
-                               dispatch(toggleApproval({ id: org.id, currentStatus: org.is_approved }))
-                             }
-                             handleDelete={() => handleOpenDialog(org.id)}
-                             handleNavigation={() => navigate(`/admin/organization/${org.id}`)}
-                           />
-                         ))}
-                        </Box>
-      )}
-    </Box>
+            sx={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 2,
+              justifyContent: 'start',
+              px: 2,
+              my: 4
+            }}
+          >
+            {filteredOrganizations.map((org) => (
+              <AdminCard
+                key={org.id}
+                name={org.name}
+                email={org.email}
+                identification_number={org.identification_number}
+                is_approved={org.is_approved}
+                image={org.profile_image}
+                id={org.id}
+                handleApproval={() =>
+                  dispatch(toggleApproval({ id: org.id, currentStatus: org.is_approved }))
+                }
+                handleDelete={() => handleOpenDialog(org.id)}
+                handleNavigation={() => navigate(`/admin/organization/${org.id}`)}
+              />
+            ))}
+          </Box>
+        )}
+      </Box>
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>تأكيد الحذف</DialogTitle>
         <DialogContent>

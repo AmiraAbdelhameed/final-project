@@ -23,7 +23,7 @@ import CampaignsDetails from "../components/Admin/CampaignsDetails";
 
 
 export default [
- 
+
   {
     id: v4(),
     path: "/",
@@ -69,61 +69,53 @@ export default [
         path: "/profile",
         element: <Profile />,
       },
-     
-          
-            {
-                id: v4(),
-                path:'/profile',
-                element: <Profile />,
-            },
-       
-            {
-                id: v4(),
-                path: '/admin/main',
-                element: <ProtectedAdminRoute><Admin /></ProtectedAdminRoute>,
-                children: [
-                    {
-                        id: v4(),
-                        index: true,
-                        element: <Organization />
-                    },
-                    {
-                        id: v4(),
-                      path: 'campaigns',
-                      element: <AdminCampaigns />
-                    },
-                ]
-            },
-            {
-              id:v4(),
-              path:'/admin/organization/:id',
-              element: <ProtectedAdminRoute> <AdminOrganizationDetails /></ProtectedAdminRoute>
-            },
-            {
-              id:v4(),
-              path:'/admin/campaigns/:id',
-              element: <ProtectedAdminRoute> <CampaignsDetails /></ProtectedAdminRoute>
-            },
-           
-  
-            
-          ]
-        },
+      {
+        id: v4(),
+        path: '/admin/main',
+        element: <ProtectedAdminRoute><Admin /></ProtectedAdminRoute>,
+        children: [
+          {
+            id: v4(),
+            index: true,
+            element: <Organization />
+          },
+          {
+            id: v4(),
+            path: 'campaigns',
+            element: <AdminCampaigns />
+          },
+        ]
+      },
+      {
+        id: v4(),
+        path: '/admin/organization/:id',
+        element: <ProtectedAdminRoute> <AdminOrganizationDetails /></ProtectedAdminRoute>
+      },
+      {
+        id: v4(),
+        path: '/admin/campaigns/:id',
+        element: <ProtectedAdminRoute> <CampaignsDetails /></ProtectedAdminRoute>
+      },
+
+
+
+    ]
+  },
   {
     id: v4(),
     path: '/admin',
     element: <AdminLogin />,
   },
-        {
-            id:v4(),
-            path:'/login',
-            element:<Login />
-        },
-        {
-            id:v4(),
-            path:'/signup',
-            element:<Signup />
-        },
-        
+  {
+    id: v4(),
+    path: '/login',
+    element: <Login />
+  },
+  {
+    id: v4(),
+    path: '/signup',
+    element: <Signup />
+  },
+
 
 ]

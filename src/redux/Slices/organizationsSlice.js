@@ -103,6 +103,9 @@ const organizationSlice = createSlice({
             })
             .addCase(toggleApproval.fulfilled, (state, action) => {
                 const updated = action.payload;
+                if (state.selectedOrg && state.selectedOrg.id === updated.id) {
+                    state.selectedOrg = updated;
+                }
                 const index = state.data.findIndex(org => org.id === updated.id);
                 if (index !== -1) {
                     state.data[index] = updated;

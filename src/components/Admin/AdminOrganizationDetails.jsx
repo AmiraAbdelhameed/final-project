@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getOrganizationById, getOrganizationCampaignsById } from '../../redux/Slices/organizationsSlice';
+import { getOrganizationById, getOrganizationCampaignsById , toggleApproval } from '../../redux/Slices/organizationsSlice';
 import {
   Box,
   Button,
@@ -13,12 +13,13 @@ import {
   Typography,
   Card,
   CardContent,
-  CardMedia
+  CardMedia,
+  IconButton
 } from '@mui/material';
-
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 const AdminOrganizationDetails = () => {
   const { id } = useParams();
- 
+  const navigate = useNavigate()
   const dispatch = useDispatch();
 
   const { selectedOrg: org, loading, error, organizationCampaigns } = useSelector((state) => state.organizations);
@@ -26,7 +27,6 @@ const AdminOrganizationDetails = () => {
 
   useEffect(() => {
     dispatch(getOrganizationById(id));
-    dispatch(getOrganizationCampaignsById(id));
     dispatch(getOrganizationCampaignsById(id));
   }, [id, dispatch]);
 
@@ -53,9 +53,12 @@ const AdminOrganizationDetails = () => {
 
   return (
     <Container maxWidth="md" sx={{ mt: 4 }}>
-      <Button variant="outlined" onClick={() => navigate('/admin/main')} sx={{ mb: 3 }}>
-        العودة إلى جميع المؤسسات
-      </Button>
+      {/* <Button variant="outlined" onClick={}> */}
+        {/* العودة إلى جميع المؤسسات */}
+      <IconButton onClick={() => navigate('/admin/main')} sx={{ mb: 3 }}>
+        <ArrowBackIosIcon />
+        </IconButton>
+      {/* </Button> */}
 
       <Box sx={{ mb: 4 }}>
         <Grid container spacing={3} alignItems="center" >
@@ -75,15 +78,14 @@ const AdminOrganizationDetails = () => {
               <Typography variant="body1" gutterBottom>
                 {org.description || 'لا يوجد وصف متاح'}
               </Typography>
-              <Stack direction="row" spacing={1} mt={1} flexWrap="wrap">
-                <Chip label={`رقم الهوية: ${org.identification_number}`} variant="outlined" />
-                <Chip label={`الهاتف: ${org.phone}`} variant="outlined" />
-              </Stack>
-              <Typography variant="body2" color="text.secondary" mt={2}>
-              حاله الاعتماد : {org.is_approved?'معتمده':"غير معتمده"}
+              <Typography variant="body2" mt={2} color="text.secondary">
+                حاله الاعتماد :<Typography variant='span'  color={org.is_approved ? "primary.main" : 'danger.main'}> {org.is_approved ? 'معتمده' : "غير معتمده"}</Typography>
               </Typography>
               <Typography variant="body2" color="text.secondary" mt={2}>
-                البريد الإلكتروني: {org.email}
+                رقم الهويه : {org.identification_number}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" mt={2}>
+                رقم الهاتف : {org.phone}
               </Typography>
               <Typography variant="body2" color="text.secondary" mt={2}>
                 البريد الإلكتروني: {org.email}
@@ -91,64 +93,66 @@ const AdminOrganizationDetails = () => {
               <Typography variant="body2" color="text.secondary" mt={2}>
                 تم الإنشاء في: {new Date(org.created_at).toLocaleDateString()}
               </Typography>
-            
               <Typography variant="body2" color="text.secondary" mt={2}>
                 آخر تحديث: {new Date(org.updated_at).toLocaleDateString()}
               </Typography>
+              <Button variant='outlined' color={org.is_approved ? 'warning' : 'primary'} onClick={()=> dispatch(toggleApproval({ id: org.id, currentStatus: org.is_approved }))}>
+                {org.is_approved ? 'إلغاء الاعتماد' : 'اعتماد'}
+              </Button>
             </CardContent>
           </Grid>
         </Grid>
       </Box>
 
-      <Box>
+      <Box sx={{my:4}}>
         <Typography variant="h6" gutterBottom>
           المشاريع التابعة
         </Typography>
-  
+
         {organizationCampaigns.length === 0 ? (
           <Typography>لا توجد مشاريع مرتبطة بهذه المؤسسة.</Typography>
         ) : (
-            <Stack spacing={2}>
-              {organizationCampaigns.map((campaign) => (
-                <Card
-                  key={campaign.id}
+          <Stack spacing={2}>
+            {organizationCampaigns.map((campaign) => (
+              <Card
+                key={campaign.id}
+                sx={{
+                  display: 'flex',
+                  flexDirection: { xs: 'column', sm: 'row' },
+                  alignItems: 'center',
+                  p: 2,
+                  boxShadow: 2,
+                  borderRadius: 2,
+                }}
+              >
+                {/* Campaign Image */}
+                <Box
+                  component="img"
+                  src={campaign.cover_image || "/images/placeholder.png"}
+                  alt={campaign.name}
                   sx={{
-                    display: 'flex',
-                    flexDirection: { xs: 'column', sm: 'row' },
-                    alignItems: 'center',
-                    p: 2,
-                    boxShadow: 2,
+                    width: { xs: '100%', sm: 120 },
+                    height: 120,
+                    objectFit: 'cover',
                     borderRadius: 2,
+                    mr: { sm: 2, xs: 0 },
+                    mb: { xs: 1, sm: 0 },
+                    backgroundColor: '#f0f0f0'
                   }}
-                >
-                  {/* Campaign Image */}
-                  <Box
-                    component="img"
-                    src={campaign.cover_image || "/images/placeholder.png"}
-                    alt={campaign.name}
-                    sx={{
-                      width: { xs: '100%', sm: 120 },
-                      height: 120,
-                      objectFit: 'cover',
-                      borderRadius: 2,
-                      mr: { sm: 2, xs: 0 },
-                      mb: { xs: 1, sm: 0 },
-                      backgroundColor: '#f0f0f0'
-                    }}
-                  />
+                />
 
-                  {/* Campaign Info */}
-                  <Box sx={{ flex: 1 }}>
-                    <Typography variant="subtitle1" fontWeight="bold">
-                      {campaign.name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {campaign.description || 'لا يوجد وصف'}
-                    </Typography>
-                  </Box>
-                </Card>
-              ))}
-            </Stack>
+                {/* Campaign Info */}
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="subtitle1" fontWeight="bold">
+                    {campaign.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {campaign.description || 'لا يوجد وصف'}
+                  </Typography>
+                </Box>
+              </Card>
+            ))}
+          </Stack>
 
         )}
       </Box>
