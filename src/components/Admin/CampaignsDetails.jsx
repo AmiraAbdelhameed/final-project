@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
-import { getCampaignById } from '../../redux/Slices/campaignsSlice';
+import { getCampaignById, toggleCompletion } from '../../redux/Slices/campaignsSlice';
 import {
   Box,
   Button,
@@ -20,6 +20,12 @@ const CampaignsDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { selectedCampaign: campaign, loading, error } = useSelector((state) => state.campaigns);
+
+  const handleToggleCompletion = () => {
+    if (campaign) {
+      dispatch(toggleCompletion({ id: campaign.id, currentStatus: campaign.is_completed }));
+    }
+  };
 
   useEffect(() => {
     dispatch(getCampaignById(id));
@@ -76,6 +82,11 @@ const CampaignsDetails = () => {
                   color={campaign.is_approved ? 'success' : 'warning'}
                   size="small"
                 />
+                <Chip
+                  label={campaign.is_completed ? 'مكتمل' : 'غير مكتمل'}
+                  color={campaign.is_completed ? 'warning' : 'default'}
+                  size="small"
+                />
               </Stack>
             </Grid>
           </Grid>
@@ -105,6 +116,18 @@ const CampaignsDetails = () => {
               </Stack>
             </>
           )}
+
+          <Divider sx={{ my: 3 }} />
+          <Stack direction="row" spacing={2} justifyContent="center">
+            <Button
+              variant="outlined"
+              color={campaign.is_completed ? 'warning' : 'success'}
+              onClick={handleToggleCompletion}
+              sx={{ minWidth: 120 }}
+            >
+              {campaign.is_completed ? 'إلغاء الإكمال' : 'إكمال الحملة'}
+            </Button>
+          </Stack>
         </CardContent>
       </Card>
     </Box>

@@ -1,23 +1,36 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  Box, Tab, Typography, Tabs, Button, Dialog,
+  Box,
+  Tab,
+  Typography,
+  Tabs,
+  Button,
+  Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   Snackbar,
-  Alert
-} from '@mui/material';
-import { getCampaigns, toggleApproval, deleteCampaign } from '../../redux/Slices/campaignsSlice';
-import AdminCard from './AdminCard';
-import { useNavigate } from 'react-router-dom';
+  Alert,
+} from "@mui/material";
+import {
+  getCampaigns,
+  toggleApproval,
+  deleteCampaign,
+} from "../../redux/Slices/campaignsSlice";
+import AdminCard from "./AdminCard";
+import { useNavigate } from "react-router-dom";
 
 const Campaigns = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { data: campaigns, loading, error } = useSelector((state) => state.campaigns);
-  const [filter, setFilter] = useState('all');
+  const {
+    data: campaigns,
+    loading,
+    error,
+  } = useSelector((state) => state.campaigns);
+  const [filter, setFilter] = useState("all");
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
@@ -30,8 +43,8 @@ const Campaigns = () => {
   };
 
   const filteredCampaigns = campaigns.filter((campaign) => {
-    if (filter === 'approved') return campaign.is_approved === true;
-    if (filter === 'not_approved') return campaign.is_approved === false;
+    if (filter === "approved") return campaign.is_approved === true;
+    if (filter === "not_approved") return campaign.is_approved === false;
     return true;
   });
   const handleOpenDialog = (id) => {
@@ -77,7 +90,9 @@ const Campaigns = () => {
         ) : error ? (
           <Typography color="error">حدث خطأ: {error}</Typography>
         ) : filteredCampaigns.length === 0 ? (
-          <Typography style={{ textAlign: 'center' }}>لا توجد مؤسسات مطابقة</Typography>
+          <Typography style={{ textAlign: "center" }}>
+            لا توجد مؤسسات مطابقة
+          </Typography>
         ) : (
           filteredCampaigns.map((campaign) => (
             <AdminCard
@@ -88,39 +103,49 @@ const Campaigns = () => {
               image={campaign.cover_image}
               id={campaign.id}
               handleApproval={() => {
-                dispatch(toggleApproval({ id: campaign.id, currentStatus: campaign.is_approved }))
-                  .then((res) => {
-                    console.log('Toggle result:', res);
-                  });
+                dispatch(
+                  toggleApproval({
+                    id: campaign.id,
+                    currentStatus: campaign.is_approved,
+                  })
+                ).then((res) => {
+                  console.log("Toggle result:", res);
+                });
               }}
               handleDelete={() => handleOpenDialog(campaign.id)}
-              handleNavigation={() => navigate(`/admin/campaigns/${campaign.id}`)}
+              handleNavigation={() =>
+                navigate(`/admin/campaigns/${campaign.id}`)
+              }
             />
           ))
         )}
       </Box>
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>تأكيد الحذف</DialogTitle>
-        <DialogContent>
-          هل أنت متأكد أنك تريد حذف هذه المشروع؟
-        </DialogContent>
+        <DialogContent>هل أنت متأكد أنك تريد حذف هذه المشروع؟</DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog}>إلغاء</Button>
-          <Button onClick={handleConfirmDelete} color="error">حذف</Button>
+          <Button onClick={handleConfirmDelete} color="error">
+            حذف
+          </Button>
         </DialogActions>
       </Dialog>
       <Snackbar
         open={showSnackbar}
         autoHideDuration={3000}
         onClose={() => setShowSnackbar(false)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
-        <Alert onClose={() => setShowSnackbar(false)} severity="success" variant="filled">
+        <Alert
+          onClose={() => setShowSnackbar(false)}
+          severity="success"
+          variant="filled"
+        >
           تم حذف المشروع بنجاح
         </Alert>
       </Snackbar>
     </>
-  )
-}
+  );
+};
 
-export default Campaigns
+export default Campaigns;
