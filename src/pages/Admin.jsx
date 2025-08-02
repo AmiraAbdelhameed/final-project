@@ -7,11 +7,10 @@ import Search from '../components/Admin/Search'
 const Admin = () => {
   return (
     <>
-      <Container maxWidth="xl">
-        <Grid container spacing={2}>
+      {/* <Container maxWidth="xl"> */}
+        <Grid container spacing={0} justifyContent={"space-evenly"} >
           <Grid
-       
-          size={3}
+          size={2}
       
           sx={{ minHeight: "80vh" }}>
             <Sidebar />
@@ -25,7 +24,7 @@ const Admin = () => {
             <Outlet />
           </Grid>
         </Grid>
-      </Container>
+      {/* </Container> */}
     </>
   )
 }

@@ -87,27 +87,8 @@ const Navbar = () => {
             </ListItemButton>
           </ListItem>
         ))}
-        <ListItem disablePadding>
-          <ListItemButton>
-            <SearchIcon sx={{ mr: 1 }} />
-            <ListItemText primary="بحث" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton onClick={handleProfile}>
-            <ListItemText primary="الملف الشخصي" />
-          </ListItemButton>
-        </ListItem>
-        <Divider sx={{ my: 2 }} />
-        <ListItem disablePadding sx={{ mt: 1 }}>
-          <Button
-            fullWidth
-            variant="contained"
-            onClick={() => navigate("/login")}
-          >
-            تسجيل الدخول
-          </Button>
-        </ListItem>
+        
+       
       </List>
     </Box>
   );
@@ -181,26 +162,10 @@ const Navbar = () => {
                       {item.label}
                     </Button>
                   ))}
-                  <IconButton>
-                    <SearchIcon className="white" />
-                  </IconButton>
+          
                 </Box>
 
-                {/* Left Section - Auth & Lang */}
-                <Box display="flex" alignItems="center" gap={1}>
-                  <Button
-                    variant="contained"
-                    onClick={() => navigate("/login")}
-                  >
-                    تسجيل الدخول
-                  </Button>
-                  <IconButton
-                    sx={{ color: "secondary.main" }}
-                    onClick={handleProfile}
-                  >
-                    <PersonIcon />
-                  </IconButton>
-                </Box>
+              
               </>
             )}
           </Toolbar>

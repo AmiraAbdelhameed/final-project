@@ -18,7 +18,6 @@ export default function Article() {
     dispatch(getCampaigns());
   }, [dispatch]);
 
-  console.log("Campaigns:", campaigns);
   if (loading) return <Box textAlign="center">Loading</Box>;
   if (error)
     return <Typography color="error">حدث خطأ أثناء جلب البيانات</Typography>;

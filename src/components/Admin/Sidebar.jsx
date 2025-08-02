@@ -1,17 +1,24 @@
 import React from 'react'
-import { NavLink, useNavigate} from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { ListItemText, ListItemButton, List, ListItem, Button, Typography } from '@mui/material';
 import { supabase } from "../../services/supabase/supabaseClient"
 
 const Sidebar = () => {
   const navigate = useNavigate()
   const items = [{
-    label: "المؤسسات" ,
-    path:'/admin/main'
-  },{
+    label: "المؤسسات",
+    path: '/admin/main'
+  },
+  {
     label: "المشاريع",
-    path:'/admin/main/campaigns'
-  } ];
+    path: '/admin/main/campaigns'
+  },
+  {
+    label: "طلبات الدفع",
+    path: '/admin/main/payments'
+  },
+
+  ];
   const handleSignOut = async () => {
     const { error } = await supabase.auth.signOut();
 
@@ -24,7 +31,7 @@ const Sidebar = () => {
   };
   return (
     <>
-   
+
       <List >
         {items.map((item, index) => (
           <ListItem key={index}  >

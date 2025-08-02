@@ -68,13 +68,72 @@ export const getOrganizationCampaignsById = createAsyncThunk(
                 return thunkAPI.rejectWithValue(error.message);
             }
 
-            return data; 
+            return data;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.message);
         }
     }
 );
+// export const toggleApproval = createAsyncThunk(
+//     'organizations/toggleApproval',
+//     async ({ id, currentStatus }, thunkAPI) => {
+//         try {
+//             const { data, error } = await supabase
+//                 .from('organizations')
+//                 .update({ is_approved: !currentStatus })
+//                 .eq('id', id)
+//                 .select();
 
+//             if (error) {
+//                 return thunkAPI.rejectWithValue(error.message);
+//             }
+
+//             return data[0];
+//         } catch (err) {
+//             return thunkAPI.rejectWithValue(err.message);
+//         }
+//     }
+// );
+
+export const toggleApproval = createAsyncThunk(
+    'organizations/toggleApproval',
+    async ({ id, currentStatus }, thunkAPI) => {
+        const { data, error } = await supabase
+            .from('organizations')
+            .update({ is_approved: !currentStatus })
+            .eq('id', id)
+            .select('*');
+
+        if (error) {
+            console.error('Supabase Error:', error);
+            return thunkAPI.rejectWithValue(error.message);
+        }
+
+        if (!data || data.length === 0) {
+            return thunkAPI.rejectWithValue('No organizations returned after update');
+        }
+
+        return data[0];
+    }
+);
+
+export const disapproveOrganization = createAsyncThunk(
+    'organizations/disapproveCampaign',
+    async ({ id, reason }) => {
+        const { data, error } = await supabase
+            .from('organizations')
+            .update({ is_approved: false, reason: reason })
+            .eq('id', id)
+            .select('*');
+
+        if (error) {
+            console.error("Supabase update error:", error);
+            throw error;
+        }
+
+        return data[0];
+    }
+);
 const organizationSlice = createSlice({
     name: 'organizations',
     initialState: {
@@ -111,6 +170,25 @@ const organizationSlice = createSlice({
                     state.data[index] = updated;
                 }
             })
+            .addCase(disapproveOrganization.fulfilled, (state, action) => {
+                const updated = action.payload;
+                if (!updated || !updated.id) return;
+
+                const index = state.data.findIndex(org => org.id === updated.id);
+                if (index !== -1) {
+                    state.data[index] = updated;
+                }
+                if (state.selectedOrg && state.selectedOrg.id === updated.id) {
+                    state.selectedOrg = updated;
+                }
+            })
+            // .addCase(disapproveOrganization.fulfilled, (state, action) => {
+            //     const updated = action.payload;
+            //     const index = state.data.findIndex(org => org.id === updated.id);
+            //     if (index !== -1) {
+            //         state.data[index] = updated;
+            //     }
+            // })
             .addCase(deleteOrganization.fulfilled, (state, action) => {
                 const id = action.payload;
                 state.data = state.data.filter(org => org.id !== id);
@@ -145,25 +223,6 @@ const organizationSlice = createSlice({
             })
     },
 });
-export const toggleApproval = createAsyncThunk(
-    'organizations/toggleApproval',
-    async ({ id, currentStatus }, thunkAPI) => {
-        try {
-            const { data, error } = await supabase
-                .from('organizations')
-                .update({ is_approved: !currentStatus })
-                .eq('id', id)
-                .select(); 
 
-            if (error) {
-                return thunkAPI.rejectWithValue(error.message);
-            }
-
-            return data[0]; 
-        } catch (err) {
-            return thunkAPI.rejectWithValue(err.message);
-        }
-    }
-);
 
 export default organizationSlice.reducer;

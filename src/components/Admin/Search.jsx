@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   CircularProgress,
+  InputAdornment,
   List,
   ListItem,
   Paper,
@@ -48,12 +49,29 @@ const Search = ({ tableName, page }) => {
       ref={wrapperRef}
       sx={{ position: 'relative', width: '100%', mx: 'auto', mt: 4 }}
     >
-      <TextField id="outlined-basic" label={<Box sx={{ display: "flex", justifyContent: "center", gap: 1 }} > <SearchIcon /> البحث </Box>} sx={{
-              mt: 4, width: '100%' ,
-      }} variant="outlined" dir="rtl"
-              onChange={(e) => dispatch(setSearchTerm(e.target.value))}
-            />
-
+   
+      <TextField
+        id="standard-basic"
+        variant="standard"
+        placeholder="البحث"
+        sx={{
+          mt: 4,
+          width: '100%',
+          bgcolor: '#F0EFEF',
+          borderRadius: '30px',
+          p:2
+        }}
+        dir="rtl"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+          disableUnderline: true,
+        }}
+        onChange={(e) => dispatch(setSearchTerm(e.target.value))}
+      />
       {searchTerm && (
         <Paper
           sx={{

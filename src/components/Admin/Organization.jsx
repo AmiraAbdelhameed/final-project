@@ -6,9 +6,11 @@ import {
   DialogContent,
   DialogActions,
   Snackbar,
-  Alert
+  Alert,
+  Modal,
+  TextField
 } from '@mui/material';
-import { getOrganizations, toggleApproval, deleteOrganization } from '../../redux/Slices/organizationsSlice';
+import { getOrganizations, toggleApproval, deleteOrganization, disapproveOrganization } from '../../redux/Slices/organizationsSlice';
 import AdminCard from './AdminCard';
 import { useNavigate } from 'react-router-dom';
 import Search from './Search';
@@ -22,6 +24,9 @@ const Organization = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
+
+  const [openModal, setOpenModal] = useState(false);
+  const [disapprovalReason, setDisapprovalReason] = useState("")
   useEffect(() => {
     dispatch(getOrganizations());
   }, [dispatch]);
@@ -59,7 +64,7 @@ const Organization = () => {
   return (
     <>
       <Box>
-        <Search tableName='organizations' page="organizations" />
+        <Search tableName='organizations' page="organization" />
         <Typography variant="h4" textAlign="right" mt={4} mb={2}>
           المؤسسات
         </Typography>
@@ -89,8 +94,8 @@ const Organization = () => {
             sx={{
               display: 'flex',
               flexWrap: 'wrap',
-              gap: 2,
-              justifyContent: 'start',
+              gap: 4,
+              justifyContent: 'space-between',
               px: 2,
               my: 4
             }}
@@ -104,9 +109,14 @@ const Organization = () => {
                 is_approved={org.is_approved}
                 image={org.profile_image}
                 id={org.id}
-                handleApproval={() =>
-                  dispatch(toggleApproval({ id: org.id, currentStatus: org.is_approved }))
-                }
+                handleApproval={() => {
+                  if (org.is_approved) {
+                    setSelectedId(org.id);
+                    setOpenModal(true);
+                  } else {
+                    dispatch(toggleApproval({ id: org.id, currentStatus: org.is_approved }));
+                  }
+                }}
                 handleDelete={() => handleOpenDialog(org.id)}
                 handleNavigation={() => navigate(`/admin/organization/${org.id}`)}
               />
@@ -134,6 +144,37 @@ const Organization = () => {
           تم حذف المؤسسة بنجاح
         </Alert>
       </Snackbar>
+
+      {/* Modal  */}
+      <Modal open={openModal} onClose={() => setOpenModal(false)}>
+        <Box sx={{
+          position: 'absolute', top: '50%', left: '50%',
+          transform: 'translate(-50%, -50%)',
+          bgcolor: 'background.paper',
+          p: 4, borderRadius: 2, width: 400
+        }}>
+          <Typography variant="h6" mb={2}>سبب عدم الاعتماد</Typography>
+          <TextField
+            fullWidth
+            label="السبب"
+            multiline
+            rows={4}
+            value={disapprovalReason}
+            onChange={(e) => setDisapprovalReason(e.target.value)}
+          />
+
+          <Button onClick={() => setOpenModal(false)}>إلغاء</Button>
+          <Button
+            onClick={() => {
+              dispatch(disapproveOrganization({ id: selectedId, reason: disapprovalReason }));
+              setOpenModal(false);
+              setDisapprovalReason('');
+            }}
+          >
+            حفظ
+          </Button>
+        </Box>
+      </Modal>
     </>
 
   );

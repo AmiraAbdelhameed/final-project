@@ -1,15 +1,16 @@
 import { Box, Button, Card, CardContent, CardMedia, Typography, Chip, Stack } from '@mui/material';
 const AdminCard = ({ email, image, name, id, is_approved, identification_number, handleApproval, handleDelete, handleNavigation }) => {
     return (
- 
+
         <Card
             sx={{
-                minWidth: 250,
-                maxWidth: 300,
-                display:"flex",
-                flexDirection:'column',
-                flex: '1 1 250px',
-                justifyContent:"space-between",
+                p: 2,
+                minWidth: 350,
+                maxWidth: 450,
+                display: "flex",
+                flexDirection: 'column',
+                flex: '1 1  250px',
+                justifyContent: "space-between",
                 textAlign: 'center',
                 borderRadius: 3,
                 boxShadow: 3,
@@ -17,7 +18,7 @@ const AdminCard = ({ email, image, name, id, is_approved, identification_number,
                 '&:hover': {
                     transform: 'scale(1.03)',
                 },
-             
+
             }}
         >
             {/* Optional image */}
@@ -35,36 +36,36 @@ const AdminCard = ({ email, image, name, id, is_approved, identification_number,
             />
 
             <CardContent sx={{
-         
+                p: 0
             }}>
                 <Box>
 
-                <Typography
-                    variant="h6"
-                    fontWeight="bold"
-                    sx={{ cursor: 'pointer' }}
-                    onClick={handleNavigation}
-                >
-                    {name}
-                </Typography>
+                    <Typography
+                        variant="h6"
+                        fontWeight="bold"
+                        sx={{ cursor: 'pointer' }}
+                        onClick={handleNavigation}
+                    >
+                        {name}
+                    </Typography>
 
-        {   email?    ( <Typography color="text.secondary" >
-                    الايميل: {email}
-                </Typography>):(<Typography></Typography>)}
+                    {email && (<Typography color="text.secondary" >
+                        الايميل: {email}
+                    </Typography>)}
 
-      { identification_number   ?(      <Typography color="text.secondary">
-                    رقم الهوية: {identification_number}
-                </Typography>):(<Typography></Typography>)}
+                    {identification_number && (<Typography color="text.secondary">
+                        رقم الهوية: {identification_number}
+                    </Typography>)}
 
-                <Typography
-                    sx={{
-                        color: is_approved ? 'primary.main' : 'danger.main',
-                        fontWeight: 'bold',
-                        mb: 1,
-                    }}
-                >
-                    {is_approved ? 'مفعل' : 'غير مفعل'}
-                </Typography>
+                    <Typography
+                        sx={{
+                            color: is_approved ? 'primary.main' : 'danger.main',
+                            fontWeight: 'bold',
+                            mb: 1,
+                        }}
+                    >
+                        {is_approved ? 'مفعل' : 'غير مفعل'}
+                    </Typography>
                 </Box>
 
                 <Box
@@ -73,7 +74,9 @@ const AdminCard = ({ email, image, name, id, is_approved, identification_number,
                         justifyContent: 'space-between',
                         gap: 1,
                         flexWrap: 'wrap',
-                        mt: 1,
+                        mt: 2,
+                        p: 0,
+                        pb:0
                     }}
                 >
                     <Button
@@ -81,6 +84,7 @@ const AdminCard = ({ email, image, name, id, is_approved, identification_number,
                         color={is_approved ? 'warning' : 'primary'}
                         size="small"
                         onClick={handleApproval}
+                        sx={{ width: '45%' }}
                     >
                         {is_approved ? 'إلغاء الاعتماد' : 'اعتماد'}
                     </Button>
@@ -89,7 +93,7 @@ const AdminCard = ({ email, image, name, id, is_approved, identification_number,
                         variant="contained"
                         size="small"
                         onClick={handleDelete}
-                        sx={{ bgcolor: 'danger.main', color: '#fff' }}
+                        sx={{ bgcolor: 'danger.main', color: '#fff', width: "45%" , p:0}}
                     >
                         حذف
                     </Button>

@@ -68,3 +68,9 @@
 .custom-shape-divider-top-1753308709 .shape-fill {
   fill: #E0E6D9 !important;
 }
+.css-zv46gn-MuiInputBase-root-MuiOutlinedInput-root{
+  border-radius: 30px !important;
+}
+.css-127evc8-MuiCardContent-root:last-child{
+  padding: 0 !important;
+}

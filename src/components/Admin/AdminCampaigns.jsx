@@ -6,9 +6,11 @@ import {
   DialogContent,
   DialogActions,
   Snackbar,
-  Alert
+  Alert,
+  Modal,
+  TextField
 } from '@mui/material';
-import { getCampaigns, toggleApproval, deleteCampaign } from '../../redux/Slices/campaignsSlice';
+import { getCampaigns, toggleApproval, deleteCampaign, disapproveCampaign } from '../../redux/Slices/campaignsSlice';
 import AdminCard from './AdminCard';
 import { useNavigate } from 'react-router-dom';
 import Search from './Search';
@@ -22,6 +24,10 @@ const Campaigns = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [showSnackbar, setShowSnackbar] = useState(false);
+
+  const [openModal, setOpenModal] = useState(false);
+  const [disapprovalReason, setDisapprovalReason] = useState("")
+
   useEffect(() => {
     dispatch(getCampaigns());
   }, [dispatch]);
@@ -99,10 +105,12 @@ const Campaigns = () => {
                 image={campaign.cover_image}
                 id={campaign.id}
                 handleApproval={() => {
-                  dispatch(toggleApproval({ id: campaign.id, currentStatus: campaign.is_approved }))
-                    .then((res) => {
-                      console.log('Toggle result:', res);
-                    });
+                  if (campaign.is_approved) {
+                    setSelectedId(campaign.id);
+                    setOpenModal(true);
+                  } else {
+                    dispatch(toggleApproval({ id: campaign.id, currentStatus: campaign.is_approved }));
+                  }
                 }}
                 handleDelete={() => handleOpenDialog(campaign.id)}
                 handleNavigation={() => navigate(`/admin/campaigns/${campaign.id}`)}
@@ -132,6 +140,36 @@ const Campaigns = () => {
           تم حذف المشروع بنجاح
         </Alert>
       </Snackbar>
+      {/* Modal  */}
+      <Modal open={openModal} onClose={() => setOpenModal(false)}>
+        <Box sx={{
+          position: 'absolute', top: '50%', left: '50%',
+          transform: 'translate(-50%, -50%)',
+          bgcolor: 'background.paper',
+          p: 4, borderRadius: 2, width: 400
+        }}>
+          <Typography variant="h6" mb={2}>سبب عدم الاعتماد</Typography>
+          <TextField
+            fullWidth
+            label="السبب"
+            multiline
+            rows={4}
+            value={disapprovalReason}
+            onChange={(e) => setDisapprovalReason(e.target.value)}
+          />
+
+          <Button onClick={() => setOpenModal(false)}>إلغاء</Button>
+          <Button
+            onClick={() => {
+              dispatch(disapproveCampaign({ id: selectedId, reason: disapprovalReason }));
+              setOpenModal(false);
+              setDisapprovalReason('');
+            }}
+          >
+            حفظ
+          </Button>
+        </Box>
+      </Modal>
     </>
   )
 }

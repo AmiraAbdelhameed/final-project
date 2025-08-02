@@ -42,7 +42,7 @@ const ProjectsSection = () => {
             المشاريع الجديده
           </Typography>
         </Box>
-        <Button display="flex" alignItems="center" gap={1}>
+        <Button display="flex"  gap={1}>
           <Typography variant="body2" pl={1}>عرض المزيد</Typography>
           <ArrowBackIosNewIcon fontSize="small" />
         </Button>

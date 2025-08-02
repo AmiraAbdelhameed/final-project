@@ -17,30 +17,6 @@ export const getCampaigns = createAsyncThunk(
     }
 );
 
-export const toggleApproval = createAsyncThunk(
-    'campaigns/toggleApproval',
-    async ({ id, currentStatus }, thunkAPI) => {
-        try {
-            const { data, error } = await supabase
-                .from('campaigns')
-                .update({ is_approved: !currentStatus })
-                .eq('id', id)
-                .select('*');
-
-            if (error) {
-                return thunkAPI.rejectWithValue(error.message);
-            }
-
-            if (!data || data.length === 0) {
-                return thunkAPI.rejectWithValue('No campaign returned after update');
-            }
-
-            return data[0];
-        } catch (err) {
-            return thunkAPI.rejectWithValue(err.message);
-        }
-    }
-);
 export const deleteCampaign = createAsyncThunk(
     'campaigns/deleteCampaign',
     async (id, thunkAPI) => {
@@ -80,6 +56,45 @@ export const getCampaignById = createAsyncThunk(
         }
     }
 );
+export const toggleApproval = createAsyncThunk(
+    'campaigns/toggleApproval',
+    async ({ id, currentStatus }, thunkAPI) => {
+        const { data, error } = await supabase
+            .from('campaigns')
+            .update({ is_approved: !currentStatus })
+            .eq('id', id)
+            .select('*');
+
+        if (error) {
+            console.error('Supabase Error:', error); 
+            return thunkAPI.rejectWithValue(error.message);
+        }
+
+        if (!data || data.length === 0) {
+            return thunkAPI.rejectWithValue('No campaign returned after update');
+        }
+
+        return data[0]; 
+    }
+);
+
+export const disapproveCampaign = createAsyncThunk(
+    'campaigns/disapproveCampaign',
+    async ({ id, reason }) => {
+        const { data, error } = await supabase
+            .from('campaigns')
+            .update({ is_approved: false, reason: reason })
+            .eq('id', id)
+            .select('*');
+
+        if (error) {
+            console.error("Supabase update error:", error);
+            throw error;
+        }
+
+        return data[0];
+    }
+);
 
 const campaignsSlice = createSlice({
     name: 'campaigns',
@@ -103,12 +118,33 @@ const campaignsSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             })
+         
             .addCase(toggleApproval.fulfilled, (state, action) => {
                 const updated = action.payload;
                 if (!updated || !updated.id) return;
+
+        
                 const index = state.data.findIndex(campaign => campaign.id === updated.id);
                 if (index !== -1) {
                     state.data[index] = updated;
+                }
+
+             
+                if (state.selectedCampaign && state.selectedCampaign.id === updated.id) {
+                    state.selectedCampaign = updated;
+                }
+            })
+
+            .addCase(disapproveCampaign.fulfilled, (state, action) => {
+                const updated = action.payload;
+                if (!updated || !updated.id) return;
+
+                const index = state.data.findIndex(campaign => campaign.id === updated.id);
+                if (index !== -1) {
+                    state.data[index] = updated;
+                }
+                if (state.selectedCampaign && state.selectedCampaign.id === updated.id) {
+                    state.selectedCampaign = updated;
                 }
             })
             .addCase(deleteCampaign.fulfilled, (state, action) => {
