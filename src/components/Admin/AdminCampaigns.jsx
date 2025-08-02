@@ -67,7 +67,7 @@ const Campaigns = () => {
       <Box>
         <Search tableName="campaigns" page='campaigns' />
         <Typography variant="h4" textAlign="right" mt={4} mb={2}>
-          المشاريع
+         الحملات
         </Typography>
         {/* Tabs Filter */}
         <Box display="flex" justifyContent="flex-start" mb={4}>

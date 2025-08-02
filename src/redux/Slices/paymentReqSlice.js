@@ -5,7 +5,31 @@ export const getPaymentsReqs = createAsyncThunk(
     'requests/getPaymentsReqs',
     async (_, thunkAPI) => {
         try {
-            const { data, error } = await supabase.from('payment_requests').select('*');
+            const { data, error } = await supabase
+                .from('payment_requests')
+                // .select(`
+                //     *,
+                //     campaigns (
+                //         id,
+                //         name,
+                //         payment_done,
+                //         is_completed,
+                //         organization_id
+                //     )
+                // `);
+                .select(`
+          *,
+          campaigns (
+            id,
+            name,
+            payment_done,
+            is_completed,
+            organization_id,
+            organizations (
+              name
+            )
+          )
+        `);
             if (error) {
                 return thunkAPI.rejectWithValue(error.message);
             }
@@ -15,31 +39,54 @@ export const getPaymentsReqs = createAsyncThunk(
         }
     }
 );
+
 export const changePaymentStatus = createAsyncThunk(
-    'requests/changePaymentStatus',
-    async ({ id, newStatus }, thunkAPI) => {
-        const { data, error } = await supabase
-            .from('payment_requests')
-            .update({ status: newStatus })
-            .eq('id', id)
-            .select('*');
+    'requests/toggleApproval',
+    async ({ id, newStatus, campaignId, campaignPayment }, thunkAPI) => {
+        try {
+ 
+            const { data: paymentData, error: paymentError } = await supabase
+                .from('payment_requests')
+                .update({ status: newStatus })
+                .eq('id', id)
+                .select(`
+                    *,
+                    campaigns (
+                        id,
+                        name,
+                        payment_done,
+                        is_completed
+                    )
+                `);
 
-        if (error) {
-            console.error('Supabase Error:', error);
-            return thunkAPI.rejectWithValue(error.message);
+            if (paymentError) {
+                console.error('Error updating payment_requests:', paymentError);
+                return thunkAPI.rejectWithValue(paymentError.message);
+            }
+
+            // Then, update the related campaign
+            const { error: campaignError } = await supabase
+                .from('campaigns')
+                .update({ payment_done: campaignPayment })
+                .eq('id', campaignId);
+
+            if (campaignError) {
+                console.error('Error updating campaigns:', campaignError);
+                return thunkAPI.rejectWithValue(campaignError.message);
+            }
+
+            return paymentData[0];
+        } catch (err) {
+            return thunkAPI.rejectWithValue(err.message);
         }
-
-        if (!data || data.length === 0) {
-            return thunkAPI.rejectWithValue('No requests returned after update');
-        }
-
-        return data[0];
     }
 );
+
 const paymentReqSlice = createSlice({
     name: 'paymentReq',
     initialState: {
         data: [],
+        campaignsById: {},
         loading: false,
         error: null,
     },

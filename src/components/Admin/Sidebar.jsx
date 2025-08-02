@@ -10,7 +10,7 @@ const Sidebar = () => {
     path: '/admin/main'
   },
   {
-    label: "المشاريع",
+    label: "الحملات",
     path: '/admin/main/campaigns'
   },
   {
