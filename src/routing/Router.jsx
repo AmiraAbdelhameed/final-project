@@ -20,6 +20,7 @@ import CampaignDetails from "../pages/CampaignDetails";
 import ProtectedAdminRoute from "../components/Admin/ProtectedAdminRoute";
 import AdminOrganizationDetails from "../components/Admin/AdminOrganizationDetails";
 import CampaignsDetails from "../components/Admin/CampaignsDetails";
+import PaymentReq from "../components/Admin/PaymentReq";
 
 
 export default [
@@ -83,6 +84,11 @@ export default [
             id: v4(),
             path: 'campaigns',
             element: <AdminCampaigns />
+          },
+          {
+            id: v4(),
+            path: 'payments',
+            element: <PaymentReq />
           },
         ]
       },
