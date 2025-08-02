@@ -182,13 +182,6 @@ const organizationSlice = createSlice({
                     state.selectedOrg = updated;
                 }
             })
-            // .addCase(disapproveOrganization.fulfilled, (state, action) => {
-            //     const updated = action.payload;
-            //     const index = state.data.findIndex(org => org.id === updated.id);
-            //     if (index !== -1) {
-            //         state.data[index] = updated;
-            //     }
-            // })
             .addCase(deleteOrganization.fulfilled, (state, action) => {
                 const id = action.payload;
                 state.data = state.data.filter(org => org.id !== id);
