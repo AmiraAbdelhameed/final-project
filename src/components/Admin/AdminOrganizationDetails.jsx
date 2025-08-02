@@ -88,7 +88,7 @@ const AdminOrganizationDetails = () => {
                 {org.name}
               </Typography>
               <Typography variant="body1" gutterBottom>
-                {org.description || 'لا يوجد وصف متاح'}
+                {org.description || "لا يوجد وصف متاح"}
               </Typography>
               <Typography variant="body2" mt={2} color="text.secondary">
                 حاله الاعتماد :<Typography variant='span' color={org.is_approved ? "primary.main" : 'danger.main'}> {org.is_approved ? 'معتمده' : "غير معتمده"}</Typography>

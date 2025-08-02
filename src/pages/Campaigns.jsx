@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCampaigns } from "../redux/Slices/campaignsSlice";
 import {
@@ -9,6 +9,8 @@ import {
   CircularProgress,
   Alert,
   Stack,
+  Tabs,
+  Tab,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { Link } from "react-router-dom";
@@ -23,6 +25,7 @@ const Campaigns = () => {
     error,
   } = useSelector((state) => state.campaigns);
   const theme = useTheme();
+  const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
     dispatch(getCampaigns());
@@ -32,6 +35,40 @@ const Campaigns = () => {
   const approvedCampaigns = (campaigns || []).filter((c) =>
     [true, "TRUE", 1].includes(c.is_approved)
   );
+
+  // Filter campaigns based on active tab
+  const getFilteredCampaigns = () => {
+    switch (activeTab) {
+      case 0: // All campaigns
+        return approvedCampaigns;
+      case 1: // Completed campaigns
+        return approvedCampaigns.filter((campaign) => {
+          const isCompleted =
+            campaign.is_completed ||
+            (campaign.goal_amount &&
+              campaign.current_amount &&
+              campaign.current_amount >= campaign.goal_amount);
+          return isCompleted;
+        });
+      case 2: // Not completed campaigns
+        return approvedCampaigns.filter((campaign) => {
+          const isCompleted =
+            campaign.is_completed ||
+            (campaign.goal_amount &&
+              campaign.current_amount &&
+              campaign.current_amount >= campaign.goal_amount);
+          return !isCompleted;
+        });
+      default:
+        return approvedCampaigns;
+    }
+  };
+
+  const filteredCampaigns = getFilteredCampaigns();
+
+  const handleTabChange = (event, newValue) => {
+    setActiveTab(newValue);
+  };
 
   return (
     <Box
@@ -72,19 +109,102 @@ const Campaigns = () => {
           استكشف أحدث حملات التبرع والتطوع
         </Typography>
       </Box>
+
       {/* Content Section */}
       <Box sx={{ px: { xs: 1, sm: 3 }, maxWidth: 1000, mx: "auto" }}>
+        {/* Tabs Filter */}
+        <Box sx={{ mb: 4 }}>
+          <Tabs
+            value={activeTab}
+            onChange={handleTabChange}
+            variant="fullWidth"
+            sx={{
+              bgcolor: theme.palette.background.paper,
+              borderRadius: 2,
+              boxShadow: 2,
+              "& .MuiTab-root": {
+                fontFamily: "Tajawal, Arial, sans-serif",
+                fontWeight: "bold",
+                fontSize: "1rem",
+                textTransform: "none",
+                minHeight: 56,
+              },
+              "& .Mui-selected": {
+                color: theme.palette.primary.main,
+              },
+              "& .MuiTabs-indicator": {
+                backgroundColor: theme.palette.primary.main,
+                height: 3,
+              },
+            }}
+          >
+            <Tab
+              label={`جميع المشاريع (${approvedCampaigns.length})`}
+              sx={{
+                "&:hover": {
+                  backgroundColor: theme.palette.action.hover,
+                },
+              }}
+            />
+            <Tab
+              label={`المشاريع المكتملة (${
+                approvedCampaigns.filter((campaign) => {
+                  const isCompleted =
+                    campaign.is_completed ||
+                    (campaign.goal_amount &&
+                      campaign.current_amount &&
+                      campaign.current_amount >= campaign.goal_amount);
+                  return isCompleted;
+                }).length
+              })`}
+              sx={{
+                "&:hover": {
+                  backgroundColor: theme.palette.action.hover,
+                },
+              }}
+            />
+            <Tab
+              label={`المشاريع النشطة (${
+                approvedCampaigns.filter((campaign) => {
+                  const isCompleted =
+                    campaign.is_completed ||
+                    (campaign.goal_amount &&
+                      campaign.current_amount &&
+                      campaign.current_amount >= campaign.goal_amount);
+                  return !isCompleted;
+                }).length
+              })`}
+              sx={{
+                "&:hover": {
+                  backgroundColor: theme.palette.action.hover,
+                },
+              }}
+            />
+          </Tabs>
+        </Box>
+
         {loading ? (
           <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
             <CircularProgress />
           </Box>
         ) : error ? (
           <Alert severity="error">خطأ في تحميل المشاريع: {error}</Alert>
-        ) : approvedCampaigns.length === 0 ? (
-          <Typography align="center">لا توجد مشاريع معتمدة حالياً.</Typography>
+        ) : filteredCampaigns.length === 0 ? (
+          <Box sx={{ textAlign: "center", mt: 4 }}>
+            <Typography variant="h6" color="text.secondary" sx={{ mb: 2 }}>
+              {activeTab === 0 && "لا توجد مشاريع معتمدة حالياً."}
+              {activeTab === 1 && "لا توجد مشاريع مكتملة حالياً."}
+              {activeTab === 2 && "لا توجد مشاريع نشطة حالياً."}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              {activeTab === 0 && "تحقق لاحقاً من المشاريع الجديدة."}
+              {activeTab === 1 && "جميع المشاريع المكتملة ستظهر هنا."}
+              {activeTab === 2 && "المشاريع النشطة ستظهر هنا."}
+            </Typography>
+          </Box>
         ) : (
           <Stack spacing={3}>
-            {approvedCampaigns.map((campaign) => (
+            {filteredCampaigns.map((campaign) => (
               <Paper
                 key={campaign.id}
                 elevation={3}
@@ -154,6 +274,12 @@ const Campaigns = () => {
                     />
                     {campaign.is_approved && (
                       <Chip label="معتمدة" color="success" size="small" />
+                    )}
+                    {(campaign.is_completed ||
+                      (campaign.goal_amount &&
+                        campaign.current_amount &&
+                        campaign.current_amount >= campaign.goal_amount)) && (
+                      <Chip label="مكتمل" color="warning" size="small" />
                     )}
                   </Stack>
                   <Typography

@@ -1,54 +1,50 @@
-
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { supabase } from '../../services/supabase/supabaseClient';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { supabase } from "../../services/supabase/supabaseClient";
 
 export const getCampaigns = createAsyncThunk(
-    'campaigns/getCampaigns',
-    async (_, thunkAPI) => {
-        try {
-            const { data, error } = await supabase.from('campaigns').select('*');
-            if (error) {
-                return thunkAPI.rejectWithValue(error.message);
-            }
-            return data;
-        } catch (err) {
-            return thunkAPI.rejectWithValue(err.message);
-        }
+  "campaigns/getCampaigns",
+  async (_, thunkAPI) => {
+    try {
+      const { data, error } = await supabase.from("campaigns").select("*");
+      if (error) {
+        return thunkAPI.rejectWithValue(error.message);
+      }
+      return data;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.message);
     }
+  }
 );
 
 export const deleteCampaign = createAsyncThunk(
-    'campaigns/deleteCampaign',
-    async (id, thunkAPI) => {
-        try {
-            const { error } = await supabase
-                .from('campaigns')
-                .delete()
-                .eq('id', id);
+  "campaigns/deleteCampaign",
+  async (id, thunkAPI) => {
+    try {
+      const { error } = await supabase.from("campaigns").delete().eq("id", id);
 
-            if (error) {
-                return thunkAPI.rejectWithValue(error.message);
-            }
+      if (error) {
+        return thunkAPI.rejectWithValue(error.message);
+      }
 
-            return id;
-        } catch (err) {
-            return thunkAPI.rejectWithValue(err.message);
-        }
+      return id;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.message);
     }
+  }
 );
 export const getCampaignById = createAsyncThunk(
-    'campaigns/getCampaignById',
-    async (id, thunkAPI) => {
-        try {
-            const { data, error } = await supabase
-                .from('campaigns')
-                .select('*')
-                .eq('id', id)
-                .single();
+  "campaigns/getCampaignById",
+  async (id, thunkAPI) => {
+    try {
+      const { data, error } = await supabase
+        .from("campaigns")
+        .select("*")
+        .eq("id", id)
+        .single();
 
-            if (error) {
-                return thunkAPI.rejectWithValue(error.message);
-            }
+      if (error) {
+        return thunkAPI.rejectWithValue(error.message);
+      }
 
             return data;
         } catch (err) {
