@@ -74,26 +74,6 @@ export const getOrganizationCampaignsById = createAsyncThunk(
         }
     }
 );
-// export const toggleApproval = createAsyncThunk(
-//     'organizations/toggleApproval',
-//     async ({ id, currentStatus }, thunkAPI) => {
-//         try {
-//             const { data, error } = await supabase
-//                 .from('organizations')
-//                 .update({ is_approved: !currentStatus })
-//                 .eq('id', id)
-//                 .select();
-
-//             if (error) {
-//                 return thunkAPI.rejectWithValue(error.message);
-//             }
-
-//             return data[0];
-//         } catch (err) {
-//             return thunkAPI.rejectWithValue(err.message);
-//         }
-//     }
-// );
 
 export const toggleApproval = createAsyncThunk(
     'organizations/toggleApproval',

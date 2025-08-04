@@ -1,6 +1,6 @@
-import React from 'react';
+
 import { useForm } from 'react-hook-form';
-import { Navigate, NavLink, Outlet, useNavigate } from "react-router";
+import {  NavLink, useNavigate } from "react-router";
 
 import {
     Grid,
@@ -8,7 +8,6 @@ import {
     Typography,
     TextField,
     Button,
-    Divider,
     Paper
 } from '@mui/material';
 import { supabase } from '../../services/supabase/supabaseClient';

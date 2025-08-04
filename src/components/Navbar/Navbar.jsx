@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -12,12 +12,9 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
-  Divider,
+
   useMediaQuery,
 } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import PersonIcon from "@mui/icons-material/Person";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -35,33 +32,33 @@ const Navbar = () => {
   const toggleDrawer = (open) => () => {
     setDrawerOpen(open);
   };
-  const handleProfile = async () => {
-    const { data: userData, error: userError } = await supabase.auth.getUser();
+  // const handleProfile = async () => {
+  //   const { data: userData, error: userError } = await supabase.auth.getUser();
 
-    if (userError) {
-      console.error("Failed to get user:", userError.message);
-      return;
-    }
+  //   if (userError) {
+  //     console.error("Failed to get user:", userError.message);
+  //     return;
+  //   }
 
-    const userId = userData?.user?.id;
-    if (!userId) {
-      console.error("User ID is undefined — make sure you're logged in.");
-      return;
-    }
-    const { data: profileData, error: profileError } = await supabase
-      .from("users")
-      .select("user_type")
-      .eq("user_id", userId)
-      .single();
+  //   const userId = userData?.user?.id;
+  //   if (!userId) {
+  //     console.error("User ID is undefined — make sure you're logged in.");
+  //     return;
+  //   }
+  //   const { data: profileData, error: profileError } = await supabase
+  //     .from("users")
+  //     .select("user_type")
+  //     .eq("user_id", userId)
+  //     .single();
 
-    if (profileError) {
-      console.error("Failed to fetch user profile:", profileError.message);
-      return;
+  //   if (profileError) {
+  //     console.error("Failed to fetch user profile:", profileError.message);
+  //     return;
 
-    } else {
-      navigate("/profile");
-    }
-  };
+  //   } else {
+  //     navigate("/profile");
+  //   }
+  // };
 
   const navItems = [
 

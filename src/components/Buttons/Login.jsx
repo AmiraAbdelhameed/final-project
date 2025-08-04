@@ -1,4 +1,3 @@
-import React from 'react'
 import { supabase } from '../../services/supabase/supabaseClient'
 import Button from '@mui/material/Button'
 const Login = () => {

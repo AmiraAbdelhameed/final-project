@@ -1,6 +1,5 @@
 
-import React from 'react'
-import { Ayady, Contact, Hero, Mission, OurValues, Vision } from '../components/About'
+import { Ayady,Hero,OurValues } from '../components/About'
 import { Container } from '@mui/material'
 
 const About = () => {

@@ -11,9 +11,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getCampaigns } from '../../redux/Slices/campaignsSlice';
 import ProjectsCard from './ProjectsCard';
 
-// Replace with your image path
-
-
 
 const ProjectsSection = () => {
   const dispatch = useDispatch();

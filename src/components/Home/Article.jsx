@@ -1,8 +1,7 @@
-import { Box, Grid, Typography, Avatar, Button } from "@mui/material";
+import { Box, Grid, Typography, Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getCampaigns,
-  toggleApproval,
 } from "../../redux/Slices/campaignsSlice";
 import { useEffect } from "react";
 import { useNavigate } from 'react-router-dom';

@@ -1,13 +1,10 @@
-import React from 'react'
-import Organization from '../components/Admin/Organization'
 import Sidebar from '../components/Admin/Sidebar'
-import { Divider, Grid , Container } from '@mui/material'
+import { Divider, Grid  } from '@mui/material'
 import { Outlet } from 'react-router'
-import Search from '../components/Admin/Search'
+
 const Admin = () => {
   return (
     <>
-      {/* <Container maxWidth="xl"> */}
         <Grid container spacing={0} justifyContent={"space-evenly"} >
           <Grid
           size={2}
@@ -24,7 +21,7 @@ const Admin = () => {
             <Outlet />
           </Grid>
         </Grid>
-      {/* </Container> */}
+ 
     </>
   )
 }

@@ -14,7 +14,6 @@ import Layout from "../layout/Layout";
 import Organization from "../components/Admin/Organization";
 import AdminCampaigns from "../components/Admin/AdminCampaigns";
 import Login from "../components/Forms/Login";
-import Signup from "../components/Forms/Signup";
 import OrganizationDetails from "../pages/OrganizationDetails";
 import CampaignDetails from "../pages/CampaignDetails";
 import ProtectedAdminRoute from "../components/Admin/ProtectedAdminRoute";
@@ -117,11 +116,7 @@ export default [
     path: '/login',
     element: <Login />
   },
-  {
-    id: v4(),
-    path: '/signup',
-    element: <Signup />
-  },
+ 
 
 
 ]
