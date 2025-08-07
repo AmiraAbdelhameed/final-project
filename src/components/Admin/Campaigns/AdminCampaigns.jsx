@@ -15,10 +15,10 @@ import {
   Modal,
   TextField
 } from '@mui/material';
-import { getCampaigns, toggleApproval, deleteCampaign, disapproveCampaign } from '../../redux/Slices/campaignsSlice';
-import AdminCard from './AdminCard';
+import { getCampaigns, toggleApproval, deleteCampaign, disapproveCampaign } from '../../../redux/Slices/campaignsSlice';
+import AdminCard from '../Cards/AdminCard';
 import { useNavigate } from 'react-router-dom';
-import Search from './Search';
+import Search from '../Search';
 
 const Campaigns = () => {
   const dispatch = useDispatch();
@@ -76,7 +76,7 @@ const Campaigns = () => {
       <Box>
         <Search tableName="campaigns" page='campaigns' />
         <Typography variant="h4" textAlign="right" mt={4} mb={2}>
-         الحملات
+          الحملات
         </Typography>
         {/* Tabs Filter */}
         <Box display="flex" justifyContent="flex-start" mb={4}>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPaymentsReqs, changePaymentStatus} from './../../redux/Slices/paymentReqSlice';
+import { getPaymentsReqs, changePaymentStatus} from './../../../redux/Slices/paymentReqSlice';
 import { Typography, Box, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 
 

@@ -10,10 +10,10 @@ import {
   Modal,
   TextField
 } from '@mui/material';
-import { getOrganizations, toggleApproval, deleteOrganization, disapproveOrganization } from '../../redux/Slices/organizationsSlice';
-import AdminCard from './AdminCard';
+import { getOrganizations, toggleApproval, deleteOrganization, disapproveOrganization } from '../../../redux/Slices/organizationsSlice';
+import AdminCard from '../Cards/AdminCard';
 import { useNavigate } from 'react-router-dom';
-import Search from './Search';
+import Search from '../Search';
 
 const Organization = () => {
   const dispatch = useDispatch();

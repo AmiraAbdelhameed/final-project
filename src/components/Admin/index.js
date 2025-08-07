@@ -1,15 +1,15 @@
 import Search from './Search';
-import AdminCampaigns from './AdminCampaigns';
-import AdminCard from './AdminCard';
-import AdminOrganizationDetails from './AdminOrganizationDetails';
-import CampaignsDetails from './CampaignsDetails';
-import Organization from './Organization';
-import PaymentReq from './PaymentReq';
+import AdminCampaigns from './Campaigns/AdminCampaigns';
+import AdminCard from './Cards/AdminCard';
+import AdminOrganizationDetails from './Organizations/AdminOrganizationDetails';
+import CampaignsDetails from './Campaigns/CampaignsDetails';
+import Organization from './Organizations/Organization';
+import PaymentReq from './Payments/PaymentReq';
 import ProtectedAdminRoute from './ProtectedAdminRoute';
 import Sidebar from './Sidebar';
+import Chats from './Chat/Chats';
 
-
-export{
+export {
     Search,
     AdminCampaigns,
     AdminCard,
@@ -18,7 +18,8 @@ export{
     Organization,
     PaymentReq,
     ProtectedAdminRoute,
-    Sidebar
+    Sidebar,
+    Chats,
 }
 
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router';
-import { disapproveCampaign, getCampaignById, toggleApproval } from '../../redux/Slices/campaignsSlice';
+import { disapproveCampaign, getCampaignById, toggleApproval } from '../../../redux/Slices/campaignsSlice';
 import {
   Box,
   Button,
