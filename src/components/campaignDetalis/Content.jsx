@@ -95,18 +95,18 @@ const Content = ({ campaign }) => {
                                         aria-label="عرض الصورة الرئيسية"
                                     >
                                         <img
-                                            src={campaign.cover_image || FALLBACK_IMAGE}
+                                            src={campaign.cover_image}
                                             alt={campaign.name}
                                             style={{
                                                 width: "100%",
-                                                height: "200px", // Fixed smaller height
+                                                height: "200px",
                                                 objectFit: "cover",
                                                 display: "block",
                                                 transition: "transform 0.3s ease",
                                             }}
-                                            onError={(e) => {
-                                                e.target.src = FALLBACK_IMAGE;
-                                            }}
+                                            // onError={(e) => {
+                                            //     e.target.src = FALLBACK_IMAGE;
+                                            // }}
                                             loading="lazy"
                                         />
                                         <Box
@@ -239,9 +239,9 @@ const Content = ({ campaign }) => {
                                                 <Box
                                                     key={idx}
                                                     sx={{
-                                                        minWidth: { xs: 60, sm: 80 }, // Reduced size
+                                                        minWidth: { xs: 60, sm: 80 }, 
                                                         minHeight: { xs: 60, sm: 80 },
-                                                        maxWidth: 80, // Reduced max size
+                                                        maxWidth: 80,
                                                         maxHeight: 80,
                                                         borderRadius: 3,
                                                         overflow: "hidden",
@@ -272,9 +272,9 @@ const Content = ({ campaign }) => {
                                                             display: "block",
                                                             transition: "transform 0.3s ease",
                                                         }}
-                                                        onError={(e) => {
-                                                            e.target.src = FALLBACK_IMAGE;
-                                                        }}
+                                                        // onError={(e) => {
+                                                        //     e.target.src = FALLBACK_IMAGE;
+                                                        // }}
                                                         loading="lazy"
                                                     />
                                                     <Box

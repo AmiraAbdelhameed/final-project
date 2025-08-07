@@ -10,9 +10,11 @@ import MicIcon from '@mui/icons-material/Mic';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCampaigns } from '../../redux/Slices/campaignsSlice';
 import ProjectsCard from './ProjectsCard';
+import { useNavigate } from 'react-router';
 
 
 const ProjectsSection = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { data: campaigns = [], loading = false, error = null } = useSelector(
     (state) => state.campaigns || {}
@@ -40,7 +42,7 @@ const ProjectsSection = () => {
           </Typography>
         </Box>
         <Button display="flex"  gap={1}>
-          <Typography variant="body2" pl={1}>عرض المزيد</Typography>
+          <Typography variant="body2" pl={1} onClick={() => navigate('/campaigns')} >عرض المزيد</Typography>
           <ArrowBackIosNewIcon fontSize="small" />
         </Button>
       </Box>
