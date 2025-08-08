@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getCampaigns } from "../redux/Slices/campaignsSlice";
 import { makePayment, clearPaymentState } from "../redux/Slices/paymentSlice";
@@ -48,7 +48,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Header } from "../components/campaignDetalis";
 
-
 const FALLBACK_IMAGE = "/default-image.png";
 
 const CampaignDetails = () => {
@@ -63,16 +62,28 @@ const CampaignDetails = () => {
   } = useSelector((state) => state.payment);
   const [donationAmount, setDonationAmount] = useState(100);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageGalleryOpen, setImageGalleryOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const theme = useTheme();
+  const { search } = useLocation();
 
   useEffect(() => {
     if (!campaigns || campaigns.length === 0) {
       dispatch(getCampaigns());
     }
   }, [dispatch, campaigns]);
+
+  // Check for success parameter in URL
+  useEffect(() => {
+    const queryParams = new URLSearchParams(search);
+    const success = queryParams.get("success");
+    if (success === "true") {
+      console.log("✅ Success parameter is true");
+      setShowSuccessModal(true);
+    }
+  }, [search]);
 
   useEffect(() => {
     return () => {
@@ -106,7 +117,6 @@ const CampaignDetails = () => {
     setShowPaymentModal(false);
     dispatch(clearPaymentState());
   };
-
 
   const handleCloseGallery = () => {
     setImageGalleryOpen(false);
@@ -142,8 +152,6 @@ const CampaignDetails = () => {
     }
     return images;
   };
-
-
 
   if (loading || !campaign) {
     return (
@@ -186,7 +194,7 @@ const CampaignDetails = () => {
       }}
     >
       {/* Header with back button */}
-    <Header />
+      <Header />
 
       {/* Image Gallery Modal */}
       <Dialog
@@ -365,6 +373,81 @@ const CampaignDetails = () => {
         </DialogActions>
       </Dialog>
 
+      {/* Success Modal */}
+      <Dialog
+        open={showSuccessModal}
+        onClose={() => setShowSuccessModal(false)}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            borderRadius: 3,
+            background: `linear-gradient(145deg, ${theme.palette.background.paper} 0%, ${theme.palette.success.main}05 100%)`,
+            border: `2px solid ${theme.palette.success.main}30`,
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            textAlign: "center",
+            fontFamily: "Tajawal, Arial, sans-serif",
+            fontWeight: "bold",
+            color: "success.main",
+            borderBottom: `2px solid ${theme.palette.success.main}30`,
+          }}
+        >
+          تم التبرع بنجاح! 🎉
+        </DialogTitle>
+        <DialogContent sx={{ pt: 3 }}>
+          <Box sx={{ textAlign: "center", py: 2 }}>
+            <CheckCircle
+              sx={{
+                color: theme.palette.success.main,
+                fontSize: 60,
+                mb: 2,
+              }}
+            />
+            <Typography
+              variant="h6"
+              color="success.main"
+              fontWeight="bold"
+              sx={{ mb: 2, fontFamily: "Tajawal, Arial, sans-serif" }}
+            >
+              شكراً لك على تبرعك! 🙏
+            </Typography>
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              sx={{ fontFamily: "Tajawal, Arial, sans-serif", lineHeight: 1.6 }}
+            >
+              تم استلام تبرعك بنجاح. سيساعد هذا التبرع في تحقيق أهداف الحملة
+              ومساعدة المحتاجين.
+              <br />
+              <br />
+              <strong>
+                شكراً لك على إيمانك بالخير ومساهمتك في بناء مستقبل أفضل للجميع.
+              </strong>
+            </Typography>
+          </Box>
+        </DialogContent>
+        <DialogActions sx={{ p: 3, justifyContent: "center" }}>
+          <Button
+            onClick={() => setShowSuccessModal(false)}
+            variant="contained"
+            color="success"
+            sx={{
+              fontWeight: "bold",
+              fontFamily: "Tajawal, Arial, sans-serif",
+              px: 4,
+              py: 1.5,
+              borderRadius: 2,
+            }}
+            aria-label="إغلاق نافذة النجاح"
+          >
+            تم
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
