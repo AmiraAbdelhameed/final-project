@@ -17,10 +17,10 @@ const Sidebar = () => {
     label: "طلبات الدفع",
     path: '/admin/main/payments'
   },
-  {
-    label: " محادثات",
-    path: '/admin/main/chats'
-  },
+  // {
+  //   label: " محادثات",
+  //   path: '/admin/main/chats'
+  // },
 
   ];
   const handleSignOut = async () => {
