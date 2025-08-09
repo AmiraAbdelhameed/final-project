@@ -80,11 +80,9 @@ const CampaignDetails = () => {
     };
   }, [dispatch]);
 
-  // Prevent new windows from opening
   useEffect(() => {
     const originalOpen = window.open;
     window.open = function (url, target, features) {
-      // Always redirect in same tab instead of opening new window
       if (url) {
         window.location.replace(url);
         return null;
@@ -112,7 +110,6 @@ const CampaignDetails = () => {
 
   useEffect(() => {
     if (paymentResponse?.iframe_url) {
-      // Prevent opening in new tab by using replace instead of href
       window.location.replace(paymentResponse.iframe_url);
       dispatch(clearPaymentState());
     } else if (paymentError) {
@@ -204,7 +201,7 @@ const CampaignDetails = () => {
       <Header />
 
       {/* Image Gallery Modal */}
-      <Dialog
+      {/* <Dialog
         open={imageGalleryOpen}
         onClose={handleCloseGallery}
         maxWidth="lg"
@@ -315,7 +312,7 @@ const CampaignDetails = () => {
             {currentImageIndex + 1} من {getAllImages().length}
           </Box>
         </Box>
-      </Dialog>
+      </Dialog> */}
 
       {/* Payment Response Modal */}
       <Dialog

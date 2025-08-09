@@ -31,10 +31,6 @@ const Progress = ({ campaign }) => {
                               borderRadius: 4,
                               border: `1px solid ${theme.palette.primary.main}20`,
                               transition: "all 0.3s ease",
-                              "&:hover": {
-                                  transform: "translateY(-4px)",
-                                  boxShadow: `0 12px 30px ${theme.palette.primary.main}30`,
-                              },
                               height: "100%",
                           }}
                       >
@@ -55,7 +51,7 @@ const Progress = ({ campaign }) => {
                                       gap: 1.5,
                                   }}
                               >
-                                  <Flag />
+                           
                                   أهداف الحملة
                               </Typography>
                               <Grid container spacing={2}>
@@ -70,12 +66,8 @@ const Progress = ({ campaign }) => {
                                                   bgcolor:
                                                       theme.palette.secondary.main + "15",
                                                   border: `2px solid ${theme.palette.secondary.main}40`,
-                                                  transition: "all 0.3s ease",
-                                                  "&:hover": {
-                                                      bgcolor:
-                                                          theme.palette.secondary.main + "20",
-                                                      transform: "scale(1.02)",
-                                                  },
+                                              
+                                              
                                               }}
                                           >
                                               <Stack
@@ -227,11 +219,7 @@ const Progress = ({ campaign }) => {
                           sx={{
                               borderRadius: 4,
                               border: `1px solid ${theme.palette.primary.main}20`,
-                              transition: "all 0.3s ease",
-                              "&:hover": {
-                                  transform: "translateY(-4px)",
-                                  boxShadow: `0 12px 30px ${theme.palette.primary.main}30`,
-                              },
+                            
                               height: "100%",
                           }}
                       >
@@ -252,7 +240,7 @@ const Progress = ({ campaign }) => {
                                       gap: 1.5,
                                   }}
                               >
-                                  <TrendingUp />
+                         
                                   الحالة الحالية
                               </Typography>
                               <Grid container spacing={2}>

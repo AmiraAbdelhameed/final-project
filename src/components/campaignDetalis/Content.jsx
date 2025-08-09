@@ -26,6 +26,7 @@ import {
 } from "../../redux/Slices/paymentSlice";
 
 const Content = ({ campaign }) => {
+  const [mainImage, setMainImage] = useState(campaign.cover_image);
   const theme = useTheme();
   const dispatch = useDispatch();
 
@@ -72,258 +73,86 @@ const Content = ({ campaign }) => {
     <>
       <Grid container spacing={4}>
         {/* Right Section: Images */}
-        <Grid item xs={12} md={6}>
-          <Stack spacing={3}>
-            {" "}
-            {/* Reduced spacing for compactness */}
-            {/* Main Image */}
-            <Zoom in={true} timeout={1000}>
-              <Card
-                elevation={8}
-                sx={{
-                  borderRadius: 4,
-                  overflow: "hidden",
-                  border: `3px solid ${theme.palette.primary.main}50`,
-                  transition: "all 0.3s ease",
-                  "&:hover": {
-                    transform: "translateY(-4px)",
-                    boxShadow: `0 12px 30px ${theme.palette.primary.main}40`,
-                  },
-                  background: `linear-gradient(145deg, ${theme.palette.background.paper} 0%, ${theme.palette.primary.main}05 100%)`,
-                }}
-              >
-                <Box sx={{ position: "relative" }}>
+        <Grid item xs={12} md={6} sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
+
+            {/* Thumbnails List */}
+            <Stack
+              spacing={1.5}
+              sx={{
+                maxHeight: 300,
+                overflowY: "auto",
+                pr: 1,
+                "&::-webkit-scrollbar": { width: 6 },
+                "&::-webkit-scrollbar-thumb": {
+                  bgcolor: theme.palette.primary.main,
+                  borderRadius: 3,
+                },
+              }}
+            >
+              {[campaign.cover_image, ...(campaign.campaign_images || [])].map(
+                (img, idx) => (
                   <Box
+                    key={idx}
+                    onClick={() => setMainImage(img)}
                     sx={{
-                      position: "relative",
-                      cursor: "pointer",
-                      overflow: "hidden",
+                      width: 70,
+                      height: 70,
                       borderRadius: 2,
-                      "&:hover .image-overlay": {
-                        opacity: 1,
-                      },
-                      "&:hover .zoom-icon": {
-                        transform: "scale(1.1)",
-                      },
+                      overflow: "hidden",
+                      border: `2px solid ${mainImage === img
+                        ? theme.palette.primary.main
+                        : "transparent"
+                        }`,
+                      cursor: "pointer",
+                      transition: "all 0.2s ease",
+                      "&:hover img": { transform: "scale(1.08)" },
                     }}
-                    onClick={() => handleImageClick(campaign.cover_image, 0)}
-                    role="button"
-                    aria-label="عرض الصورة الرئيسية"
                   >
                     <img
-                      src={campaign.cover_image}
-                      alt={campaign.name}
+                      src={img}
+                      alt={`صورة ${idx + 1}`}
                       style={{
                         width: "100%",
-                        height: "200px",
+                        height: "100%",
                         objectFit: "cover",
-                        display: "block",
                         transition: "transform 0.3s ease",
                       }}
-                      // onError={(e) => {
-                      //     e.target.src = FALLBACK_IMAGE;
-                      // }}
                       loading="lazy"
                     />
-                    <Box
-                      className="image-overlay"
-                      sx={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        bgcolor: "rgba(0,0,0,0.4)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        opacity: 0,
-                        transition: "opacity 0.3s ease",
-                      }}
-                    >
-                      <ZoomIn
-                        className="zoom-icon"
-                        sx={{
-                          color: "white",
-                          fontSize: 48,
-                          transition: "transform 0.3s ease",
-                        }}
-                      />
-                    </Box>
                   </Box>
-                  <Box
-                    sx={{
-                      position: "absolute",
-                      top: 16,
-                      right: 16,
-                      bgcolor: "rgba(0,0,0,0.8)",
-                      borderRadius: 3,
-                      p: 1.5,
-                      backdropFilter: "blur(10px)",
-                    }}
-                  >
-                    <PhotoLibrary sx={{ color: "white", fontSize: 24 }} />
-                  </Box>
-                  {campaign.is_approved && (
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        top: 16,
-                        left: 16,
-                        bgcolor: theme.palette.success.main,
-                        borderRadius: 3,
-                        p: 1,
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 0.5,
-                      }}
-                    >
-                      <CheckCircle sx={{ color: "white", fontSize: 20 }} />
-                      <Typography
-                        variant="caption"
-                        sx={{ color: "white", fontWeight: "bold" }}
-                      >
-                        معتمدة
-                      </Typography>
-                    </Box>
-                  )}
-                  {isCampaignCompleted && (
-                    <Box
-                      sx={{
-                        position: "absolute",
-                        top: campaign.is_approved ? 60 : 16,
-                        left: 16,
-                        bgcolor: theme.palette.warning.main,
-                        borderRadius: 3,
-                        p: 1,
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 0.5,
-                      }}
-                    >
-                      <CheckCircle sx={{ color: "white", fontSize: 20 }} />
-                      <Typography
-                        variant="caption"
-                        sx={{ color: "white", fontWeight: "bold" }}
-                      >
-                        مكتمل
-                      </Typography>
-                    </Box>
-                  )}
-                </Box>
-              </Card>
-            </Zoom>
-            {/* Additional Images */}
-            {Array.isArray(campaign.campaign_images) &&
-              campaign.campaign_images.length > 0 && (
-                <Fade in={true} timeout={1200}>
-                  <Card
-                    elevation={6}
-                    sx={{
-                      borderRadius: 4,
-                      p: 2, // Reduced padding for compactness
-                      border: `3px solid ${theme.palette.primary.main}50`,
-                      background: `linear-gradient(135deg, ${theme.palette.primary.main}08 0%, transparent 100%)`,
-                      transition: "all 0.3s ease",
-                      "&:hover": {
-                        transform: "translateY(-4px)",
-                        boxShadow: `0 12px 30px ${theme.palette.primary.main}40`,
-                      },
-                    }}
-                  >
-                    <Typography
-                      variant="h6"
-                      fontWeight="bold"
-                      sx={{
-                        mb: 2, // Reduced margin
-                        fontFamily: "Tajawal, Arial, sans-serif",
-                        color: theme.palette.primary.main,
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 1.5,
-                      }}
-                    >
-                      <PhotoLibrary />
-                      صور إضافية ({campaign.campaign_images.length})
-                    </Typography>
-                    <Stack
-                      direction="row"
-                      spacing={1} // Reduced spacing
-                      sx={{ overflowX: "auto", pb: 1 }} // Reduced padding
-                    >
-                      {campaign.campaign_images.map((img, idx) => (
-                        <Box
-                          key={idx}
-                          sx={{
-                            minWidth: { xs: 60, sm: 80 },
-                            minHeight: { xs: 60, sm: 80 },
-                            maxWidth: 80,
-                            maxHeight: 80,
-                            borderRadius: 3,
-                            overflow: "hidden",
-                            border: `3px solid ${theme.palette.primary.main}80`,
-                            transition: "all 0.3s ease",
-                            cursor: "pointer",
-                            position: "relative",
-                            "&:hover": {
-                              transform: "scale(1.05)",
-                              boxShadow: `0 8px 25px ${theme.palette.primary.main}50`,
-                              borderColor: theme.palette.primary.dark,
-                            },
-                            "&:hover .image-overlay": {
-                              opacity: 1,
-                            },
-                          }}
-                          onClick={() => handleImageClick(img, idx + 1)}
-                          role="button"
-                          aria-label={`عرض الصورة الإضافية ${idx + 1}`}
-                        >
-                          <img
-                            src={img}
-                            alt={`صورة إضافية ${idx + 1}`}
-                            style={{
-                              width: "100%",
-                              height: "100%",
-                              objectFit: "cover",
-                              display: "block",
-                              transition: "transform 0.3s ease",
-                            }}
-                            // onError={(e) => {
-                            //     e.target.src = FALLBACK_IMAGE;
-                            // }}
-                            loading="lazy"
-                          />
-                          <Box
-                            className="image-overlay"
-                            sx={{
-                              position: "absolute",
-                              top: 0,
-                              left: 0,
-                              right: 0,
-                              bottom: 0,
-                              bgcolor: "rgba(0,0,0,0.5)",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              opacity: 0,
-                              transition: "opacity 0.3s ease",
-                            }}
-                          >
-                            <ZoomIn
-                              sx={{
-                                color: "white",
-                                fontSize: 20, // Reduced icon size
-                              }}
-                            />
-                          </Box>
-                        </Box>
-                      ))}
-                    </Stack>
-                  </Card>
-                </Fade>
+                )
               )}
-          </Stack>
+            </Stack>
+          {/* Main Image */}
+          <Box
+            sx={{
+              flex: 1,
+              borderRadius: 3,
+              overflow: "hidden",
+              border: `3px solid ${theme.palette.primary.main}30`,
+              position: "relative",
+              cursor: "pointer",
+              "&:hover img": { transform: "scale(1.02)" },
+            }}
+            onClick={() => handleImageClick(mainImage)}
+          >
+            <img
+              src={mainImage}
+              alt="الصورة الرئيسية"
+              style={{
+                width: "100%",
+                height: 300,
+                objectFit: "cover",
+                transition: "transform 0.3s ease",
+              }}
+              loading="lazy"
+            />
+
+
+          </Box>
+ 
         </Grid>
+
 
         {/* Left Section: Info, Donation, Progress */}
         <Grid item xs={12} md={6}>
@@ -342,10 +171,7 @@ const Content = ({ campaign }) => {
                     border: `1px solid ${theme.palette.primary.main}20`,
                     background: `linear-gradient(135deg, ${theme.palette.primary.main}08 0%, transparent 100%)`,
                     transition: "all 0.3s ease",
-                    "&:hover": {
-                      transform: "translateY(-4px)",
-                      boxShadow: `0 12px 30px ${theme.palette.primary.main}30`,
-                    },
+                
                   }}
                 >
                   <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
@@ -355,7 +181,7 @@ const Content = ({ campaign }) => {
                       variant="h6"
                       fontWeight="bold"
                       sx={{
-                        mb: 2, // Reduced margin
+                        mb: 2,
                         fontFamily: "Tajawal, Arial, sans-serif",
                         color: theme.palette.primary.main,
                         display: "flex",
@@ -363,7 +189,7 @@ const Content = ({ campaign }) => {
                         gap: 1.5,
                       }}
                     >
-                      <AttachMoney />
+            
                       تبرع الآن
                     </Typography>
                     <Box sx={{ mb: 2 }}>
@@ -400,9 +226,7 @@ const Content = ({ campaign }) => {
                               fontWeight: "bold",
                               cursor: "pointer",
                               transition: "all 0.3s ease",
-                              "&:hover": {
-                                transform: "scale(1.05)",
-                              },
+                         
                               height: 28, // Reduced height
                               fontSize: "0.85rem", // Reduced font size
                             }}
@@ -578,7 +402,7 @@ const Content = ({ campaign }) => {
               </Fade>
             )}
             {/* Progress and Status Sections */}
-            <Progress campaign={campaign} />
+            {/* <Progress campaign={campaign} /> */}
           </Stack>
         </Grid>
       </Grid>

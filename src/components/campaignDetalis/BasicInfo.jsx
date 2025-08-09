@@ -14,10 +14,7 @@ const BasicInfo = ({ campaign }) => {
                                                border: `1px solid ${theme.palette.primary.main}20`,
                                                background: `linear-gradient(135deg, ${theme.palette.primary.main}08 0%, transparent 100%)`,
                                                transition: "all 0.3s ease",
-                                               "&:hover": {
-                                                   transform: "translateY(-4px)",
-                                                   boxShadow: `0 12px 30px ${theme.palette.primary.main}30`,
-                                               },
+                                   
                                            }}
                                        >
                                            <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
@@ -55,31 +52,7 @@ const BasicInfo = ({ campaign }) => {
                                                    >
                                                        {campaign.name}
                                                    </Typography>
-                                                   <Stack direction="row" spacing={0.5}>
-                                                       <Chip
-                                                           label={
-                                                               campaign.type === "money" ? "تبرع مالي" : "تطوع"
-                                                           }
-                                                           color={
-                                                               campaign.type === "money"
-                                                                   ? "primary"
-                                                                   : "secondary"
-                                                           }
-                                                           size="small"
-                                                           sx={{
-                                                               fontWeight: "bold",
-                                                               fontSize: "0.9rem",
-                                                               height: 28, // Reduced height
-                                                           }}
-                                                           icon={
-                                                               campaign.type === "money" ? (
-                                                                   <AttachMoney />
-                                                               ) : (
-                                                                   <Group />
-                                                               )
-                                                           }
-                                                       />
-                                                   </Stack>
+                                            
                                                </Stack>
                                                <Typography
                                                    variant="body1"

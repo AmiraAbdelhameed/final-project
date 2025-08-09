@@ -32,34 +32,7 @@ const Navbar = () => {
   const toggleDrawer = (open) => () => {
     setDrawerOpen(open);
   };
-  // const handleProfile = async () => {
-  //   const { data: userData, error: userError } = await supabase.auth.getUser();
-
-  //   if (userError) {
-  //     console.error("Failed to get user:", userError.message);
-  //     return;
-  //   }
-
-  //   const userId = userData?.user?.id;
-  //   if (!userId) {
-  //     console.error("User ID is undefined — make sure you're logged in.");
-  //     return;
-  //   }
-  //   const { data: profileData, error: profileError } = await supabase
-  //     .from("users")
-  //     .select("user_type")
-  //     .eq("user_id", userId)
-  //     .single();
-
-  //   if (profileError) {
-  //     console.error("Failed to fetch user profile:", profileError.message);
-  //     return;
-
-  //   } else {
-  //     navigate("/profile");
-  //   }
-  // };
-
+ 
   const navItems = [
 
     { label: 'الرئيسيه', path: '/' },
@@ -145,7 +118,7 @@ const Navbar = () => {
               <>
                 {/* Right Section - Navigation */}
                 <Box display="flex" alignItems="center" gap={3}>
-                  <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+                    <Typography variant="h6" sx={{ fontWeight: "bold" , cursor:"pointer" , color:'white'}} onClick={() => navigate('/')}>
                     أيادي
                   </Typography>
                   {navItems.map((item) => (
