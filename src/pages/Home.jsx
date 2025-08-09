@@ -25,15 +25,47 @@ const Home = () => {
 
   // Check for success parameter in URL
   useEffect(() => {
+    console.log("🔍 Home component mounted");
+    console.log("🔍 Current URL search:", search);
+    console.log("🔍 Current URL:", window.location.href);
+
     const queryParams = new URLSearchParams(search);
     const success = queryParams.get("success");
-    console.log("🔍 Current URL search:", search);
     console.log("🔍 Success parameter:", success);
+
     if (success === "true") {
-      console.log("✅ Success parameter is true");
+      console.log("✅ Success parameter is true - showing modal");
       setShowSuccessModal(true);
+    } else {
+      console.log("❌ Success parameter is not true:", success);
     }
   }, [search]);
+
+  // Additional check on component mount
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const successFromURL = urlParams.get("success");
+    console.log("🔍 Component mount check - success:", successFromURL);
+    
+    if (successFromURL === "true") {
+      console.log("✅ Component mount - showing modal");
+      setShowSuccessModal(true);
+    }
+  }, []);
+
+  // Test function to manually show modal
+  const handleTestModal = () => {
+    console.log("🧪 Test button clicked - showing modal");
+    setShowSuccessModal(true);
+  };
+
+  // Test function to simulate URL with success parameter
+  const handleTestURL = () => {
+    console.log("🧪 Test URL button clicked");
+    window.history.pushState({}, "", "/?success=true");
+    // Force re-render
+    window.location.reload();
+  };
 
   return (
     <>
@@ -42,12 +74,43 @@ const Home = () => {
         <Article />
         <Charities />
         <ProjectsSection />
+
+        {/* Test Buttons - Remove these later */}
+        <Box
+          sx={{
+            textAlign: "center",
+            py: 4,
+            display: "flex",
+            gap: 2,
+            justifyContent: "center",
+          }}
+        >
+          <Button
+            onClick={handleTestModal}
+            variant="outlined"
+            color="primary"
+            sx={{ fontFamily: "Tajawal, Arial, sans-serif" }}
+          >
+            اختبار Modal النجاح
+          </Button>
+          <Button
+            onClick={handleTestURL}
+            variant="outlined"
+            color="secondary"
+            sx={{ fontFamily: "Tajawal, Arial, sans-serif" }}
+          >
+            اختبار URL مع success=true
+          </Button>
+        </Box>
       </Container>
 
       {/* Success Modal */}
       <Dialog
         open={showSuccessModal}
-        onClose={() => setShowSuccessModal(false)}
+        onClose={() => {
+          console.log("🔒 Closing modal");
+          setShowSuccessModal(false);
+        }}
         maxWidth="sm"
         fullWidth
         PaperProps={{
@@ -103,7 +166,10 @@ const Home = () => {
         </DialogContent>
         <DialogActions sx={{ p: 3, justifyContent: "center" }}>
           <Button
-            onClick={() => setShowSuccessModal(false)}
+            onClick={() => {
+              console.log("🔒 Modal close button clicked");
+              setShowSuccessModal(false);
+            }}
             variant="contained"
             color="success"
             sx={{
