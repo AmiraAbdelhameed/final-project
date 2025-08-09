@@ -80,6 +80,23 @@ const CampaignDetails = () => {
     };
   }, [dispatch]);
 
+  // Prevent new windows from opening
+  useEffect(() => {
+    const originalOpen = window.open;
+    window.open = function (url, target, features) {
+      // Always redirect in same tab instead of opening new window
+      if (url) {
+        window.location.replace(url);
+        return null;
+      }
+      return originalOpen.call(this, url, target, features);
+    };
+
+    return () => {
+      window.open = originalOpen;
+    };
+  }, []);
+
   const campaign = (campaigns || []).find((c) => String(c.id) === String(id));
 
   const handleDonation = useCallback(() => {
@@ -95,14 +112,9 @@ const CampaignDetails = () => {
 
   useEffect(() => {
     if (paymentResponse?.iframe_url) {
-      // Option 1: Open in same tab (redirect)
-      window.location.href = paymentResponse.iframe_url;
+      // Prevent opening in new tab by using replace instead of href
+      window.location.replace(paymentResponse.iframe_url);
       dispatch(clearPaymentState());
-
-      // Option 2: Open in modal (uncomment the lines below and comment the redirect above)
-      // setPaymentIframeUrl(paymentResponse.iframe_url);
-      // setShowPaymentIframeModal(true);
-      // dispatch(clearPaymentState());
     } else if (paymentError) {
       setShowPaymentModal(true);
     }
