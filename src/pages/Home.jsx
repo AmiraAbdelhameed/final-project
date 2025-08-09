@@ -53,20 +53,6 @@ const Home = () => {
     }
   }, []);
 
-  // Test function to manually show modal
-  const handleTestModal = () => {
-    console.log("🧪 Test button clicked - showing modal");
-    setShowSuccessModal(true);
-  };
-
-  // Test function to simulate URL with success parameter
-  const handleTestURL = () => {
-    console.log("🧪 Test URL button clicked");
-    window.history.pushState({}, "", "/?success=true");
-    // Force re-render
-    window.location.reload();
-  };
-
   return (
     <>
       <Hero />
@@ -74,34 +60,6 @@ const Home = () => {
         <Article />
         <Charities />
         <ProjectsSection />
-
-        {/* Test Buttons - Remove these later */}
-        <Box
-          sx={{
-            textAlign: "center",
-            py: 4,
-            display: "flex",
-            gap: 2,
-            justifyContent: "center",
-          }}
-        >
-          <Button
-            onClick={handleTestModal}
-            variant="outlined"
-            color="primary"
-            sx={{ fontFamily: "Tajawal, Arial, sans-serif" }}
-          >
-            اختبار Modal النجاح
-          </Button>
-          <Button
-            onClick={handleTestURL}
-            variant="outlined"
-            color="secondary"
-            sx={{ fontFamily: "Tajawal, Arial, sans-serif" }}
-          >
-            اختبار URL مع success=true
-          </Button>
-        </Box>
       </Container>
 
       {/* Success Modal */}
@@ -128,43 +86,71 @@ const Home = () => {
             fontWeight: "bold",
             color: "success.main",
             borderBottom: `2px solid ${theme.palette.success.main}30`,
+            fontSize: "1.5rem",
+            py: 2,
           }}
         >
           تم التبرع بنجاح! 🎉
         </DialogTitle>
-        <DialogContent sx={{ pt: 3 }}>
+        <DialogContent sx={{ pt: 3, px: 4 }}>
           <Box sx={{ textAlign: "center", py: 2 }}>
             <CheckCircle
               sx={{
                 color: theme.palette.success.main,
-                fontSize: 60,
-                mb: 2,
+                fontSize: 80,
+                mb: 3,
               }}
             />
             <Typography
-              variant="h6"
+              variant="h5"
               color="success.main"
               fontWeight="bold"
-              sx={{ mb: 2, fontFamily: "Tajawal, Arial, sans-serif" }}
+              sx={{ 
+                mb: 3, 
+                fontFamily: "Tajawal, Arial, sans-serif",
+                fontSize: "1.3rem"
+              }}
             >
               شكراً لك على تبرعك! 🙏
             </Typography>
             <Typography
               variant="body1"
-              color="text.secondary"
-              sx={{ fontFamily: "Tajawal, Arial, sans-serif", lineHeight: 1.6 }}
+              color="text.primary"
+              sx={{ 
+                fontFamily: "Tajawal, Arial, sans-serif", 
+                lineHeight: 1.8,
+                fontSize: "1.1rem",
+                mb: 2
+              }}
             >
-              تم استلام تبرعك بنجاح. سيساعد هذا التبرع في تحقيق أهداف الحملة
-              ومساعدة المحتاجين.
-              <br />
-              <br />
-              <strong>
-                شكراً لك على إيمانك بالخير ومساهمتك في بناء مستقبل أفضل للجميع.
-              </strong>
+              تم استلام تبرعك بنجاح وسيتم تحويله للمستفيدين.
             </Typography>
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              sx={{ 
+                fontFamily: "Tajawal, Arial, sans-serif", 
+                lineHeight: 1.6,
+                fontSize: "1rem"
+              }}
+            >
+              سيساعد هذا التبرع في تحقيق أهداف الحملة ومساعدة المحتاجين.
+            </Typography>
+            <Box sx={{ mt: 3, p: 2, bgcolor: "success.main", borderRadius: 2, color: "white" }}>
+              <Typography
+                variant="body1"
+                sx={{ 
+                  fontFamily: "Tajawal, Arial, sans-serif",
+                  fontWeight: "bold",
+                  fontSize: "1rem"
+                }}
+              >
+                شكراً لك على إيمانك بالخير ومساهمتك في بناء مستقبل أفضل للجميع 🌟
+              </Typography>
+            </Box>
           </Box>
         </DialogContent>
-        <DialogActions sx={{ p: 3, justifyContent: "center" }}>
+        <DialogActions sx={{ p: 4, justifyContent: "center" }}>
           <Button
             onClick={() => {
               console.log("🔒 Modal close button clicked");
@@ -172,16 +158,24 @@ const Home = () => {
             }}
             variant="contained"
             color="success"
+            size="large"
             sx={{
               fontWeight: "bold",
               fontFamily: "Tajawal, Arial, sans-serif",
-              px: 4,
-              py: 1.5,
-              borderRadius: 2,
+              px: 6,
+              py: 2,
+              borderRadius: 3,
+              fontSize: "1.1rem",
+              boxShadow: 3,
+              "&:hover": {
+                boxShadow: 6,
+                transform: "translateY(-2px)",
+              },
+              transition: "all 0.3s ease",
             }}
             aria-label="إغلاق نافذة النجاح"
           >
-            تم
+            تم 👍
           </Button>
         </DialogActions>
       </Dialog>
