@@ -95,8 +95,14 @@ const CampaignDetails = () => {
 
   useEffect(() => {
     if (paymentResponse?.iframe_url) {
-      window.open(paymentResponse.iframe_url, "_blank");
+      // Option 1: Open in same tab (redirect)
+      window.location.href = paymentResponse.iframe_url;
       dispatch(clearPaymentState());
+
+      // Option 2: Open in modal (uncomment the lines below and comment the redirect above)
+      // setPaymentIframeUrl(paymentResponse.iframe_url);
+      // setShowPaymentIframeModal(true);
+      // dispatch(clearPaymentState());
     } else if (paymentError) {
       setShowPaymentModal(true);
     }
