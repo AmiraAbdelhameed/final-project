@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getPaymentsReqs, changePaymentStatus} from './../../../redux/Slices/paymentReqSlice';
 import { Typography, Box, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
@@ -19,25 +19,41 @@ const PaymentReq = () => {
             setOpenConfirm(true);
         };
 
-        const handleConfirm = () => {
-        const selectedRequest = paymentReqs.find(req => req.id === selectedId);
-        const campaignId = selectedRequest?.campaigns?.id;
+        const handleConfirm = useCallback(()=>{
+            const selectedRequest = paymentReqs.find(req => req.id === selectedId);
+            const campaignId = selectedRequest?.campaigns?.id;
+    
+            if (!campaignId) {
+                console.error('Missing campaign ID');
+                return;
+            }
+    
+            dispatch(changePaymentStatus({
+                id: selectedId,
+            }));
+    
+            setOpenConfirm(false);
+            setSelectedId(null);
 
-        if (!campaignId) {
-            console.error('Missing campaign ID');
-            return;
-        }
+        }) 
+     
 
-        dispatch(changePaymentStatus({
-            id: selectedId,
-            newStatus: 'approved',
-            campaignId: campaignId,
-            campaignPayment: true
-        }));
+    //     const handleConfirm = () => {
+    //     const selectedRequest = paymentReqs.find(req => req.id === selectedId);
+    //     const campaignId = selectedRequest?.campaigns?.id;
 
-        setOpenConfirm(false);
-        setSelectedId(null);
-    };
+    //     if (!campaignId) {
+    //         console.error('Missing campaign ID');
+    //         return;
+    //     }
+
+    //     dispatch(changePaymentStatus({
+    //         id: selectedId,
+    //     }));
+
+    //     setOpenConfirm(false);
+    //     setSelectedId(null);
+    // };
 
         const handleCancel = () => {
             setOpenConfirm(false);
@@ -61,14 +77,14 @@ const PaymentReq = () => {
                         borderRadius="8px"
                     >
                         <Typography>رقم الطلب: {req.id}</Typography>
-                        <Typography>الحالة الحالية: {req.status=='approved'?'تم الاعتماد':"في انتظار الموافقه"}</Typography>
+                        <Typography>الحالة الحالية: {req.status =='processed'?'تم الاعتماد':"في انتظار الموافقه"}</Typography>
                         <Typography>الحملة: {req.campaigns?.name || '—'}</Typography>
                         <Typography>
                             اسم المؤسسة: {req.campaigns?.organizations?.name || '—'}
                         </Typography>
                         <Button variant='contained'
-                            color={req.status == 'approved' ? 'primary' :"warning"}
-                        onClick={() => handleApproveClick(req.id)}>{req.status == 'approved' ? 'تمت الموافقه' : "اعتماد الطلب"}</Button>
+                            color={req.status == 'processed' ? 'primary' :"warning"}
+                            onClick={() => handleApproveClick(req.id)}>{req.status == 'processed' ? 'تمت الموافقه' : "اعتماد الطلب"}</Button>
                   
                     </Box>
                 ))}

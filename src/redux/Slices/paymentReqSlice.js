@@ -7,16 +7,6 @@ export const getPaymentsReqs = createAsyncThunk(
         try {
             const { data, error } = await supabase
                 .from('payment_requests')
-                // .select(`
-                //     *,
-                //     campaigns (
-                //         id,
-                //         name,
-                //         payment_done,
-                //         is_completed,
-                //         organization_id
-                //     )
-                // `);
                 .select(`
           *,
           campaigns (
@@ -41,41 +31,23 @@ export const getPaymentsReqs = createAsyncThunk(
 );
 
 export const changePaymentStatus = createAsyncThunk(
-    'requests/toggleApproval',
-    async ({ id, newStatus, campaignId, campaignPayment }, thunkAPI) => {
+    'requests/changePaymentStatus',
+    async ({id}, thunkAPI) => {
         try {
- 
-            const { data: paymentData, error: paymentError } = await supabase
-                .from('payment_requests')
-                .update({ status: newStatus })
-                .eq('id', id)
-                .select(`
-                    *,
-                    campaigns (
-                        id,
-                        name,
-                        payment_done,
-                        is_completed
-                    )
-                `);
-
-            if (paymentError) {
-                console.error('Error updating payment_requests:', paymentError);
-                return thunkAPI.rejectWithValue(paymentError.message);
+            console.log("Sending to pay_out function:", {id});
+     
+            const { data, error } = await supabase.functions.invoke("pay_out", {
+                method: "POST",
+                body: { "payment_id": id }
+            });
+            console.log("Function response:", { data, error , id});
+            if (error) {
+                console.error('Error invoking pay_out function:', error);
+                return thunkAPI.rejectWithValue(error.message);
             }
 
-            // Then, update the related campaign
-            const { error: campaignError } = await supabase
-                .from('campaigns')
-                .update({ payment_done: campaignPayment })
-                .eq('id', campaignId);
-
-            if (campaignError) {
-                console.error('Error updating campaigns:', campaignError);
-                return thunkAPI.rejectWithValue(campaignError.message);
-            }
-
-            return paymentData[0];
+       
+            return data;
         } catch (err) {
             return thunkAPI.rejectWithValue(err.message);
         }
@@ -90,6 +62,7 @@ const paymentReqSlice = createSlice({
         loading: false,
         error: null,
     },
+    reducers:{},
     extraReducers: (builder) => {
         builder
             .addCase(getPaymentsReqs.pending, (state) => {
@@ -104,7 +77,15 @@ const paymentReqSlice = createSlice({
                 state.loading = false;
                 state.error = action.payload;
             })
+            // .addCase(changePaymentStatus.fulfilled, (state, action) => {
+            //     const updatedRequest = action.payload;
+            //     const index = state.data.findIndex(req => req.id === updatedRequest.id);
+            //     if (index !== -1) {
+            //         state.data[index] = updatedRequest;
+            //     }
+            // })
             .addCase(changePaymentStatus.fulfilled, (state, action) => {
+                if (!action.payload) return;
                 const updatedRequest = action.payload;
                 const index = state.data.findIndex(req => req.id === updatedRequest.id);
                 if (index !== -1) {
