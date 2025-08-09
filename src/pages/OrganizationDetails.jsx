@@ -104,7 +104,7 @@ const OrganizationDetails = () => {
         },
       }}
     >
-      {/* زر الرجوع المحسن */}
+      {/*Back button*/}
       <Fade in={true} timeout={800}>
         <Tooltip title="العودة إلى قائمة المؤسسات">
           <IconButton
@@ -134,7 +134,7 @@ const OrganizationDetails = () => {
         </Tooltip>
       </Fade>
 
-      {/* الهيدر المحسن */}
+      {/* الهيدر */}
       <Fade in={true} timeout={1200}>
         <Box
           sx={{
@@ -154,6 +154,7 @@ const OrganizationDetails = () => {
               background: `radial-gradient(circle at 30% 70%, rgba(255,255,255,0.1) 0%, transparent 50%),
                         radial-gradient(circle at 70% 30%, rgba(255,255,255,0.05) 0%, transparent 50%)`,
               pointerEvents: "none",
+              // bgcolor: "rgba(0, 0, 0)",
             },
           }}
         >

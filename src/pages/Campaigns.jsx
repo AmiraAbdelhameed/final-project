@@ -111,7 +111,7 @@ const Campaigns = () => {
       </Box>
 
       {/* Content Section */}
-      <Box sx={{ px: { xs: 1, sm: 3 }, maxWidth: 1000, mx: "auto" }}>
+      <Box sx={{ px: { xs: 1, sm: 3 },py:8 ,maxWidth: 1000, mx: "auto" }}>
         {/* Tabs Filter */}
         <Box sx={{ mb: 4 }}>
           <Tabs
@@ -256,31 +256,31 @@ const Campaigns = () => {
                 </Box>
                 {/* Info */}
                 <Box sx={{ flex: 1, textAlign: "right" }}>
-                  <Stack direction="row" spacing={1} alignItems="center" mb={1}>
+                  <Stack direction="row" spacing={4} alignItems="center" mb={1} justifyContent={"space-between"}>
                     <Typography
                       variant="h6"
                       fontWeight="bold"
-                      sx={{ fontFamily: "Tajawal, Arial, sans-serif" }}
+                      mx={8}
+                      sx={{ ml:4 , pl:8}}
                     >
                       {campaign.name}
                     </Typography>
+                    <Box>
                     <Chip
                       label={campaign.type === "money" ? "تبرع مالي" : "تطوع"}
                       color={
                         campaign.type === "money" ? "primary" : "secondary"
                       }
                       size="small"
-                      sx={{ fontWeight: "bold" }}
+                      sx={{ fontWeight: "bold" , mx:4 }}
                     />
-                    {campaign.is_approved && (
-                      <Chip label="معتمدة" color="success" size="small" />
-                    )}
                     {(campaign.is_completed ||
                       (campaign.goal_amount &&
                         campaign.current_amount &&
-                        campaign.current_amount >= campaign.goal_amount)) && (
+                        campaign.current_amount >= campaign.goal_amount)) ? (
                       <Chip label="مكتمل" color="warning" size="small" />
-                    )}
+                    ) : (<Chip label="غير مكتمل" color="danger" size="small" />)}
+                    </Box>
                   </Stack>
                   <Typography
                     variant="body2"

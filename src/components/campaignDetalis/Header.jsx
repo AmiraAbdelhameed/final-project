@@ -1,4 +1,4 @@
-import { ArrowBack } from '@mui/icons-material';
+import { ArrowBack, ArrowForward } from '@mui/icons-material';
 import { Box, Fade, IconButton, Paper, Tooltip, useTheme, Zoom } from '@mui/material';
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -63,7 +63,7 @@ const Header = () => {
                             }}
                             aria-label="العودة إلى قائمة الحملات"
                         >
-                            <ArrowBack />
+                            <ArrowForward />
                         </IconButton>
                     </Tooltip>
                 </Zoom>
@@ -76,7 +76,7 @@ const Header = () => {
                         maxWidth: 1400,
                         mx: "auto",
                         p: { xs: 3, sm: 6 },
-                        borderRadius: 4,
+                        // borderRadius: 4,
                         background: `linear-gradient(145deg, ${theme.palette.background.paper} 0%, ${theme.palette.primary.main}03 100%)`,
                         border: `1px solid ${theme.palette.primary.main}20`,
                         boxShadow: `0 20px 60px ${theme.palette.primary.main}15`,
