@@ -4,7 +4,7 @@ import {
     Typography,
   
 } from '@mui/material';
-const ProjectsCard = ({ title, description, organizationName, img, orgImg }) => (
+const ProjectsCard = ({ title, description, organizationName, img, orgImg, handleNavigation }) => (
     <Box
         sx={{
             display: 'flex',
@@ -15,8 +15,10 @@ const ProjectsCard = ({ title, description, organizationName, img, orgImg }) => 
             boxShadow: 1,
             mb: 2,
             direction: 'rtl',
+            cursor: 'pointer',
             
         }}
+        onClick={handleNavigation}
     >
         <Box
             sx={{

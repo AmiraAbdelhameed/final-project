@@ -36,7 +36,7 @@ const ProjectsSection = () => {
         mb={3}
       >
         <Box display="flex" alignItems="center" gap={1}>
-          <MicIcon />
+
           <Typography variant="h6" fontWeight="bold">
             المشاريع الجديده
           </Typography>
@@ -63,6 +63,7 @@ const ProjectsSection = () => {
                 img={campaign.cover_image}
                 organizationName={org ? org.name : "غير معروف"}
                 // orgImg={org.profile_image}
+                handleNavigation={()=>navigate(`/campaigns/${campaign.id}`)}
               />
             )
           })}

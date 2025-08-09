@@ -1,23 +1,23 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getPaymentsReqs, changePaymentStatus} from './../../../redux/Slices/paymentReqSlice';
+import { getPaymentsReqs, changePaymentStatus } from './../../../redux/Slices/paymentReqSlice';
 import { Typography, Box, Button, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@mui/material';
 
 
 
 const PaymentReq = () => {
     const dispatch = useDispatch();
-    const { data: paymentReqs, loading, error} = useSelector((state) => state.paymentReqs);
+    const { data: paymentReqs, loading, error } = useSelector((state) => state.paymentReqs);
     const [selectedId, setSelectedId] = useState(null);
     const [openConfirm, setOpenConfirm] = useState(false);
     useEffect(() => {
         dispatch(getPaymentsReqs());
     }, [dispatch]);
-  
-        const handleApproveClick = (id) => {
-            setSelectedId(id);
-            setOpenConfirm(true);
-        };
+
+    const handleApproveClick = (id) => {
+        setSelectedId(id);
+        setOpenConfirm(true);
+    };
 
     const handleConfirm = useCallback(async () => {
         const selectedRequest = paymentReqs.find(req => req.id === selectedId);
@@ -29,16 +29,17 @@ const PaymentReq = () => {
 
         await dispatch(changePaymentStatus({ id: selectedId }));
 
-  
+
         await dispatch(getPaymentsReqs());
 
         setOpenConfirm(false);
         setSelectedId(null);
     }, [dispatch, paymentReqs, selectedId]);
-        const handleCancel = () => {
-            setOpenConfirm(false);
-            setSelectedId(null);
-        };
+    const handleCancel = () => {
+        setOpenConfirm(false);
+        setSelectedId(null);
+    };
+
 
     return (
         <>
@@ -57,15 +58,18 @@ const PaymentReq = () => {
                         borderRadius="8px"
                     >
                         <Typography>رقم الطلب: {req.id}</Typography>
-                        <Typography>الحالة الحالية: {req.status =='processed'?'تم الاعتماد':"في انتظار الموافقه"}</Typography>
+                        <Typography>الحالة الحالية: {req.status == 'processed' ? 'تم الاعتماد' : "في انتظار الموافقه"}</Typography>
                         <Typography>الحملة: {req.campaigns?.name || '—'}</Typography>
                         <Typography>
                             اسم المؤسسة: {req.campaigns?.organizations?.name || '—'}
                         </Typography>
+                        <Typography>
+                            المبلغ: {req.campaigns.current_amount}
+                        </Typography>
                         <Button variant='contained'
-                            color={req.status == 'processed' ? 'primary' :"warning"}
+                            color={req.status == 'processed' ? 'primary' : "warning"}
                             onClick={() => handleApproveClick(req.id)}>{req.status == 'processed' ? 'تمت الموافقه' : "اعتماد الطلب"}</Button>
-                  
+
                     </Box>
                 ))}
             </Box>

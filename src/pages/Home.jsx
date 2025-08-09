@@ -25,19 +25,12 @@ const Home = () => {
 
   // Check for success parameter in URL
   useEffect(() => {
-    console.log("🔍 Home component mounted");
-    console.log("🔍 Current URL search:", search);
-    console.log("🔍 Current URL:", window.location.href);
-
     const queryParams = new URLSearchParams(search);
     const success = queryParams.get("success");
-    console.log("🔍 Success parameter:", success);
-
     if (success === "true") {
-      console.log("✅ Success parameter is true - showing modal");
       setShowSuccessModal(true);
     } else {
-      console.log("❌ Success parameter is not true:", success);
+
     }
   }, [search]);
 
@@ -48,7 +41,6 @@ const Home = () => {
     console.log("🔍 Component mount check - success:", successFromURL);
     
     if (successFromURL === "true") {
-      console.log("✅ Component mount - showing modal");
       setShowSuccessModal(true);
     }
   }, []);

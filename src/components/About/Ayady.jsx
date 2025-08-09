@@ -51,7 +51,7 @@ const Ayady = () => {
                 }}>
                     <Box
                         component="img"
-                        src="./images/adminlogin.jpg"
+                        src="./images/about.jpg"
                         alt="أيادي"
                         sx={{
                             width: '100%',

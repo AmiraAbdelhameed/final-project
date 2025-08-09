@@ -15,12 +15,6 @@ import Login from "../components/Forms/Login";
 import OrganizationDetails from "../pages/OrganizationDetails";
 import CampaignDetails from "../pages/CampaignDetails";
 
-// import Organization from "../components/Admin/Organization";
-// import AdminCampaigns from "../components/Admin/AdminCampaigns";
-// import ProtectedAdminRoute from "../components/Admin/ProtectedAdminRoute";
-// import AdminOrganizationDetails from "../components/Admin/AdminOrganizationDetails";
-// import CampaignsDetails from "../components/Admin/CampaignsDetails";
-// import PaymentReq from "../components/Admin/PaymentReq";
 import {
   Organization,
   AdminCampaigns,
@@ -115,9 +109,6 @@ export default [
         path: '/admin/campaigns/:id',
         element: <ProtectedAdminRoute> <CampaignsDetails /></ProtectedAdminRoute>
       },
-
-
-
     ]
   },
   {
@@ -130,7 +121,4 @@ export default [
     path: '/login',
     element: <Login />
   },
- 
-
-
 ]

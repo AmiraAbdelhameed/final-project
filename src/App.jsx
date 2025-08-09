@@ -17,7 +17,6 @@ function App() {
     <>
       <ThemeProvider theme={theme}>
         <BrowserRouter>
-          {/* <Suspense fallback={<div>Loading...</div>}> */}
           <Suspense fallback={<Loading />}>
             <Routes>{renderRoutes(routes)}</Routes>
           </Suspense>

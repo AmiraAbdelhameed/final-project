@@ -5,7 +5,7 @@ const Hero = () => {
 
           <Box
               component="img"
-              src="./images/adminlogin.jpg"
+              src="./images/aboutAyady.jpg"
               alt="background"
               sx={{
                   width: '100%',

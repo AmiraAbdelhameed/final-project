@@ -14,6 +14,7 @@ export const getPaymentsReqs = createAsyncThunk(
             name,
             payment_done,
             is_completed,
+            current_amount,
             organization_id,
             organizations (
               name
