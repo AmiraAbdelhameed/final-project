@@ -19,42 +19,22 @@ const PaymentReq = () => {
             setOpenConfirm(true);
         };
 
-        const handleConfirm = useCallback(()=>{
-            const selectedRequest = paymentReqs.find(req => req.id === selectedId);
-            const campaignId = selectedRequest?.campaigns?.id;
-    
-            if (!campaignId) {
-                console.error('Missing campaign ID');
-                return;
-            }
-    
-            dispatch(changePaymentStatus({
-                id: selectedId,
-            }));
-    
-            setOpenConfirm(false);
-            setSelectedId(null);
+    const handleConfirm = useCallback(async () => {
+        const selectedRequest = paymentReqs.find(req => req.id === selectedId);
 
-        }) 
-     
+        if (!selectedRequest) {
+            console.error('Missing payment request');
+            return;
+        }
 
-    //     const handleConfirm = () => {
-    //     const selectedRequest = paymentReqs.find(req => req.id === selectedId);
-    //     const campaignId = selectedRequest?.campaigns?.id;
+        await dispatch(changePaymentStatus({ id: selectedId }));
 
-    //     if (!campaignId) {
-    //         console.error('Missing campaign ID');
-    //         return;
-    //     }
+  
+        await dispatch(getPaymentsReqs());
 
-    //     dispatch(changePaymentStatus({
-    //         id: selectedId,
-    //     }));
-
-    //     setOpenConfirm(false);
-    //     setSelectedId(null);
-    // };
-
+        setOpenConfirm(false);
+        setSelectedId(null);
+    }, [dispatch, paymentReqs, selectedId]);
         const handleCancel = () => {
             setOpenConfirm(false);
             setSelectedId(null);
